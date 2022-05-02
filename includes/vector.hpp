@@ -6,14 +6,14 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/05/01 07:25:55 by msalena          ###   ########.fr       */
+/*   Updated: 2022/05/02 15:59:52 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include "vercot_iterator.hpp"
+#include "vectorIterator.hpp"
 #include <iostream>
 #include <string>
 #include <memory>
@@ -28,13 +28,15 @@ namespace ft{
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef ft::iter<pointer>							iterator;
-		typedef ft::iter<const_pointer>						const_iterator;
-		typedef ft::reverse_iter<iterator>					reverse_iterator;
-		typedef ft::reverse_iter<const_iterator>			const_reverse_iterator;
+		typedef ft::Iter<pointer>							iterator;
+		typedef ft::Iter<const_pointer>						const_iterator;
+		typedef ft::reverseIter<iterator>					reverse_iterator;
+		typedef ft::reverseIter<const_iterator>				const_reverse_iterator;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::difference_type	difference_type;
-
+	private:
+		value_type*											vector;
+	public:
 		//ENABLE_IF!!!!!!
 		explicit vector (const allocator_type& alloc = allocator_type()); //empty_vector
 		explicit vector (size_type n, const value_type& val = value_type(),
