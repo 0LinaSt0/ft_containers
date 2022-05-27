@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 21:44:46 by msalena           #+#    #+#             */
-/*   Updated: 2022/05/02 17:12:47 by msalena          ###   ########.fr       */
+/*   Updated: 2022/05/27 17:36:55 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace ft{
 	
 	template < class Tp >
 		struct iterator_traits {
-			typedef ptrdiff_t 						difference_type; // result of subtracting one iterator from another
+			typedef ptrdiff_t 						difference_type; // result of subtracting (-) one iterator from another
 			typedef remove_pointer<Tp>::type		value_type; // the type of the element
 			typedef value_type&						reference; // the type of a reference to an element
 			typedef Tp								pointer; // the type of a pointer to an element

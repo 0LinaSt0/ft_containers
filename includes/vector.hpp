@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/05/02 15:59:52 by msalena          ###   ########.fr       */
+/*   Updated: 2022/05/27 21:12:13 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,45 @@ namespace ft{
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef ft::Iter<pointer>							iterator;
 		typedef ft::Iter<const_pointer>						const_iterator;
-		typedef ft::reverseIter<iterator>					reverse_iterator;
-		typedef ft::reverseIter<const_iterator>				const_reverse_iterator;
+		typedef ft::reversIter<iterator>					reverse_iterator;
+		typedef ft::reversIter<const_iterator>				const_reverse_iterator;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::difference_type	difference_type;
 	private:
 		value_type*											vector;
+		size_type											countElem;
 	public:
 		//ENABLE_IF!!!!!!
-		explicit vector (const allocator_type& alloc = allocator_type()); //empty_vector
+		explicit vector (const allocator_type& alloc = allocator_type()) : vector (NULL), countElem = 0 { } //empty_vector
 		explicit vector (size_type n, const value_type& val = value_type(),
-							const allocator_type& alloc = allocator_type()); // creat n vector elems with value val
+							const allocator_type& alloc = allocator_type()) : 
+							vector (Alloc.allocate(n)), countElem (n){  // creat n vector elems with value val
+								iterator iter; 
+								for (size_type i=0; i < n; i++){
+									Iter[i] = val;
+								}
+							}
 		template < class InputIterator >
 			vector (InputIterator first, InputIterator last,
-					const allocator_type& alloc = allocator_type()); // vector with elems from first to last
-		vector (const vector& x); // copy constructor
-		~vector (void);
+					const allocator_type& alloc = allocator_type()){ // vector with elems from first to last
+						size_type	i = 0;
+						while (first != last){
+							first++;
+							i++;
+						}
+						iterator iter;
+						countElem = i;
+						vector = Alloc.allocate(i);
+						for (size_type i=0; first != last; i++){
+							iter[i] = first++;
+						}
+					}
+		vector (const vector& x){ // copy constructor
+			countElem = x.countElem;
+			vector = Alloc.allocate(countElem);
+			operator=(x);
+		}
+		~vector (void) {}
 
 		//Iterators
 		iterator			begin();
