@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/05/28 23:23:49 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/04 14:58:07 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,34 @@
 #include "vectorIterator.hpp"
 
 namespace ft{
-	// template < class T >
-	// 	struct is_integral { static const bool	value = false; };
-	template < bool T >
-		struct is_integral { static const bool	value = true; };
-	template < char T >
-		struct is_integral { static const bool	value = true; };
-	template < unsigned char T >
-		struct is_integral { static const bool	value = true; };
-	template < signed char T >
-		struct is_integral { static const bool	value = true; };
-	template < wchar_t T >
-		struct is_integral { static const bool	value = true; };
-	template < short T >
-		struct is_integral { static const bool	value = true; };
-	template < unsigned short T >
-		struct is_integral { static const bool	value = true; };
-	template < int T >
-		struct is_integral { static const bool	value = true; };
-	template < unsigned int T >
-		struct is_integral { static const bool	value = true; };
-	template < long T >
-		struct is_integral { static const bool	value = true; };
-	template < unsigned long T >
-		struct is_integral { static const bool	value = true; };
-	template < long long T >
-		struct is_integral { static const bool	value = true; };
-	template < unsigned long long T >
-		struct is_integral { static const bool	value = true; };
-	template < long long T >
-		struct is_integral { static const bool	value = true; };
 	template < class T >
-		struct is_integral { static const bool	value = false; }; 
+		struct is_integral { static const bool	value = false; };
+	template < >
+		struct is_integral < bool > { static const bool	value = true; };
+	template < >
+		struct is_integral < char > { static const bool	value = true; };
+	template < >
+		struct is_integral < unsigned char > { static const bool	value = true; };
+	template < >
+		struct is_integral < signed char > { static const bool	value = true; };
+	template < >
+		struct is_integral < wchar_t > { static const bool	value = true; };
+	template < >
+		struct is_integral < short > { static const bool	value = true; };
+	template < >
+		struct is_integral < unsigned short > { static const bool	value = true; };
+	template < >
+		struct is_integral < int > { static const bool	value = true; };
+	template < >
+		struct is_integral < unsigned int > { static const bool	value = true; };
+	template < >
+		struct is_integral < long > { static const bool	value = true; };
+	template < >
+		struct is_integral < unsigned long > { static const bool	value = true; };
+	template < >
+		struct is_integral < long long > { static const bool	value = true; };
+	template < >
+		struct is_integral < unsigned long long > { static const bool	value = true; };
 	
 	template < bool Cond, class T = void > 
 		struct enable_if {};
@@ -94,8 +90,10 @@ namespace ft{
 		
 		template < class InputIterator >
 			vector (InputIterator first, InputIterator last,
-					const allocator_type& alloc = allocator_type(),
-					typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type tmp = void){ // vector with elems from first to last
+					const allocator_type& alloc = allocator_type(), 
+					typename enable_if<!is_integral<InputIterator>::value, 
+												InputIterator>::type tmp = InputIterator()){ // vector with elems from first to last
+						(void) tmp;
 						for (size_type i=0; first != last; first++){
 							countElem = i++;
 						}
@@ -103,10 +101,9 @@ namespace ft{
 						vec = vecAlloc.allocate(countElem);
 						
 						iterator	iter(vec);
-						iterator	copy = first;
 						
-						for (size_type i=0; copy != last; copy++){
-							iter[i++] = (*copy);
+						for (size_type i=0; first != last; first++){
+							iter[i++] = (*first);
 						}
 					}
 		vector (const vector& x){ // copy constructor

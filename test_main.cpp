@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/05/28 22:56:54 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/04 13:20:45 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int main (void){
 	// int	i = 5;
 	ft::vector<int>::iterator	aaa;
 	ft::vector<int>::iterator	bbb;
-	ft::vector<int>	vec(1, 5);
+	ft::vector<int>	veca(1, 5);
+	ft::vector<char>	vec(aaa, bbb);
 	
 	(void) vec;
 	
