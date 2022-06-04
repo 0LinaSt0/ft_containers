@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/04 14:58:07 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/04 21:41:30 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ namespace ft{
 		allocator_type										vecAlloc;
 		size_type											countElem;
 	public:
-		
-			
 		explicit vector (const allocator_type& alloc = allocator_type()) : 
 									vec (NULL), countElem (0) { vecAlloc = alloc; } //empty_vector
 		explicit vector (size_type n, const value_type& val = value_type(),
@@ -84,10 +82,12 @@ namespace ft{
 								
 								for (size_type i=0; i < n; i++){
 									iter[i] = val;
+									std::cout << iter[i] << std::endl;
 								}
 							}
 		
-		
+		 // !!!!!!!!!!!ADD THE EXCEPTION WHEN first OR/AND last is NULL!!!!!!!!!!!
+		 // TYPE OF EXCEPTION: "libc++abi.dylib: terminating with uncaught exception of type std::length_error: vector"
 		template < class InputIterator >
 			vector (InputIterator first, InputIterator last,
 					const allocator_type& alloc = allocator_type(), 
@@ -106,25 +106,74 @@ namespace ft{
 							iter[i++] = (*first);
 						}
 					}
-		vector (const vector& x){ // copy constructor
-			allocator_type	all;
-			
+		vector (const vector& x){ // copy constructor			
 			countElem = x.countElem;
-			vec = all.allocate(countElem);
+			vec = vecAlloc.allocate(countElem);
 			operator=(x);
 		}
 		~vector (void) {}
 
-		//Iterators
-		iterator			begin() { iterator iter(vec); return countElem ? iter : end(); }
-		iterator			end() { iterator iter(vec); return iter + countElem; }
+		//Operators
+		vector&			operator= (const vector& x){
+			iterator	thisIter(vec);
+			iterator	xIter(x.begin());
+			size_type	i = 0;
+
+			for (; xIter != x.end(); xIter++){
+				thisIter[i] = xIter[i];
+				i++;
+			}
+			countElem = i;
+			return *this;
+		}
+		reference		operator[] (size_type n) 
+			{ iterator	referBrackets(vec); return referBrackets[n]; }
+		const_reference	operator[] (size_type n) const 
+			{ iterator	constReferBrackets; return constReferBrackets[n]; }
+		
+		
+		/* ~~~~~~~~~~ Iterators ~~~~~~~~~~ 
+			begin	|	Return iterator to beginning
+			end		|	Return reverse iterator to reverse beginning
+			rbegin	|	Return reverse iterator to reverse end
+			rend	|	Return reverse iterator to reverse end
+		*/
+		iterator			begin() const { iterator iter(vec); return countElem ? iter : end(); }
+		iterator			end() const { iterator iter(vec); return iter + countElem; }
 		reverse_iterator	rbegin();
 		reverse_iterator	rend();
 
-		//Capacity
-		size_type 			size() const;
-		size_type 			max_size() const;
-		void 				resize (size_type n, value_type val = value_type());
+		/* ~~~~~~~~~~ Capacity ~~~~~~~~~~
+			size		|	Return size
+			max_size	|	Return maximum possible size
+			resize		|	Change size on 'n' size
+			capacity	|	Return size of allocated storage capacity
+			empty		|	Test whether vector is empty
+			reserve		|	Request a change in capacity
+		*/
+		size_type 			size() const { return countElem; }
+		size_type 			max_size() const { return vecAlloc.max_size(); }
+		void 				resize (size_type n, value_type val = value_type()){ 
+			if (n == countElem)
+				return ;
+			vector<value_type>	copy(n);
+			size_type	i = 0;
+			
+			for (iterator iter(this->begin()); iter != this->end(); iter++){
+				copy[i] = iter[i];
+				i++;
+			}
+			vecAlloc.deallocate(vec, countElem);
+			if (n > countElem){
+				for (size_type it = i; it < n; it++){
+					copy[it] = val;
+				}
+			}
+			vec = vecAlloc.allocate(n);
+			vec = copy;
+			countElem = n;
+			copy.vecAlloc.deallocate(copy, n);
+		}
 		size_type 			capacity() const;
 		bool 				empty() const;
 		void 				reserve (size_type n);
@@ -139,7 +188,7 @@ namespace ft{
 
 		//Modifiers
 		template <class InputIterator>
-			void		assign (InputIterator first, InputIterator last);	
+			void		assign (InputIterator first, InputIterator last);
 		void			assign (size_type n, const value_type& val);
 		
 		void			push_back (const value_type& val);
@@ -161,20 +210,6 @@ namespace ft{
 		//Allocator
 		allocator_type	get_allocator() const;
 
-		//Operators
-		vector&			operator= (const vector& x){
-			iterator	thisIter(vec);
-			iterator	xIter(x.beging());
-			size_type	i = 0;
-
-			for (; xIter != x.end(); xIter++){
-				thisIter[i++] = xIter;
-			}
-			countElem = i;
-			return *this;
-		}
-		reference		operator[] (size_type n);
-		const_reference	operator[] (size_type n) const;
 	};
 
 	template <class T, class Alloc>
