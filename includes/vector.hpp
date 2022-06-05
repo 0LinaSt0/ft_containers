@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/04 21:41:30 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/05 20:11:57 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 #include "vectorIterator.hpp"
 
+/*
+	Чтобы сделать функцию resize (не готова - дорабработь), нужно сделать функцию reserve.
+	Сейчас проблема последней заключается в том, что у нее необходимо выделить память для vec.
+	Vec был зафришин уже.
+
+	В то же время я разработала функцию freeMemory, которая ставит дефолтные значения на места,
+	которые я не передаю, но так нельзя. Разобраться надо!
+*/
 namespace ft{
 	template < class T >
 		struct is_integral { static const bool	value = false; };
@@ -69,34 +77,68 @@ namespace ft{
 		value_type*											vec;
 		allocator_type										vecAlloc;
 		size_type											countElem;
-	public:
-		explicit vector (const allocator_type& alloc = allocator_type()) : 
-									vec (NULL), countElem (0) { vecAlloc = alloc; } //empty_vector
-		explicit vector (size_type n, const value_type& val = value_type(),
-							const allocator_type& alloc = allocator_type()) : 
-							countElem (n){  // creat n vector elems with value val
-								vecAlloc = alloc;
-								vec = vecAlloc.allocate(n);
-								
-								iterator iter(vec);
-								
-								for (size_type i=0; i < n; i++){
-									iter[i] = val;
-									std::cout << iter[i] << std::endl;
-								}
-							}
+		size_type											capacitySize;
+
+		void	capacityUpdate(size_type amountCapacity){
+			if (capacitySize == 0){
+				capacitySize = amountCapacity;
+			}
+			while (capacitySize < amountCapacity) {
+				capacitySize *= 2;
+			}
+		}
 		
+		void	freeMemory(bool justDestructFlag = 0, size_type freeElems = capacitySize){
+			if (justDestructFlag){
+				for (size_type i = 0; i < countElem; i++){
+					vecAlloc.destruct(vec + i);
+				}
+			}
+			vecAlloc.deallocate(vec, freeElems);
+		}
+		// void	reallocationMemory(size_type amountElems, size_type amountCapacity,
+		// 					size_type sizeCapacity = capacitySize){
+		// 	if (sizeCapacity < amountElems){
+		// 		freeMemory(0, sizeCapacity);
+		// 		capacityUpdate(amountCapacity);
+		// 		vec = vecAlloc.allocate(sizeCapacity);
+		// 	} else {
+		// 		freeMemory(1, sizeCapacity);
+		// 	}
+		// }
+	public:
+		/* ~~~~~~~~~~ Constructors ~~~~~~~~~~ 
+			1. explicit vector (const allocator_type&)			|	Empty vector
+			2. explicit vector (size_type, const value_type&,	|	Creat vector on 'n' elems with value 'val'
+						const allocator_type&)					|
+			3. vector (InputIterator, InputIterator,			|	Vector with elems from first to last
+						const allocator_type&)					|
+			4. vector (const vector&)							|	Copy constructor
+		*/
+		explicit vector (const allocator_type& alloc = allocator_type()) : 
+						vec (NULL), countElem (0), capacitySize (0) { vecAlloc = alloc; } 
+		explicit vector (size_type n, const value_type& val = value_type(),
+						const allocator_type& alloc = allocator_type()) : 
+						countElem (n), capacitySize (n){
+							vecAlloc = alloc;
+							vec = vecAlloc.allocate(n);
+							
+							for (iterator iter(this->begin()); iter < this->end(); iter++){
+								(*iter) = val;
+							}
+						}
 		 // !!!!!!!!!!!ADD THE EXCEPTION WHEN first OR/AND last is NULL!!!!!!!!!!!
 		 // TYPE OF EXCEPTION: "libc++abi.dylib: terminating with uncaught exception of type std::length_error: vector"
 		template < class InputIterator >
 			vector (InputIterator first, InputIterator last,
 					const allocator_type& alloc = allocator_type(), 
 					typename enable_if<!is_integral<InputIterator>::value, 
-												InputIterator>::type tmp = InputIterator()){ // vector with elems from first to last
+												InputIterator>::type tmp = InputIterator()){ 
 						(void) tmp;
 						for (size_type i=0; first != last; first++){
 							countElem = i++;
 						}
+						capacitySize = countElem;
 						vecAlloc = alloc;
 						vec = vecAlloc.allocate(countElem);
 						
@@ -106,24 +148,32 @@ namespace ft{
 							iter[i++] = (*first);
 						}
 					}
-		vector (const vector& x){ // copy constructor			
+		vector (const vector& x){	
 			countElem = x.countElem;
+			capacitySize = countElem;
 			vec = vecAlloc.allocate(countElem);
 			operator=(x);
 		}
 		~vector (void) {}
 
-		//Operators
+		// ~~~~~~~~~~ Operators ~~~~~~~~~~
 		vector&			operator= (const vector& x){
+			if (capacitySize < x.size()){
+				freeMemory();
+				capacityUpdate(x.capacity());
+				vec = vecAlloc.allocate(capacitySize);
+			} else {
+				freeMemory(1);
+			}
+			
 			iterator	thisIter(vec);
-			iterator	xIter(x.begin());
 			size_type	i = 0;
 
-			for (; xIter != x.end(); xIter++){
-				thisIter[i] = xIter[i];
+			for (iterator	xIter(x.begin()); xIter != x.end(); xIter++){
+				thisIter[i] = (*xIter);
 				i++;
 			}
-			countElem = i;
+			countElem = x.size();
 			return *this;
 		}
 		reference		operator[] (size_type n) 
@@ -134,8 +184,8 @@ namespace ft{
 		
 		/* ~~~~~~~~~~ Iterators ~~~~~~~~~~ 
 			begin	|	Return iterator to beginning
-			end		|	Return reverse iterator to reverse beginning
-			rbegin	|	Return reverse iterator to reverse end
+			end		|	Return iterator to end
+			rbegin	|	Return reverse iterator to reverse beginning
 			rend	|	Return reverse iterator to reverse end
 		*/
 		iterator			begin() const { iterator iter(vec); return countElem ? iter : end(); }
@@ -151,16 +201,16 @@ namespace ft{
 			empty		|	Test whether vector is empty
 			reserve		|	Request a change in capacity
 		*/
-		size_type 			size() const { return countElem; }
-		size_type 			max_size() const { return vecAlloc.max_size(); }
-		void 				resize (size_type n, value_type val = value_type()){ 
+		size_type	size() const { return countElem; }
+		size_type	max_size() const { return vecAlloc.max_size(); }
+		void		resize (size_type n, value_type val = value_type()){ 
 			if (n == countElem)
 				return ;
 			vector<value_type>	copy(n);
 			size_type	i = 0;
 			
 			for (iterator iter(this->begin()); iter != this->end(); iter++){
-				copy[i] = iter[i];
+				copy[i] = iter;
 				i++;
 			}
 			vecAlloc.deallocate(vec, countElem);
@@ -169,14 +219,31 @@ namespace ft{
 					copy[it] = val;
 				}
 			}
+
+			// vecAlloc.constuct(vec + 2, val);
+			// vecAlloc.destruct(vec + 2);
+
 			vec = vecAlloc.allocate(n);
 			vec = copy;
 			countElem = n;
 			copy.vecAlloc.deallocate(copy, n);
 		}
-		size_type 			capacity() const;
-		bool 				empty() const;
-		void 				reserve (size_type n);
+		size_type	capacity() const { return capacitySize; }
+		bool		empty() const{ return countElem ? false : true; }
+		void		reserve (size_type n){
+			if (capacitySize < n){
+				size_type			oldCapacity = capacitySize;
+				capacityUpdate(n);
+				vector<size_type>	tmp(capacitySize);
+				
+				tmp = vec;
+				freeMemory(0, oldCapacity);
+				/* тут нужно нормально выделить память для vec на новый capacitySize 
+				последого, как я зафришила это самый vec */
+				vec = tmp;
+				
+			}
+		}
 		
 		//Element access
 		reference			at (size_type n);
