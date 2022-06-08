@@ -6,66 +6,66 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/05 19:57:13 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/08 17:49:10 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/vector.hpp"
 #include "includes/vectorIterator.hpp"
 #include <vector>
-// #include <iostream>
-// #include <string>
+#include <iostream>
+#include <string>
 // #include <stddef.h>
-// #include <memory>
+#include <memory>
 
+template <class T>
+	void	printVecParams (T *vec){
+		std::cout << "\nSTATUS\n"
+				<< "	vecAddress: " << &(*vec) << "\n"
+				<< "	count elem: " << vec->size() << "\n"
+				<< "	capaxity size: " << vec->capacity() << "\n"
+				<< "	emptyFlag: " << vec->empty()
+				<< std::endl;
+	}
+template <class T>
+	// TESTS FOR DEFAULTE CONSTRUCTOR
+	void	defaultConstructor(T *vec){
+		/*status*/printVecParams(vec);
+		vec->reserve(16);
+		(*vec)[20] = 3;
+		/*status*/printVecParams(vec);
+		std::cout << (*vec)[20] << std::endl;
+	}
+
+template <class T>
+	// TESTS FOR CONSTRUCTOR WITH 'n' ELEMS
+	void	sizeNConstructor(T *vec){
+		/*status*/printVecParams(vec);
+		vec->resize(4);
+		/*status*/printVecParams(vec);
+		vec->resize(10);
+		/*status*/printVecParams(vec);
+	}
 
 int main (void){
-	// int	i = 5;
 	{
-		// size_t	i=0;
-		
-		ft::vector<int>	vec(10, 5);
-		// ft::vector<int>	ve2(vec);
-		// ft::vector<int>	ve3(8, 1);
-
-
-		std::cout << "VEC: ";
-		for (ft::vector<int>::iterator	iter = vec.begin(); iter != vec.end(); iter++){
-			std::cout << (*iter) << "   ";
-		}
-		// std::cout << std::endl;
-		// std::cout << "VE2: " << ve2[0] << std::endl;
-		// std::cout << "VE3: " << ve3[0] << std::endl;
-
-		// std::cout << "\nsize: " << veca.size() << std::endl;
-		// std::cout << "max_size: " << veca.max_size() << std::endl;
-		
-		// vec.resize(8, 1);
 	}
-	// 	std::cout << std::endl;
-		std::cout << "~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
+
 	{
-	// 	// std::vector<int>::iterator	aaa;
-	// 	// std::vector<int>::iterator	bbb;
-		std::vector<int>	veca(16, 2);
-		veca.reserve(20);
-	// 	// std::vector<char>	vec(aaa, bbb); 
-		std::vector<int>	ve2 (15, 3);
+		// ft::vector<int>	vec1;
+		// defaultConstructor(&vec1);
 
-		std::cout << "BEFORE EQUEL: " << veca.capacity() << "   " << ve2.capacity() << std::endl;
-		ve2 = veca;
-		std::cout << "AFTER EQUEL: " << veca.capacity() << "   " << ve2.capacity() << std::endl;
+		ft::vector<char>	vec2(5, 'a');
+		sizeNConstructor(&vec2);
 		
-		// for (size_t i=0; i < 19; i++){
-		// 	std::cout << veca.size() << "     ";
-		// 	veca.push_back(1);
-		// }
-	// 	std::cout << "VECA: " << veca[0] << std::endl;
-	// 	// std::cout << "VEC: " << vec[0] << std::endl;
-	// 	// std::cout << "VE2: " << ve2[0] << std::endl;
-
-	// 	std::cout << "\nsize: " << veca.size() << std::endl;
-	// 	std::cout << "max_size: " << veca.max_size() << std::endl;
+	}
+		std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
+	{
+		// std::vector<int>	vec1;
+		// defaultConstructor(&vec1);
+		
+		std::vector<char>	vec2(5, 'a');
+		sizeNConstructor(&vec2);
 	}
 
 }

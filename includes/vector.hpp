@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/08 15:05:10 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/08 18:24:08 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,10 @@ namespace ft{
 					(DoIDeallocate - true, freeElems - how much deallocate)*/
 		void	freeMemory(bool DoIDeallocate, size_type freeElems){
 			for (size_type i = 0; i < countElem; i++){
-					vecAlloc.destruct(vec + i);
+					vecAlloc.destroy(vec + i);
 			if (DoIDeallocate){
-				vecAlloc.deallocate(vec, freeElems);
+					// (void) freeElems;
+					vecAlloc.deallocate(vec, freeElems);
 				}
 			}
 		}
@@ -140,7 +141,12 @@ namespace ft{
 		vector (const vector& x){	
 			countElem = x.countElem;
 			capacitySize = countElem;
-			vec = vecAlloc.allocate(countElem);
+			if (!x.vec){
+				vec = NULL;
+			} else {
+				vec = vecAlloc.allocate(countElem);
+			}
+			
 			operator=(x);
 		}
 		~vector (void) {}
@@ -197,7 +203,7 @@ namespace ft{
 				return ;
 			if (n < countElem){
 				for (; countElem > n; countElem--){
-					vecAlloc.destruct(vec + countElem);
+					vecAlloc.destroy(vec + countElem);
 				}
 			} else {
 				reserve(n);
@@ -210,13 +216,18 @@ namespace ft{
 		bool		empty() const{ return countElem ? false : true; }
 		void		reserve (size_type n){
 			size_type			oldCapacity = capacitySize;
-			capacityUpdate(n, capacitySize);
+			capacityUpdate(n);
 			vector<size_type>	tmp(capacitySize);
 			
-			tmp = vec;
+			for (size_type iter = 0; iter < countElem; iter++){
+				tmp[iter] = vec[iter];
+			}
 			freeMemory(true, oldCapacity);
 			vec = vecAlloc.allocate(capacitySize);
-			vec = tmp;
+			for (size_type i = 0; i < countElem; i++){
+				vec[i] = tmp[i];
+			}
+			//need destroy tmp some way
 		}
 		
 		//Element access
