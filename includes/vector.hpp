@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/08 18:24:08 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/18 15:19:06 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,9 @@ namespace ft{
 			for (size_type i = 0; i < countElem; i++){
 				vec[i] = tmp[i];
 			}
-			//need destroy tmp some way
+			// FREE TMP
+			// tmp.clear();
+			
 		}
 		
 		//Element access
@@ -255,9 +257,11 @@ namespace ft{
 		iterator		erase (iterator position);
 		iterator		erase (iterator first, iterator last);
 
-		void			swap (vector& x);
+		void			swap (vector& x){
+			
+		}
 
-		void			clear();
+		void			clear(){ freeMemory(false, countElem); countElem = 0; }
 
 		//Allocator
 		allocator_type	get_allocator() const;

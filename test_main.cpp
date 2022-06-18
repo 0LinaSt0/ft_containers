@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/08 17:49:10 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/18 15:18:47 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ int main (void){
 		// ft::vector<int>	vec1;
 		// defaultConstructor(&vec1);
 
-		ft::vector<char>	vec2(5, 'a');
-		sizeNConstructor(&vec2);
+		// ft::vector<char>	vec2(5, 'a');
+		// printVecParams(&vec2);
+		// vec2.clear();
+		// printVecParams(&vec2);
+		// sizeNConstructor(&vec2);
 		
 	}
 		std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
@@ -64,8 +67,24 @@ int main (void){
 		// std::vector<int>	vec1;
 		// defaultConstructor(&vec1);
 		
-		std::vector<char>	vec2(5, 'a');
-		sizeNConstructor(&vec2);
+		// std::vector<char>	vec2(5, 'a');
+		// std::cout << "myvector contains:";
+		// 	for (unsigned i=0; i<vec2.size(); i++)
+		// 		std::cout << ' ' << vec2[i];
+		// 	std::cout << '\n';
+		
+		// printVecParams(&vec2);
+		// vec2.erase (vec2.begin()+4);
+		// vec2.clear();
+		// printVecParams(&vec2);
+		
+		// sizeNConstructor(&vec2);
+		std::vector<int> foo(500);
+		std::vector<int> foo1(400);
+		
+		printVecParams(&foo);
+		foo.swap(foo1);
+		printVecParams(&foo);
 	}
 
 }
