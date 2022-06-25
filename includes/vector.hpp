@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/18 15:19:06 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/25 20:28:34 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,11 @@ namespace ft{
 		void	freeMemory(bool DoIDeallocate, size_type freeElems){
 			for (size_type i = 0; i < countElem; i++){
 					vecAlloc.destroy(vec + i);
+			}
 			if (DoIDeallocate){
 					// (void) freeElems;
 					vecAlloc.deallocate(vec, freeElems);
 				}
-			}
 		}
 	public:
 		/* ~~~~~~~~~~ Constructors ~~~~~~~~~~ 
@@ -144,12 +144,12 @@ namespace ft{
 			if (!x.vec){
 				vec = NULL;
 			} else {
-				vec = vecAlloc.allocate(countElem);
+				vec = vecAlloc.allocate(capacitySize);
 			}
 			
 			operator=(x);
 		}
-		~vector (void) {}
+		~vector (void) { freeMemory(true, capacitySize); }
 
 		// ~~~~~~~~~~ Operators ~~~~~~~~~~
 		vector&			operator= (const vector& x){
@@ -210,6 +210,7 @@ namespace ft{
 				for (; countElem <= n; countElem++){
 					vec[countElem] = val;
 				}
+				countElem--;
 			}
 		}
 		size_type	capacity() const { return capacitySize; }
@@ -217,48 +218,84 @@ namespace ft{
 		void		reserve (size_type n){
 			size_type			oldCapacity = capacitySize;
 			capacityUpdate(n);
-			vector<size_type>	tmp(capacitySize);
+			value_type*	tmp;
+
+			tmp = vecAlloc.allocate(capacitySize);
 			
 			for (size_type iter = 0; iter < countElem; iter++){
 				tmp[iter] = vec[iter];
 			}
 			freeMemory(true, oldCapacity);
-			vec = vecAlloc.allocate(capacitySize);
-			for (size_type i = 0; i < countElem; i++){
-				vec[i] = tmp[i];
-			}
-			// FREE TMP
-			// tmp.clear();
-			
+			vec = tmp;	
 		}
 		
-		//Element access
-		reference			at (size_type n);
-		const_reference		at (size_type n) const;
-		reference			front();
-		const_reference		front() const;
-		reference			back();
-		const_reference		back() const;
+		/* ~~~~~~~~~~ Element access ~~~~~~~~~~
+			at		|	Returns a reference to the element at position 'n' in the vector
+			front	|	Returns a reference to the first element in the vector
+			back	|	Returns a reference to the last element in the vector
+		*/
+		reference			at (size_type n) {
+			if (n > countElem || !countElem){
+				throw std::invalid_argument("libc++abi.dylib: terminating with uncaught exception of type std::out_of_range: vector");
+			}
+			return (vec[n]);
+		}
+		const_reference		at (size_type n) const { at(n); }
+		reference			front() { return at(0); }
+		const_reference		front() const { return front(); }
+		reference			back(){ 
+			if(countElem){
+				return vec[countElem - 1]; 
+			}
+			return at(countElem);
+		}
+		const_reference		back() const { return back(); }
 
-		//Modifiers
+		/* ~~~~~~~~~~ Modifiers ~~~~~~~~~~
+			assign		|	Assigns new contents to the vector and modifying its size
+			push_back	|	Adds a new element at the end of the vector
+			pop_back	|	Removes the last element in the vector
+			intsert		|	Inserting new elements before the concret element 
+			earse		|	Removes from the vector one element (position) or a range of elements ([first,last))
+			swap		|	Exchanges the vector content by the other
+			clear		|	Removes all elements from the vector (which are destroyed)
+		*/
 		template <class InputIterator>
-			void		assign (InputIterator first, InputIterator last);
+			void		assign (InputIterator first, InputIterator last){
+				freeMemory(true, )
+			}
 		void			assign (size_type n, const value_type& val);
 		
 		void			push_back (const value_type& val);
 		
 		void			pop_back();
 		
-		iterator		insert (iterator position, const value_type& val);
-		void			insert (iterator position, size_type n, const value_type& val);
 		template <class InputIterator>
 			void		insert (iterator position, InputIterator first, InputIterator last);
+		iterator		insert (iterator position, const value_type& val);
+		void			insert (iterator position, size_type n, const value_type& val);
 		
 		iterator		erase (iterator position);
 		iterator		erase (iterator first, iterator last);
 
 		void			swap (vector& x){
-			
+			if (vec){
+				freeMemory(true, countElem);
+			}
+			countElem = x.size();
+			capacitySize = x.capacity();
+			if (!x.vec){
+				vec = NULL;
+			} else {
+				vec = vecAlloc.allocate(capacitySize);
+			}
+			iterator	thisIter(vec);
+			size_t		i = 0;
+
+			for (iterator xIter(x.begin()); xIter != x.end(); xIter++){
+				thisIter[i] = *xIter;
+				i++;
+			}
 		}
 
 		void			clear(){ freeMemory(false, countElem); countElem = 0; }
@@ -270,7 +307,7 @@ namespace ft{
 
 	template <class T, class Alloc>
   		bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-
+		  
 	template <class T, class Alloc>
 		bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
 
@@ -289,6 +326,7 @@ namespace ft{
 	
 	template <class T, class Alloc>
   		void swap (vector<T,Alloc>& x, vector<T,Alloc>& y);
+
 }
 
 
