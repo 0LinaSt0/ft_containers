@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/26 16:29:50 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/26 18:07:14 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ namespace ft{
 			}
 		}
 		
-		/* 	- destruct needing element (DoIDeallocate - false) 
-			- destruct and deallocate vec 
-					(DoIDeallocate - true, freeElems - how much deallocate)*/
+		/* 	1) destruct needing element (DoIDeallocate - false) 
+			2) destruct and deallocate vec 
+				(DoIDeallocate - true, freeElems - how much deallocate)*/
 		void	freeMemory(bool DoIDeallocate, size_type freeElems){
 			for (size_type i = 0; i < countElem; i++){
 					vecAlloc.destroy(vec + i);
@@ -259,7 +259,6 @@ namespace ft{
 			swap		|	Exchanges the vector content by the other
 			clear		|	Removes all elements from the vector (which are destroyed)
 		*/
-
 		template <class InputIterator>
 			void	assign (InputIterator first, InputIterator last){
 				freeMemory(false, countElem);
@@ -279,6 +278,7 @@ namespace ft{
 					}
 				}
 			}
+	
 		void	assign (size_type n, const value_type& val){
 			freeMemory(false, countElem);
 			countElem = n;
@@ -294,19 +294,28 @@ namespace ft{
 			}
 		}
 		
-		void			push_back (const value_type& val);
+		void		push_back (const value_type& val){
+			if ((capacitySize - countElem) <= 0){
+				reserve(capacitySize+1);
+			}
+			vec[countElem] = val;
+			++countElem;
+		}
 		
-		void			pop_back();
+		void		pop_back(){
+			vecAlloc.destroy(vec + countElem-1);
+			--countElem;
+		}
 		
 		template <class InputIterator>
-			void		insert (iterator position, InputIterator first, InputIterator last);
-		iterator		insert (iterator position, const value_type& val);
-		void			insert (iterator position, size_type n, const value_type& val);
+			void	insert (iterator position, InputIterator first, InputIterator last);
+		iterator	insert (iterator position, const value_type& val);
+		void		insert (iterator position, size_type n, const value_type& val);
 		
-		iterator		erase (iterator position);
-		iterator		erase (iterator first, iterator last);
+		iterator	erase (iterator position);
+		iterator	erase (iterator first, iterator last);
 
-		void			swap (vector& x){
+		void		swap (vector& x){
 			if (vec){
 				freeMemory(true, countElem);
 			}
