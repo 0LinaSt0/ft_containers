@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/26 18:07:14 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/26 20:00:14 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,17 +215,20 @@ namespace ft{
 		size_type	capacity() const { return capacitySize; }
 		bool		empty() const{ return countElem ? false : true; }
 		void		reserve (size_type n){
-			size_type			oldCapacity = capacitySize;
-			capacityUpdate(n);
-			value_type*	tmp;
+			if (n > capacitySize){
+				size_type			oldCapacity = capacitySize;
+				capacityUpdate(n);
+				value_type*	tmp;
 
-			tmp = vecAlloc.allocate(capacitySize);
-			
-			for (size_type iter = 0; iter < countElem; iter++){
-				tmp[iter] = vec[iter];
+				tmp = vecAlloc.allocate(capacitySize);
+				
+				for (size_type iter = 0; iter < countElem; iter++){
+					tmp[iter] = vec[iter];
+				}
+				freeMemory(true, oldCapacity);
+				vec = tmp;	
+				
 			}
-			freeMemory(true, oldCapacity);
-			vec = tmp;	
 		}
 		
 		/* ~~~~~~~~~~ Element access ~~~~~~~~~~
@@ -309,7 +312,15 @@ namespace ft{
 		
 		template <class InputIterator>
 			void	insert (iterator position, InputIterator first, InputIterator last);
-		iterator	insert (iterator position, const value_type& val);
+		iterator	insert (iterator position, const value_type& val){
+			reserve(countElem+1);
+			++countElem;
+			
+			*(position-1) = val;
+			
+			iterator	firstElem(vec);
+			return (firstElem);
+		}
 		void		insert (iterator position, size_type n, const value_type& val);
 		
 		iterator	erase (iterator position);

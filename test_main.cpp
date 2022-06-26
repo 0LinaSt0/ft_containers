@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/26 18:26:58 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/26 19:57:45 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,63 +209,43 @@ template <class T>
 
 int main (void){
 	{
-		// ft::vector<int>	vec(5, 'a');
+		// ft::vector<char>	vec(5, 'a');
 		// std::vector<std::string>	vec(5, "aboba");
-		// ft::vector<int>	vec(0);
-		// ft::vector<int>	vec1(12, 'd');
+		ft::vector<char>	vec(0);
+		vec.push_back('a');
+		vec.push_back('b');
+		vec.push_back('v');
+		vec.push_back('g');
+		ft::vector<char>	vec1(6, 'd');
 		// ft::vector<int>	vec1(3, 'd');
 		
-		// printVecParams(vec, false);
+		printVecParams(vec, false);
 		
+		ft::vector<char>::iterator	iterVec = vec.begin();
+		iterVec = vec.insert(iterVec+2, 'f');
 		
+		printVecParams(vec, true);
+		// vec.insert(iterVec, vec1.begin(), vec1.end());
+		// printVecParams(vec, true);
 
 	}
 		std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
 	{
 		//мой пример
-		std::vector<int>	foo(5, 'a');
+		std::vector<char>	foo(5, 'a');
 		// // std::vector<std::string>	foo(5, "aboba");
 		// // std::vector<int>	foo(0);
-		std::vector<int>	foo1(2, 400);
+		std::vector<char>	foo1(6, 'd');
 		// // std::vector<int>	foo1(3, 'd');
 		
-		// printVecParams(foo, true);
+		printVecParams(foo, true);
 	
-		std::vector<int>::iterator	iterFoo = foo.begin()+4;
-		foo.insert(iterFoo, 'f');
+		std::vector<char>::iterator	iterFoo = foo.begin();
+		iterFoo = foo.insert(iterFoo+3, 'f');
 		
 		printVecParams(foo, true);
-		// foo.insert(iterFoo+1, foo1.begin(), foo.end());
-		// printVecParams(foo, true);
-
-
-		//пример из интрнета
-		std::vector<int> myvector (3,100);
-		std::vector<int>::iterator it;
-
-		it = myvector.begin();
-		it = myvector.insert ( it , 200 );
-		printVecParams(myvector, true);
-
-		// myvector.insert (it,2,300);
-
-		// // "it" no longer valid, get a new one:
-		// it = myvector.begin();
-
-		std::vector<int> anothervector (2,400);
-		myvector.insert (it+2,anothervector.begin(),anothervector.end());
-		printVecParams(myvector, true);
-
-		// int myarray [] = { 501,502,503 };
-		// myvector.insert (myvector.begin(), myarray, myarray+3);
-
-		// std::cout << "myvector contains:";
-		// for (it=myvector.begin(); it<myvector.end(); it++)
-		// 	std::cout << ' ' << *it;
-		// std::cout << '\n';
-
-		return 0;
-
+		foo.insert(iterFoo, foo1.begin(), foo1.end());
+		printVecParams(foo, true);
 	}
 
 	// По какой-то непонятной мне причине мой пример с инсертом не работает, а из интернета пример работает
