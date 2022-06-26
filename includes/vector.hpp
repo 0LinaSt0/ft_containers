@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/25 20:28:34 by msalena          ###   ########.fr       */
+/*   Updated: 2022/06/26 16:29:50 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 	! - means things which i still don't implement
 */
 namespace ft{
-	template < class T >
+	template < class D >
 		struct is_integral { static const bool	value = false; };
 	template < >
 		struct is_integral < bool > { static const bool	value = true; };
@@ -48,10 +48,10 @@ namespace ft{
 	template < >
 		struct is_integral < unsigned long long > { static const bool	value = true; };
 	
-	template < bool Cond, class T = void > 
+	template < bool Cond, class D = void > 
 		struct enable_if {};
-	template < class T > 
-		struct enable_if < true, T > { typedef T type; };
+	template < class D > 
+		struct enable_if < true, D > { typedef D type; };
 
 	template < class T, class Alloc = std::allocator<T> >
 	class	vector{
@@ -92,7 +92,6 @@ namespace ft{
 					vecAlloc.destroy(vec + i);
 			}
 			if (DoIDeallocate){
-					// (void) freeElems;
 					vecAlloc.deallocate(vec, freeElems);
 				}
 		}
@@ -260,11 +259,40 @@ namespace ft{
 			swap		|	Exchanges the vector content by the other
 			clear		|	Removes all elements from the vector (which are destroyed)
 		*/
+
 		template <class InputIterator>
-			void		assign (InputIterator first, InputIterator last){
-				freeMemory(true, )
+			void	assign (InputIterator first, InputIterator last){
+				freeMemory(false, countElem);
+				countElem = 0;
+				for (InputIterator myFirst(first); myFirst != last; myFirst++){
+					countElem++;
+				}
+				if (countElem){
+					if (countElem > capacitySize){
+						vecAlloc.deallocate(vec, capacitySize);
+						vec = vecAlloc.allocate(countElem);
+						capacitySize = countElem;
+					}
+					for (iterator iterVec(vec); first != last; first++){
+						(*iterVec) = (*first);
+						iterVec++;
+					}
+				}
 			}
-		void			assign (size_type n, const value_type& val);
+		void	assign (size_type n, const value_type& val){
+			freeMemory(false, countElem);
+			countElem = n;
+			if (countElem){
+				if (countElem > capacitySize){
+					vecAlloc.deallocate(vec, capacitySize);
+						vec = vecAlloc.allocate(countElem);
+						capacitySize = countElem;
+				}
+				for (size_type i = 0; i < n; i++){
+					vec[i] = val;
+				}
+			}
+		}
 		
 		void			push_back (const value_type& val);
 		
@@ -327,7 +355,7 @@ namespace ft{
 	template <class T, class Alloc>
   		void swap (vector<T,Alloc>& x, vector<T,Alloc>& y);
 
-}
+};
 
 
 #endif
