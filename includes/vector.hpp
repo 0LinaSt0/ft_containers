@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/01 13:22:58 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/01 15:48:40 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,38 @@ namespace ft{
 					vecAlloc.deallocate(vec, freeElems);
 				}
 		}
+
+		/* Counts distance between two iterators and returns size of the distance */
+		template < class InputIterator >
+			size_type	sizeItersDistance(InputIterator first, InputIterator last){
+				size_type	distance = 0;
+
+				for (InputIterator countIter(first); countIter != last; countIter++){
+						distance++;
+					}
+				return (distance);
+			}
+			
+		/* Function is used just for insert function
+			Writes in 'container' value from begin_vector to 'posititon' iterators
+			or from 'position' to end_vector. It depends on whichPartFl.
+			'whichPartFl' flag could be:
+				- 'b' if needs put first part of vector to containter
+				- 'e' if needs put last part of vector to containter */
+		template < class D, class InputIterator >
+			void	writeValueInsert(D &container, InputIterator position, char whichPartFl){
+				if (whichPartFl == 'b') {
+					for (InputIterator vecBeging(begin()); vecBeging != position; vecBeging++){
+						(*container) = (*vecBeging);
+						container++;
+					}
+				} else if (whichPartFl == 'e') {
+					for (InputIterator vecEnd(end()); position != vecEnd; position++){
+						(*container) = (*position);
+						container++;
+					}
+				} else { }
+			}
 	public:
 		/* ~~~~~~~~~~ Constructors ~~~~~~~~~~ 
 			1. explicit vector (const allocator_type&)			|	Empty vector
@@ -124,9 +156,7 @@ namespace ft{
 					typename enable_if<!is_integral<InputIterator>::value, 
 												InputIterator>::type tmp = InputIterator()){ 
 						(void) tmp;
-						for (size_type i=0; first != last; first++){
-							countElem = i++;
-						}
+						countElem = sizeItersDistance(first, last);
 						capacitySize = countElem;
 						vecAlloc = alloc;
 						vec = vecAlloc.allocate(countElem);
@@ -282,7 +312,7 @@ namespace ft{
 				}
 			}
 	
-		void	assign (size_type n, const value_type& val){
+		void		assign (size_type n, const value_type& val){
 			freeMemory(false, countElem);
 			countElem = n;
 			if (countElem){
@@ -311,40 +341,66 @@ namespace ft{
 		}
 		
 		template <class InputIterator>
-			void	insert (iterator position, InputIterator first, InputIterator last);
+			void	insert (iterator position, InputIterator first, InputIterator last){
+				size_type	distanceSize = sizeItersDistance(first, last);
+				size_type	oldCapacity = capacitySize;
+				value_type*	tmp;
+				
+				capacityUpdate(countElem+distanceSize);
+				tmp = vecAlloc.allocate(capacitySize);
+				
+				iterator	tmpIter(tmp);
+				writeValueInsert(tmpIter, position, 'b');
+				for (iterator tmp(first); tmp != last; tmp++){
+					(*tmpIter) = (*tmp);
+					tmpIter++;
+				}
+				
+				writeValueInsert(tmpIter, position, 'e');
+				countElem +=distanceSize;
+				freeMemory(true, oldCapacity);
+				vec = tmp;
+			}
 		iterator	insert (iterator position, const value_type& val){
 			size_type	oldCapacity = capacitySize;
-
-			capacityUpdate(capacitySize+1);
-			
 			value_type*	tmp;
-			tmp = vecAlloc.allocate(capacitySize);
 
-			// (void)val;
-			// std::count << tmp->begin() << std::endl;
-			// return (position);
+			capacityUpdate(countElem+1);
+			tmp = vecAlloc.allocate(capacitySize);
 			
 			iterator	tmpIter(tmp);
-			for (iterator vecBeging(begin()); vecBeging != position; vecBeging++){
-				(*tmpIter) = (*vecBeging);
-				tmpIter++;
-			}
+			writeValueInsert(tmpIter, position, 'b');
 			
-			iterator	returnPosition(tmpIter);
 			(*tmpIter) = val;
+			iterator	returnPosition(tmpIter);
 			tmpIter++;
 			
-			iterator	vecEnd(end());
-			for (iterator afterPosition(position); afterPosition != vecEnd; afterPosition++){
-				(*tmpIter) = (*afterPosition);
-				tmpIter++;
-			}
+			writeValueInsert(tmpIter, position, 'e');
 			countElem++;
 			freeMemory(true, oldCapacity);
 			vec = tmp;
 			return(returnPosition);
 		}
-		void		insert (iterator position, size_type n, const value_type& val);
+		void		insert (iterator position, size_type n, const value_type& val){
+			size_type	oldCapacity = capacitySize;
+			value_type*	tmp;
+			
+			capacityUpdate(countElem+n);
+			tmp = vecAlloc.allocate(capacitySize);
+
+			iterator	tmpIter(tmp);
+			writeValueInsert(tmpIter, position, 'b');
+			
+			for (size_type i=0; i < n; i++){
+				(*tmpIter) = val;
+				tmpIter++;
+			}
+
+			writeValueInsert(tmpIter, position, 'e');
+			countElem += n;
+			freeMemory(true, oldCapacity);
+			vec = tmp;
+		}
 		
 		iterator	erase (iterator position);
 		iterator	erase (iterator first, iterator last);
@@ -369,7 +425,7 @@ namespace ft{
 			}
 		}
 
-		void			clear(){ freeMemory(false, countElem); countElem = 0; }
+		void		clear(){ freeMemory(false, countElem); countElem = 0; }
 
 		//Allocator
 		allocator_type	get_allocator() const;
@@ -393,8 +449,7 @@ namespace ft{
 
 	template <class T, class Alloc>
 		bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
-	
-	
+
 	template <class T, class Alloc>
   		void swap (vector<T,Alloc>& x, vector<T,Alloc>& y);
 
