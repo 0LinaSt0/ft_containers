@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/01 15:48:40 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/01 16:21:53 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ namespace ft{
 			operator=(x);
 		}
 		~vector (void) { freeMemory(true, capacitySize); }
+
 
 		// ~~~~~~~~~~ Operators ~~~~~~~~~~
 		vector&			operator= (const vector& x){

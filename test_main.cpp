@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/01 16:12:54 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/01 19:24:52 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ template <class T>
 	}
 
 int main (void){
-		checkConstructors();
+		// checkConstructors();
 	{
 		// ft::vector<char>	vec(5, 'a');
 		// std::vector<std::string>	vec(5, "aboba");
@@ -330,20 +330,21 @@ int main (void){
 
 	}
 	{
-		// std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
+		std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
 		// std::vector<char>	foo(5, 'a');
 		// std::vector<std::string>	foo(5, "aboba");
-		// std::vector<char>	foo(0);
-		// std::vector<char>	foo(0);
-		// foo.push_back('a');
-		// foo.push_back('b');
-		// foo.push_back('v');
-		// foo.push_back('g');
+		std::vector<char>	foo(0);
+		foo.push_back('a');
+		foo.push_back('b');
+		foo.push_back('v');
+		foo.push_back('g');
+		
 		// std::vector<char>	foo1(6, 'd');
 		// // std::vector<int>	foo1(3, 'd');
 		
-		// printVecParams(foo, true);
-	
+		printVecParams(foo, true);
+		foo.erase(foo.end());
+		printVecParams(foo, true);
 		
 		
 		
