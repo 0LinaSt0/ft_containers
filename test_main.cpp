@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/26 19:57:45 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/01 13:31:00 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ template <class T>
 	}
 
 template <class T>
-// Tests for ASSIGN  (two overload)
+// Tests for ASSIGN  (two overloads)
 	void	assignCheck(T &vec, bool isItOrigVector){
 			std::cout << "<<<<< Assign check" << std::endl << std::endl;
 			
@@ -207,6 +207,82 @@ template <class T>
 		printVecParams(vec, isItOrigVector);
 	}
 
+	// Tests for INSERT (three overloads) 
+template <class T>
+	void	insertCheck(T &vec, bool isItOrigVector){
+		/*<<<<<<<<<<<<<<< Tests for assign(size_type, value_type) >>>>>>>>>>>>>>>*/
+							// FOR CHAR
+			// /* ~~~~~~~~~~ Example 1 for char ~~~~~~~~~~ */
+			// typedef typename T::size_type	size_type;
+			// typedef typename T::value_type	value_type;
+
+			// size_type	countElems1 = 0;
+			// value_type	value1 = "hola";
+			
+			// std::cout << "example # 1 assign(size_type, value_type) for char*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			// vec.assign(countElems1, value1);
+			// std::cout << "example # 1 assign(size_type, value_type) for char*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			
+			// /* ~~~~~~~~~~Example 2 for char ~~~~~~~~~~ */
+			// size_type	countElems2 = 10;
+			// value_type	value2 = "hola";
+
+			// std::cout << "example # 2 assign(size_type, value_type) for char*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			// vec.assign(countElems2, value2);
+			// std::cout << "example # 2 assign(size_type, value_type) for char*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			
+			// /* ~~~~~~~~~~Example 3 for char ~~~~~~~~~~ */
+			// size_type	countElems3 = 5;
+			// value_type	value3 = "gracias";
+
+			// std::cout << "example # 3 assign(size_type, value_type) for char*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			// vec.assign(countElems3, value3);
+			// std::cout << "example # 3 assign(size_type, value_type) for char*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+								// FOR INT
+			// /* ~~~~~~~~~~ Example 1 for int ~~~~~~~~~~ */
+			// typedef typename T::size_type	size_type;
+			// typedef typename T::value_type	value_type;
+
+			// size_type	countElems1 = 0;
+			// value_type	value1 = 3;
+			
+			// std::cout << "example # 1 assign(size_type, value_type) for int*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			// vec.assign(countElems1, value1);
+			// std::cout << "example # 1 assign(size_type, value_type) for int*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			
+			// /* ~~~~~~~~~~Example 2 for int* ~~~~~~~~~~ */
+			// size_type	countElems2 = 10;
+			// value_type	value2 = 1;
+
+			// std::cout << "example # 2 assign(size_type, value_type) for int*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			// vec.assign(countElems2, value2);
+			// std::cout << "example # 2 assign(size_type, value_type) for int*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			
+			// /* ~~~~~~~~~~Example 3 for int* ~~~~~~~~~~ */
+			// size_type	countElems3 = 5;
+			// value_type	value3 = 156;
+
+			// std::cout << "example # 3 assign(size_type, value_type) for int*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+			// vec.assign(countElems3, value3);
+			// std::cout << "example # 3 assign(size_type, value_type) for int*" << std::endl;
+			// /*status*/printVecParams(vec, isItOrigVector);
+
+							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
+
+			std::cout << "-----" << std::endl;
+	}
+
 int main (void){
 	{
 		// ft::vector<char>	vec(5, 'a');
@@ -248,5 +324,19 @@ int main (void){
 		printVecParams(foo, true);
 	}
 
-	// По какой-то непонятной мне причине мой пример с инсертом не работает, а из интернета пример работает
+	// {
+		// std::vector<char>*	vec = new std::vector<char>(6);
+
+		// std::vector<char>::iterator	iterVec(vec->begin());
+
+		// (void)iterVec;
+		
+		
+		// ft::vector<char>*	vec1 = new ft::vector<char>(6);
+
+		// ft::vector<char>::iterator	iterVec2(vec1->begin());
+
+		// (void)iterVec2;
+		
+	// }
 }

@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/26 20:00:14 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/01 13:22:58 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,13 +313,36 @@ namespace ft{
 		template <class InputIterator>
 			void	insert (iterator position, InputIterator first, InputIterator last);
 		iterator	insert (iterator position, const value_type& val){
-			reserve(countElem+1);
-			++countElem;
+			size_type	oldCapacity = capacitySize;
+
+			capacityUpdate(capacitySize+1);
 			
-			*(position-1) = val;
+			value_type*	tmp;
+			tmp = vecAlloc.allocate(capacitySize);
+
+			// (void)val;
+			// std::count << tmp->begin() << std::endl;
+			// return (position);
 			
-			iterator	firstElem(vec);
-			return (firstElem);
+			iterator	tmpIter(tmp);
+			for (iterator vecBeging(begin()); vecBeging != position; vecBeging++){
+				(*tmpIter) = (*vecBeging);
+				tmpIter++;
+			}
+			
+			iterator	returnPosition(tmpIter);
+			(*tmpIter) = val;
+			tmpIter++;
+			
+			iterator	vecEnd(end());
+			for (iterator afterPosition(position); afterPosition != vecEnd; afterPosition++){
+				(*tmpIter) = (*afterPosition);
+				tmpIter++;
+			}
+			countElem++;
+			freeMemory(true, oldCapacity);
+			vec = tmp;
+			return(returnPosition);
 		}
 		void		insert (iterator position, size_type n, const value_type& val);
 		
