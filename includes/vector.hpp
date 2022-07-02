@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/02 13:40:51 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/02 15:39:42 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ namespace ft{
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef ft::Iter<pointer>							iterator;
-		typedef ft::Iter<const_pointer>						const_iterator;
-		typedef ft::reversIter<iterator>					reverse_iterator;
-		typedef ft::reversIter<const_iterator>				const_reverse_iterator;
+		typedef ft::iterator<pointer>						iterator;
+		typedef ft::iterator<const_pointer>					const_iterator;
+		typedef ft::reverse_iterator<iterator>				reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::difference_type	difference_type;
 	private:
@@ -453,9 +453,7 @@ namespace ft{
 		void		clear(){ freeMemory(false, countElem); countElem = 0; }
 
 		//Allocator
-		allocator_type	get_allocator() const{
-			return (vecAlloc);
-		}
+		allocator_type	get_allocator() const{ return (vecAlloc); }
 	};
 
 	template <class T, class Alloc>

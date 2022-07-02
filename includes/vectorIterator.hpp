@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 21:44:46 by msalena           #+#    #+#             */
-/*   Updated: 2022/06/05 18:03:52 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/02 17:20:22 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ namespace ft{
 			typedef std::random_access_iterator_tag		iterator_category; // the iterator category
 		} ;
 
-	template < class Type >
-		class	Iter{
+	template < class Iter >
+		class	iterator{
 		protected:
-			typedef Type	iterator_type;
+			typedef Iter	iterator_type;
 			iterator_type	vectorElem;
 		public:
 			typedef typename iterator_traits<iterator_type>::difference_type	difference_type;
@@ -51,45 +51,73 @@ namespace ft{
 			typedef typename iterator_traits<iterator_type>::pointer			pointer;
 			typedef typename iterator_traits<iterator_type>::reference			reference;
 			typedef typename iterator_traits<iterator_type>::iterator_category	iterator_category;
-			
-			Iter (void) : vectorElem (NULL){} //default
-			Iter (const iterator_type vecElem) : vectorElem (vecElem){ } // assign 
-			Iter (const Iter& other){ *this = other; } // copy
-			~Iter (void){} // destructor
+
+			iterator (void) : vectorElem (NULL){ } //default
+			iterator (const iterator_type vecElem) : vectorElem (vecElem){ } // assign 
+			iterator (const iterator& other){ *this = other; } // copy
+			~iterator (void){} // destructor
 
 			//Operator
 			reference	operator* (void) const { return *vectorElem; }
 			reference	operator[](difference_type distan) const { return vectorElem[distan]; }
 			pointer		operator->(void) const { return vectorElem; }
-			Iter&		operator=(const Iter& other) { vectorElem = other.vectorElem; return *this; }
-			Iter&		operator++(void) { ++vectorElem; return *this; }
-			Iter		operator++(int) { Iter _new = *this; ++vectorElem; return _new; }
-			Iter&		operator--(void) { --vectorElem; return *vectorElem; }
-			Iter		operator--(int) { Iter _new = *this; --vectorElem; return _new; }
-			Iter&		operator+(difference_type distan) { vectorElem += distan; return *this; }
-			Iter&		operator-(difference_type distan) { vectorElem -= distan; return *this; }
-			Iter&		operator+=(difference_type distan) { vectorElem += distan; return *this; }
-			Iter&		operator-=(difference_type distan) { vectorElem -= distan; return *this; }
+			iterator&	operator=(const iterator& other) { vectorElem = other.vectorElem; return *this; }
+			iterator&	operator++(void) { ++vectorElem; return *this; }
+			iterator	operator++(int) { iterator _new = *this; ++vectorElem; return _new; }
+			iterator&	operator--(void) { --vectorElem; return *vectorElem; }
+			iterator	operator--(int) { iterator _new = *this; --vectorElem; return _new; }
+			iterator&	operator+(difference_type distan) { vectorElem += distan; return *this; }
+			iterator&	operator-(difference_type distan) { vectorElem -= distan; return *this; }
+			iterator&	operator+=(difference_type distan) { vectorElem += distan; return *this; }
+			iterator&	operator-=(difference_type distan) { vectorElem -= distan; return *this; }
 
 			pointer		base(void) const { return vectorElem; }
 		} ;
 
-	template < class Type >
-		class	reversIter : public Iter < Type > {
-			
+	template < class Iter >
+		class	reverse_iterator : public iterator < Iter > {
+		protected:
+			Iter	current;
+		public:
+			typedef typename iterator<Iter>::difference_type	difference_type;
+			typedef typename iterator<Iter>::value_type			value_type;
+			typedef typename iterator<Iter>::pointer			pointer;
+			typedef typename iterator<Iter>::reference			reference;
+			typedef typename iterator<Iter>::iterator_category	iterator_category;
+
+			reverse_iterator (void) : current() { }
+			explicit reverse_iterator (Iter it) : current(it) { }
+			template < class Type >
+				reverse_iterator (const reverse_iterator<Type> &rev_it) { *this = rev_it; }
+			~reverse_iterator (void) { }
+
+			//Operator
+			reference operator*(void) const;
+			reverse_iterator operator+ (difference_type n) const;
+			reverse_iterator& operator++(void);
+			reverse_iterator  operator++(int);
+			reverse_iterator& operator+= (difference_type n);
+			reverse_iterator operator- (difference_type n) const;
+			reverse_iterator& operator--(void);
+			reverse_iterator  operator--(int);
+			reverse_iterator& operator-= (difference_type n);
+			pointer operator->(void) const;
+			reference operator[] (difference_type n) const;
+
+			Iter base() const { return current; }
 		} ;
 	template <class Iter1, class Iter2>
-		bool		operator==(const Iter<Iter1>& a, const Iter<Iter2>& b){ return a.base() == b.base(); }
+		bool		operator==(const iterator<Iter1>& a, const iterator<Iter2>& b){ return a.base() == b.base(); }
 	template <class Iter1, class Iter2>
-		bool		operator<(const Iter<Iter1>& a, const Iter<Iter2>& b) { return a.base() < b.base(); }
+		bool		operator<(const iterator<Iter1>& a, const iterator<Iter2>& b) { return a.base() < b.base(); }
 	template <class Iter1, class Iter2>
-		bool		operator!=(const Iter<Iter1>& a, const Iter<Iter2>& b) { return a.base() != b.base(); }
+		bool		operator!=(const iterator<Iter1>& a, const iterator<Iter2>& b) { return a.base() != b.base(); }
 	template <class Iter1, class Iter2>
-		bool		operator>(const Iter<Iter1>& a, const Iter<Iter2>& b) { return a.base() > b.base(); }
+		bool		operator>(const iterator<Iter1>& a, const iterator<Iter2>& b) { return a.base() > b.base(); }
 	template <class Iter1, class Iter2>
-		bool		operator>=(const Iter<Iter1>& a, const Iter<Iter2>& b) { return a.base() >= b.base(); }
+		bool		operator>=(const iterator<Iter1>& a, const iterator<Iter2>& b) { return a.base() >= b.base(); }
 	template <class Iter1, class Iter2>
-		bool		operator<=(const Iter<Iter1>& a, const Iter<Iter2>& b) { return a.base() <= b.base(); }
+		bool		operator<=(const iterator<Iter1>& a, const iterator<Iter2>& b) { return a.base() <= b.base(); }
 }
 
 #endif

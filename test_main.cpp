@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/02 13:34:27 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/02 17:16:35 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,47 +342,89 @@ template <class T>
 int main (void){
 		// checkConstructors();
 	{
-		// ft::vector<char>	vec(5, 'a');
+		ft::vector<char>	vec(5, 'a');
 		// std::vector<std::string>	vec(5, "aboba");
-		ft::vector<char>	vec(0);
-		vec.push_back('a');
-		vec.push_back('b');
-		vec.push_back('v');
-		vec.push_back('g');
-		vec.push_back('d');
-		vec.push_back('e');
-		vec.push_back('j');
-		vec.push_back('z');
-		vec.push_back('i');
-		vec.push_back('k');
+		// ft::vector<char>	vec(0);
+		// vec.push_back('a');
+		// vec.push_back('b');
+		// vec.push_back('v');
+		// vec.push_back('g');
+		// vec.push_back('d');
+		// vec.push_back('e');
+		// vec.push_back('j');
+		// vec.push_back('z');
+		// vec.push_back('i');
+		// vec.push_back('k');
 		// ft::vector<char>	vec1(6, 'd');
 		// ft::vector<int>	vec1(3, 'd');
 		
-		printVecParams(vec, false);
+		// printVecParams(vec, false);
 		
-		eraseCheck(vec, false);
+
+		// <<<<<<<<<<<<<<<<< my reverse tests >>>>>>>>>>>>>>>>>>>>
+		// ft::vector<int> myvector;
+		// for (int i=0; i<10; i++){
+		// 	myvector.push_back(i);
+		// 	std::cout << myvector[i] << ' ';
+		// 	printf("\n%p", &myvector[i]);
+		// } 
+		// std::cout << std::endl;
+
+		// typedef ft::vector<int>::iterator iter_type;
+
+		// ft::reverse_iterator<iter_type> rev_end (myvector.begin());
+		// ft::reverse_iterator<iter_type> rev_begin (myvector.end());
+
+		// printf("\n%p   /   %p", &rev_begin, &rev_end);
+		// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	}
 	{
 		std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
 		// std::vector<char>	foo(5, 'a');
 		// std::vector<std::string>	foo(5, "aboba");
-		std::vector<char>	foo(0);
-		foo.push_back('a');
-		foo.push_back('b');
-		foo.push_back('v');
-		foo.push_back('g');
-		foo.push_back('d');
-		foo.push_back('e');
-		foo.push_back('j');
-		foo.push_back('z');
-		foo.push_back('i');
-		foo.push_back('k');
+		// std::vector<char>	foo(0);
+		// foo.push_back('a');
+		// foo.push_back('b');
+		// foo.push_back('v');
+		// foo.push_back('g');
+		// foo.push_back('d');
+		// foo.push_back('e');
+		// foo.push_back('j');
+		// foo.push_back('z');
+		// foo.push_back('i');
+		// foo.push_back('k');
 		// std::vector<char>	foo1(6, 'd');
 		// // std::vector<int>	foo1(3, 'd');
 
-		printVecParams(foo, true);
+		// printVecParams(foo, true);
+
+
+		std::vector<int> myvector;
+		for (int i=0; i<10; i++){
+			myvector.push_back(i);
+			std::cout << myvector[i] << ' ';
+		} 
+		std::cout << std::endl;
+
+		typedef std::vector<int>::iterator iter_type;
+
+		std::reverse_iterator<iter_type> rev_end (myvector.begin());
+		std::reverse_iterator<iter_type> rev_begin (myvector.end());
+
+		// printf("\n%p   /   %p", &(*rev_begin), &(*rev_end));
+		std::cout << "from *: " << *rev_end << "   /   ";
+		std::cout << *rev_begin << std::endl;
 		
-		eraseCheck(foo, true);
+		std::cout << "from base: " << *(rev_end.base()) << "   /   ";
+		std::cout << *(rev_begin.base()) << std::endl;
+
+		// std::cout << "myvector:";
+		// for (iter_type it = rev_end.base(); it != rev_begin.base(); ++it)
+		// 	std::cout << ' ' << *it;
+		// std::cout << '\n';
+
+		return 0;
+		
 
 	}
 }
