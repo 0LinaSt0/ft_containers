@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/01 16:21:53 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/02 13:40:51 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ namespace ft{
 		allocator_type										vecAlloc;
 		size_type											countElem;
 		size_type											capacitySize;
-
 		// Just change size of "capacitySize" variable
 		void	capacityUpdate(size_type amountCapacity){
 			if (capacitySize == 0){
@@ -107,14 +106,13 @@ namespace ft{
 				return (distance);
 			}
 			
-		/* Function is used just for insert function
-			Writes in 'container' value from begin_vector to 'posititon' iterators
+		/* Writes in 'container' value from begin_vector to 'posititon' iterators
 			or from 'position' to end_vector. It depends on whichPartFl.
 			'whichPartFl' flag could be:
 				- 'b' if needs put first part of vector to containter
 				- 'e' if needs put last part of vector to containter */
 		template < class D, class InputIterator >
-			void	writeValueInsert(D &container, InputIterator position, char whichPartFl){
+			void	writeValue(D &container, InputIterator position, char whichPartFl){
 				if (whichPartFl == 'b') {
 					for (InputIterator vecBeging(begin()); vecBeging != position; vecBeging++){
 						(*container) = (*vecBeging);
@@ -351,13 +349,13 @@ namespace ft{
 				tmp = vecAlloc.allocate(capacitySize);
 				
 				iterator	tmpIter(tmp);
-				writeValueInsert(tmpIter, position, 'b');
+				writeValue(tmpIter, position, 'b');
 				for (iterator tmp(first); tmp != last; tmp++){
 					(*tmpIter) = (*tmp);
 					tmpIter++;
 				}
 				
-				writeValueInsert(tmpIter, position, 'e');
+				writeValue(tmpIter, position, 'e');
 				countElem +=distanceSize;
 				freeMemory(true, oldCapacity);
 				vec = tmp;
@@ -370,13 +368,13 @@ namespace ft{
 			tmp = vecAlloc.allocate(capacitySize);
 			
 			iterator	tmpIter(tmp);
-			writeValueInsert(tmpIter, position, 'b');
+			writeValue(tmpIter, position, 'b');
 			
 			(*tmpIter) = val;
 			iterator	returnPosition(tmpIter);
 			tmpIter++;
 			
-			writeValueInsert(tmpIter, position, 'e');
+			writeValue(tmpIter, position, 'e');
 			countElem++;
 			freeMemory(true, oldCapacity);
 			vec = tmp;
@@ -390,21 +388,47 @@ namespace ft{
 			tmp = vecAlloc.allocate(capacitySize);
 
 			iterator	tmpIter(tmp);
-			writeValueInsert(tmpIter, position, 'b');
+			writeValue(tmpIter, position, 'b');
 			
 			for (size_type i=0; i < n; i++){
 				(*tmpIter) = val;
 				tmpIter++;
 			}
 
-			writeValueInsert(tmpIter, position, 'e');
+			writeValue(tmpIter, position, 'e');
 			countElem += n;
 			freeMemory(true, oldCapacity);
 			vec = tmp;
 		}
 		
-		iterator	erase (iterator position);
-		iterator	erase (iterator first, iterator last);
+		iterator	erase (iterator position){
+			value_type*	tmp;
+			
+			tmp = vecAlloc.allocate(capacitySize);
+			iterator	tmpIter(tmp);
+			
+			writeValue(tmpIter, position, 'b');
+
+			iterator	newPosition(position+1);
+			writeValue(tmpIter, newPosition, 'e');
+			countElem--;
+			freeMemory(true, capacitySize);
+			vec = tmp;
+			return (newPosition);
+		}
+		iterator	erase (iterator first, iterator last){
+			value_type*	tmp;
+
+			tmp = vecAlloc.allocate(capacitySize);
+			iterator	tmpIter(tmp);
+
+			writeValue(tmpIter, first, 'b');
+			writeValue(tmpIter, last, 'e');
+			freeMemory(true, capacitySize);
+			countElem -= sizeItersDistance(first, last);
+			vec = tmp;
+			return (last);
+		}
 
 		void		swap (vector& x){
 			if (vec){
@@ -429,8 +453,9 @@ namespace ft{
 		void		clear(){ freeMemory(false, countElem); countElem = 0; }
 
 		//Allocator
-		allocator_type	get_allocator() const;
-
+		allocator_type	get_allocator() const{
+			return (vecAlloc);
+		}
 	};
 
 	template <class T, class Alloc>

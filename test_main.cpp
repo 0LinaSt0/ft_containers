@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/01 19:24:52 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/02 13:34:27 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,8 +270,8 @@ template <class T>
 		printVecParams(vec, isItOrigVector);
 	}
 
-	// Tests for INSERT (three overloads) 
 template <class T>
+	// Tests for INSERT (three overloads) 
 	void	insertCheck(T &vec, bool isItOrigVector){
 		std::cout << "<<<<< INSERT CHECK" << std::endl << std::endl;
 		typedef typename T::iterator	iterator;
@@ -311,23 +311,56 @@ template <class T>
 		std::cout << ">>>>>" << std::endl;
 	}
 
+template <class T>
+	// Tests for ERASE (two overloads) 
+	void	eraseCheck(T &vec, bool isItOrigVector){
+		std::cout << "<<<<< EARASE CHECK" << std::endl << std::endl;
+		typedef typename T::iterator	iterator;
+		iterator	iterVecBegin = vec.begin();
+		iterator	returnIter;
+		/* <<<<<<<<<<<<<<< Tests for int type >>>>>>>>>>>>>>>*/
+		returnIter = vec.erase(iterVecBegin+2);
+		std::cout << "example # 1 earse: remove elem " << std::endl;
+		/*status*/printVecParams(vec, isItOrigVector);
+		/*print_return*/std::cout << "	earse_return: "
+								<< (*returnIter) 
+								<< std::endl << std::endl;
+	
+		// std::cout << *iterVecBegin << std::endl;
+		iterVecBegin = vec.begin();
+		returnIter = vec.erase(iterVecBegin, iterVecBegin+5);
+		std::cout << "example # 2 earse: remove elems " << std::endl;
+		/*status*/printVecParams(vec, isItOrigVector);
+		/*print_return*/std::cout << "	earse_return: "
+								<< (*returnIter) 
+								<< std::endl << std::endl;
+				/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
+				
+		std::cout << ">>>>>" << std::endl;
+	}
+
 int main (void){
 		// checkConstructors();
 	{
 		// ft::vector<char>	vec(5, 'a');
 		// std::vector<std::string>	vec(5, "aboba");
-		// ft::vector<char>	vec(0);
-		// vec.push_back('a');
-		// vec.push_back('b');
-		// vec.push_back('v');
-		// vec.push_back('g');
+		ft::vector<char>	vec(0);
+		vec.push_back('a');
+		vec.push_back('b');
+		vec.push_back('v');
+		vec.push_back('g');
+		vec.push_back('d');
+		vec.push_back('e');
+		vec.push_back('j');
+		vec.push_back('z');
+		vec.push_back('i');
+		vec.push_back('k');
 		// ft::vector<char>	vec1(6, 'd');
 		// ft::vector<int>	vec1(3, 'd');
 		
-		// printVecParams(vec, false);
+		printVecParams(vec, false);
 		
-		
-
+		eraseCheck(vec, false);
 	}
 	{
 		std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
@@ -338,15 +371,18 @@ int main (void){
 		foo.push_back('b');
 		foo.push_back('v');
 		foo.push_back('g');
-		
+		foo.push_back('d');
+		foo.push_back('e');
+		foo.push_back('j');
+		foo.push_back('z');
+		foo.push_back('i');
+		foo.push_back('k');
 		// std::vector<char>	foo1(6, 'd');
 		// // std::vector<int>	foo1(3, 'd');
-		
-		printVecParams(foo, true);
-		foo.erase(foo.end());
+
 		printVecParams(foo, true);
 		
-		
-		
+		eraseCheck(foo, true);
+
 	}
 }
