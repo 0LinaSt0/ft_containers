@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/02 17:16:35 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/03 19:19:42 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,20 +362,36 @@ int main (void){
 		
 
 		// <<<<<<<<<<<<<<<<< my reverse tests >>>>>>>>>>>>>>>>>>>>
-		// ft::vector<int> myvector;
-		// for (int i=0; i<10; i++){
-		// 	myvector.push_back(i);
-		// 	std::cout << myvector[i] << ' ';
-		// 	printf("\n%p", &myvector[i]);
-		// } 
-		// std::cout << std::endl;
+		ft::vector<int> myvector;
+		for (int i=0; i<10; i++){
+			myvector.push_back(i);
+			std::cout << myvector[i] << ' ';
+		} 
+		std::cout << std::endl;
 
-		// typedef ft::vector<int>::iterator iter_type;
+		typedef ft::vector<int>::iterator iter_type;
+																// ? 9 8 7 6 5 4 3 2 1 0 ?
+		iter_type from (myvector.begin());                      //   ^
+		std::cout << *(from.base() - 1) << std::endl;
+		iter_type until (myvector.end());                       //                       ^
+		std::cout << *(until.base() - 1) << std::endl;
+		ft::reverse_iterator<iter_type> rev_until (from);      // ^
 
-		// ft::reverse_iterator<iter_type> rev_end (myvector.begin());
-		// ft::reverse_iterator<iter_type> rev_begin (myvector.end());
+		ft::reverse_iterator<iter_type> rev_from (until);      //                     ^
+		
+		
+		for (ft::reverse_iterator<iter_type> it(rev_from); it != rev_until; ++it){
+			std::cout << (*it) <<  "   ";
+		}
+		std::cout << std::endl; 
 
-		// printf("\n%p   /   %p", &rev_begin, &rev_end);
+		std::cout << "OPERATOR-: " << *(rev_from+3) << std::endl;
+		
+		std::cout << "myvector:";
+		while (rev_from != rev_until)
+			std::cout << ' ' << *rev_from++;
+		std::cout << '\n';
+
 		// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	}
 	{
@@ -399,6 +415,41 @@ int main (void){
 		// printVecParams(foo, true);
 
 
+		// std::vector<int> myvector;
+		// for (int i=0; i<10; i++){
+		// 	myvector.push_back(i);
+		// 	std::cout << myvector[i] << ' ';
+		// } 
+		// std::cout << std::endl;
+
+		// typedef std::vector<int>::iterator iter_type;
+
+		// std::reverse_iterator<iter_type> rev_end (myvector.begin());
+		// std::reverse_iterator<iter_type> rev_begin (myvector.end());
+
+		// // printf("\n%p   /   %p", &(*rev_begin), &(*rev_end));
+		// std::cout << "from *: " << *rev_end << "   /   ";
+		// std::cout << *rev_begin << std::endl;
+		
+		// std::cout << "from base: " << *(rev_end.base()) << "   /   ";
+		// std::cout << *(rev_begin.base() - 1) << std::endl;
+
+		// // std::cout << "myvector:";
+		// // for (iter_type it = rev_end.base(); it != rev_begin.base(); ++it)
+		// // 	std::cout << ' ' << *it;
+		// // std::cout << '\n';
+
+		// return 0;
+
+
+
+
+
+
+
+
+
+
 		std::vector<int> myvector;
 		for (int i=0; i<10; i++){
 			myvector.push_back(i);
@@ -407,24 +458,28 @@ int main (void){
 		std::cout << std::endl;
 
 		typedef std::vector<int>::iterator iter_type;
+																// ? 9 8 7 6 5 4 3 2 1 0 ?
+		iter_type from (myvector.begin());                      //   ^
+		std::cout << *(from.base() - 1) << std::endl;
+		iter_type until (myvector.end());                       //                       ^
+		std::cout << *(until.base() - 1) << std::endl;
+		std::reverse_iterator<iter_type> rev_until (from);      // ^
 
-		std::reverse_iterator<iter_type> rev_end (myvector.begin());
-		std::reverse_iterator<iter_type> rev_begin (myvector.end());
+		std::reverse_iterator<iter_type> rev_from (until);      //                     ^
 
-		// printf("\n%p   /   %p", &(*rev_begin), &(*rev_end));
-		std::cout << "from *: " << *rev_end << "   /   ";
-		std::cout << *rev_begin << std::endl;
+		// for (std::reverse_iterator<iter_type> it(rev_from); it != rev_until; ++it){
+		// 	std::cout << (*it) <<  "   ";
+		// }
+		// std::cout << std::endl; 
 		
-		std::cout << "from base: " << *(rev_end.base()) << "   /   ";
-		std::cout << *(rev_begin.base()) << std::endl;
-
-		// std::cout << "myvector:";
-		// for (iter_type it = rev_end.base(); it != rev_begin.base(); ++it)
-		// 	std::cout << ' ' << *it;
-		// std::cout << '\n';
+		std::cout << "OPERATOR-: " << *(rev_from+3) << std::endl;
+		
+		std::cout << "myvector:";
+		while (rev_from != rev_until)
+			std::cout << ' ' << *rev_from++;
+		std::cout << '\n';
 
 		return 0;
-		
 
 	}
 }
