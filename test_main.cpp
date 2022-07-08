@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/03 19:19:42 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/08 20:50:55 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,6 +386,7 @@ int main (void){
 		std::cout << std::endl; 
 
 		std::cout << "OPERATOR-: " << *(rev_from+3) << std::endl;
+		std::cout << "OPERATOR+: " << *(rev_until-2) << std::endl;
 		
 		std::cout << "myvector:";
 		while (rev_from != rev_until)
@@ -470,9 +471,10 @@ int main (void){
 		// for (std::reverse_iterator<iter_type> it(rev_from); it != rev_until; ++it){
 		// 	std::cout << (*it) <<  "   ";
 		// }
-		// std::cout << std::endl; 
-		
+		// std::cout << std::endl; 		
+
 		std::cout << "OPERATOR-: " << *(rev_from+3) << std::endl;
+		std::cout << "OPERATOR+: " << *(rev_until-2) << std::endl;
 		
 		std::cout << "myvector:";
 		while (rev_from != rev_until)
