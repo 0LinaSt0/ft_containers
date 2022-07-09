@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 21:44:46 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/08 20:52:33 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/09 14:46:19 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@
 #include <memory>
 
 namespace ft{
-	template<typename T>
+	template<typename vecType>
 		struct remove_pointer
 		{
-			typedef T type;
+			typedef vecType type;
 		};
 
-	template<typename T>
-		struct remove_pointer<T*>
+	template<typename vecType>
+		struct remove_pointer<vecType*>
 		{
-			typedef typename remove_pointer<T>::type type;
+			typedef typename remove_pointer<vecType>::type type;
 		};
 	
 	template < class Tp >
@@ -98,11 +98,11 @@ namespace ft{
 			reverse_iterator&	operator++(void) { --current; return *this; }
 			reverse_iterator	operator++(int) { reverse_iterator it(*this); --current; return it; }
 			reverse_iterator&	operator--(void) { ++current; return *this; }
-			reverse_iterator	operator--(int) { reverse_iterator it(*this); --current; return it; }
-			reverse_iterator&	operator+=(difference_type n);
-			reverse_iterator&	operator-=(difference_type n);
-			pointer				operator->(void) const;
-			reference			operator[] (difference_type n) const;
+			reverse_iterator	operator--(int) { reverse_iterator it(*this); ++current; return it; }
+			reverse_iterator&	operator+=(difference_type n) { current-= n; return *this; }
+			reverse_iterator&	operator-=(difference_type n) { current += n; return *this; }
+			pointer				operator->(void) const { return &(operator*()); }
+			reference			operator[] (difference_type n) const { return *(current + n); }
 
 			Iter base() const { return current; }
 		} ;

@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/02 15:39:42 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/09 13:17:32 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ namespace ft{
 	template < class D > 
 		struct enable_if < true, D > { typedef D type; };
 
-	template < class T, class Alloc = std::allocator<T> >
+	template < class vecType, class Alloc = std::allocator<vecType> >
 	class	vector{
 	public:
-		typedef T											value_type;
+		typedef vecType											value_type;
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
@@ -456,26 +456,26 @@ namespace ft{
 		allocator_type	get_allocator() const{ return (vecAlloc); }
 	};
 
-	template <class T, class Alloc>
-  		bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	template <class vecType, class Alloc>
+  		bool operator== (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
 		  
-	template <class T, class Alloc>
-		bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	template <class vecType, class Alloc>
+		bool operator!= (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
 
-	template <class T, class Alloc>
-		bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	template <class vecType, class Alloc>
+		bool operator<  (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
 
-	template <class T, class Alloc>
-		bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	template <class vecType, class Alloc>
+		bool operator<= (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
 
-	template <class T, class Alloc>
-		bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	template <class vecType, class Alloc>
+		bool operator>  (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
 
-	template <class T, class Alloc>
-		bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	template <class vecType, class Alloc>
+		bool operator>= (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
 
-	template <class T, class Alloc>
-  		void swap (vector<T,Alloc>& x, vector<T,Alloc>& y);
+	template <class vecType, class Alloc>
+  		void swap (vector<vecType,Alloc>& x, vector<vecType,Alloc>& y);
 
 };
 
