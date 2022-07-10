@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:38:01 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/09 15:07:48 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/10 18:13:21 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ template <class vecType>
 				<< "	emptyFlag: " << vec.empty()
 				<< std::endl << std::endl;
 	}
+
+
+
+//~~~~~~~~~~~ CHECKS_FOR_MEMBER_FUNCTIONS ~~~~~~~~~~~
+
 template <class vecType>
 	// Tests for RESIZE and RESERVE (reserve is called int resize)
 	void	sizeNConstructor(vecType &vec, bool isItOrigVector){
@@ -63,11 +68,6 @@ template <class vecType>
 		vec.resize(0);
 		/*status*/printVecParams(vec, isItOrigVector);
 	}
-
-
-
-
-//~~~~~~~~~~~ CHECKS_FOR_MEMBER_FUNCTIONS ~~~~~~~~~~~
 
 template <class vecType>
 	// Tests for ASSIGN  (two overloads)
@@ -260,13 +260,13 @@ template <class vecType>
 template <class vecType>
 	// Tests for ERASE (two overloads) 
 	void	eraseCheck(vecType &vec, bool isItOrigVector){
-		std::cout << "<<<<< EARASE CHECK" << std::endl << std::endl;
+		std::cout << "<<<<< ERASE CHECK" << std::endl << std::endl;
 		typedef typename vecType::iterator	iterator;
 		iterator	iterVecBegin = vec.begin();
 		iterator	returnIter;
 		/* <<<<<<<<<<<<<<< Tests for int type >>>>>>>>>>>>>>>*/
 		returnIter = vec.erase(iterVecBegin+2);
-		std::cout << "example # 1 earse: remove elem " << std::endl;
+		std::cout << "example # 1 erase: remove elem " << std::endl;
 		/*status*/printVecParams(vec, isItOrigVector);
 		/*print_return*/std::cout << "	earse_return: "
 								<< (*returnIter) 
@@ -275,7 +275,7 @@ template <class vecType>
 		// std::cout << *iterVecBegin << std::endl;
 		iterVecBegin = vec.begin();
 		returnIter = vec.erase(iterVecBegin, iterVecBegin+5);
-		std::cout << "example # 2 earse: remove elems " << std::endl;
+		std::cout << "example # 2 erase: remove elems " << std::endl;
 		/*status*/printVecParams(vec, isItOrigVector);
 		/*print_return*/std::cout << "	earse_return: "
 								<< (*returnIter) 
@@ -285,6 +285,14 @@ template <class vecType>
 		std::cout << ">>>>>" << std::endl;
 	}
 
+template <class vecType>
+	// Testd for RBEGIN and REND
+	void	reverseBeginEndCheck(vecType &vec){
+		std::cout << "<<<<< RBEGIN & REND CHECK" << std::endl << std::endl;
+		std::cout << "rbegin: " << *(vec.rbegin()) << std::endl;
+		std::cout << "rend: " << *(vec.rend()-1) << std::endl;
+		std::cout << ">>>>>" << std::endl << std::endl;
+	}
 
 
 

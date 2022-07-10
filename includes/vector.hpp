@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/09 13:17:32 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/10 21:30:16 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,12 @@ namespace ft{
 		void	capacityUpdate(size_type amountCapacity){
 			if (capacitySize == 0){
 				capacitySize = amountCapacity;
-			}
-			while (capacitySize < amountCapacity) {
-				capacitySize *= 2;
+			} else if (capacitySize < amountCapacity) {
+				if ((capacitySize * 2) < amountCapacity){
+					capacitySize = amountCapacity;
+				} else {
+					capacitySize *= 2;
+				}
 			}
 		}
 		
@@ -213,8 +216,8 @@ namespace ft{
 		*/
 		iterator			begin() const { iterator iter(vec); return countElem ? iter : end(); }
 		iterator			end() const { iterator iter(vec); return iter + countElem; }
-		reverse_iterator	rbegin();
-		reverse_iterator	rend();
+		reverse_iterator	rbegin() { return reverse_iterator(end()); }
+		reverse_iterator	rend() { return reverse_iterator (begin()); }
 
 		/* ~~~~~~~~~~ Capacity ~~~~~~~~~~
 			size		|	Return size
@@ -292,7 +295,10 @@ namespace ft{
 			clear		|	Removes all elements from the vector (which are destroyed)
 		*/
 		template <class InputIterator>
-			void	assign (InputIterator first, InputIterator last){
+			void	assign (InputIterator first, InputIterator last,
+								typename enable_if<!is_integral<InputIterator>::value, 
+												InputIterator>::type tmp = InputIterator()){
+				(void)tmp;
 				freeMemory(false, countElem);
 				countElem = 0;
 				for (InputIterator myFirst(first); myFirst != last; myFirst++){
@@ -305,7 +311,7 @@ namespace ft{
 						capacitySize = countElem;
 					}
 					for (iterator iterVec(vec); first != last; first++){
-						(*iterVec) = (*first);
+						*iterVec = *first;
 						iterVec++;
 					}
 				}
@@ -340,10 +346,13 @@ namespace ft{
 		}
 		
 		template <class InputIterator>
-			void	insert (iterator position, InputIterator first, InputIterator last){
+			void	insert (iterator position, InputIterator first, InputIterator last,
+								typename enable_if<!is_integral<InputIterator>::value, 
+												InputIterator>::type tmp = InputIterator()){
+				// (void)tmp;
 				size_type	distanceSize = sizeItersDistance(first, last);
 				size_type	oldCapacity = capacitySize;
-				value_type*	tmp;
+				value_type*	t;
 				
 				capacityUpdate(countElem+distanceSize);
 				tmp = vecAlloc.allocate(capacitySize);
@@ -384,7 +393,9 @@ namespace ft{
 			size_type	oldCapacity = capacitySize;
 			value_type*	tmp;
 			
+			// std::cout << "BEFORE: " << capacitySize << std::endl;
 			capacityUpdate(countElem+n);
+			// std::cout << "AFTER: " << capacitySize << std::endl;
 			tmp = vecAlloc.allocate(capacitySize);
 
 			iterator	tmpIter(tmp);
