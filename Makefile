@@ -6,7 +6,7 @@
 #    By: msalena <msalena@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 16:24:48 by msalena           #+#    #+#              #
-#    Updated: 2022/07/10 18:18:16 by msalena          ###   ########.fr        #
+#    Updated: 2022/07/13 18:32:31 by msalena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ all:			$(PROG_NAME)
 ${PROG_NAME}:	$(SRCS) $(OBJS)
 				$(C++) $(OBJS) -o $(PROG_NAME)
 
-start:
+start:			all
 				$(PROG_NAME)
 
 cate:			 

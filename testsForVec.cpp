@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:36:43 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/10 21:35:40 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/13 20:06:04 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	checkerForVector(void){
 
 		
 		/*~~~~Check_itertors~~~~*/
-		ft::vector<int>	vec;
+		// ft::vector<int>	vec;
 		// ft::reverse_iterator<ft::vector<int>::iterator>	rev;
 		// for(char i=0; i<10; i++){
 		// 	vec.push_back(i);
@@ -106,36 +106,52 @@ void	checkerForVector(void){
 		// checkIterators(vec, rev);
 		/*~~~~~~~~~~~~~~~~~~~~*/
 
-		std::vector<int> v;
-		vec.assign(1100, 11);
-		ft::vector<int> tmp(500, 5), tmp2(1000, 10), tmp3(1500, 15), tmp4(3000, 30);
-		// g_start1 = timer();
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		long *adr1 = reinterpret_cast<long *>(&vec);
-		long *adr2 = reinterpret_cast<long *>(&tmp);
-		vec.swap(tmp);
-		if (reinterpret_cast<long *>(&vec) == adr1 && reinterpret_cast<long *>(&tmp) == adr2)
-			v.push_back(1);
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		vec.swap(tmp3);
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		std::swap(vec, tmp2);
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		std::swap(vec, tmp4);
-		// g_end1 = timer();
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
+		// std::vector<int> v;
+		// vec.assign(1100, 11);
+		// ft::vector<int> tmp(500, 5), tmp2(1000, 10), tmp3(1500, 15), tmp4(3000, 30);
+		// // g_start1 = timer();
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// long *adr1 = reinterpret_cast<long *>(&vec);
+		// long *adr2 = reinterpret_cast<long *>(&tmp);
+		// vec.swap(tmp);
+		// if (reinterpret_cast<long *>(&vec) == adr1 && reinterpret_cast<long *>(&tmp) == adr2)
+		// 	v.push_back(1);
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// vec.swap(tmp3);
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// std::swap(vec, tmp2);
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// std::swap(vec, tmp4);
+		// // g_end1 = timer();
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
 
-		/*status*/printVecParams(vec, false);
+		ft::vector<int>	myvec(5, 5);
+		ft::vector<int>	vec;
+		std::reverse_iterator<std::vector<int>::iterator>	rev;
+		for(char i=0; i<10; i++){
+			vec.push_back(i);
+		}
+
+		ft::vector<int>::iterator	myvecBeg(myvec.begin());
+		ft::vector<int>::iterator	myvecEnd(myvec.end());
+
+
+		printVecParams(vec, false);
+
+		vec.insert(vec.begin(), myvecBeg, myvecEnd);
+		printVecParams(vec, false);
+
+		// /*status*/printVecParams(vec, false);
 
 		
 	}
@@ -146,11 +162,21 @@ void	checkerForVector(void){
 		
 		
 		/*~~~~Check_itertors~~~~*/
+		std::vector<int>	myvec(5, 5);
 		std::vector<int>	vec;
 		// std::reverse_iterator<std::vector<int>::iterator>	rev;
-		// for(char i=0; i<10; i++){
-		// 	vec.push_back(i);
-		// }
+		for(char i=0; i<10; i++){
+			vec.push_back(i);
+		}
+
+		std::vector<int>::iterator	myvecBeg(myvec.begin());
+		std::vector<int>::iterator	myvecEnd(myvec.end());
+
+
+		printVecParams(vec, true);
+
+		vec.insert(vec.begin(), myvecBeg, myvecEnd);
+		printVecParams(vec, true);
 
 		// std::vector<char>	vec;
 		// std::reverse_iterator<std::vector<char>::iterator>	rev;
@@ -167,36 +193,38 @@ void	checkerForVector(void){
 
 		// printVecParams(foo, true);
 
+// ~~~~~~~~~~~~~~~~SWAAAAAAAAAP
+		// std::vector<int> v;
+		// vec.assign(1100, 11);
+		// std::vector<int> tmp(500, 5), tmp2(1000, 10), tmp3(1500, 15), tmp4(3000, 30);
+		// // g_start1 = timer();
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// long *adr1 = reinterpret_cast<long *>(&vec);
+		// long *adr2 = reinterpret_cast<long *>(&tmp);
+		// vec.swap(tmp);
+		// if (reinterpret_cast<long *>(&vec) == adr1 && reinterpret_cast<long *>(&tmp) == adr2)
+		// 	v.push_back(1);
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// vec.swap(tmp3);
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// std::swap(vec, tmp2);
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// std::swap(vec, tmp4);
+		// // g_end1 = timer();
+		// v.push_back(vec[2]);
+		// v.push_back(vec.size());
+		// v.push_back(vec.capacity());
+		// /*status*/printVecParams(vec, true);
+// ~~~~~~~~~~~~~~~~SWAAAAAAAAAP
 		
-		std::vector<int> v;
-		vec.assign(1100, 11);
-		std::vector<int> tmp(500, 5), tmp2(1000, 10), tmp3(1500, 15), tmp4(3000, 30);
-		// g_start1 = timer();
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		long *adr1 = reinterpret_cast<long *>(&vec);
-		long *adr2 = reinterpret_cast<long *>(&tmp);
-		vec.swap(tmp);
-		if (reinterpret_cast<long *>(&vec) == adr1 && reinterpret_cast<long *>(&tmp) == adr2)
-			v.push_back(1);
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		vec.swap(tmp3);
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		std::swap(vec, tmp2);
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		std::swap(vec, tmp4);
-		// g_end1 = timer();
-		v.push_back(vec[2]);
-		v.push_back(vec.size());
-		v.push_back(vec.capacity());
-		/*status*/printVecParams(vec, true);
 	}
 }
 

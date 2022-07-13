@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/10 21:30:16 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/13 20:38:12 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ namespace ft{
 	template < class vecType, class Alloc = std::allocator<vecType> >
 	class	vector{
 	public:
-		typedef vecType											value_type;
+		typedef vecType										value_type;
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
@@ -349,25 +349,25 @@ namespace ft{
 			void	insert (iterator position, InputIterator first, InputIterator last,
 								typename enable_if<!is_integral<InputIterator>::value, 
 												InputIterator>::type tmp = InputIterator()){
-				// (void)tmp;
+				(void)tmp;
 				size_type	distanceSize = sizeItersDistance(first, last);
 				size_type	oldCapacity = capacitySize;
 				value_type*	t;
 				
 				capacityUpdate(countElem+distanceSize);
-				tmp = vecAlloc.allocate(capacitySize);
+				t = vecAlloc.allocate(capacitySize);
 				
-				iterator	tmpIter(tmp);
+				iterator	tmpIter(t);
 				writeValue(tmpIter, position, 'b');
-				for (iterator tmp(first); tmp != last; tmp++){
-					(*tmpIter) = (*tmp);
+				for (InputIterator t(first); t != last; t++){
+					(*tmpIter) = (*t);
 					tmpIter++;
 				}
 				
 				writeValue(tmpIter, position, 'e');
 				countElem +=distanceSize;
 				freeMemory(true, oldCapacity);
-				vec = tmp;
+				vec = t;
 			}
 		iterator	insert (iterator position, const value_type& val){
 			size_type	oldCapacity = capacitySize;
@@ -393,9 +393,7 @@ namespace ft{
 			size_type	oldCapacity = capacitySize;
 			value_type*	tmp;
 			
-			// std::cout << "BEFORE: " << capacitySize << std::endl;
 			capacityUpdate(countElem+n);
-			// std::cout << "AFTER: " << capacitySize << std::endl;
 			tmp = vecAlloc.allocate(capacitySize);
 
 			iterator	tmpIter(tmp);
@@ -468,8 +466,10 @@ namespace ft{
 	};
 
 	template <class vecType, class Alloc>
-  		bool operator== (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
-		  
+		bool operator== (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+			return lhs.
+		}
+
 	template <class vecType, class Alloc>
 		bool operator!= (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
 
