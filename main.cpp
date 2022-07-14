@@ -11,7 +11,23 @@
 /* ************************************************************************** */
 
 #include "includes/testsVec.hpp"
+#include "includes/containers.hpp"
+#include <utility>
+#include <stdio.h>
 
 int main (void){
-	checkerForVector();
+	// checkerForVector();
+
+	// int	a = 5;
+	// char	b = '6';
+	ft::pair<int, int>	new_;
+
+	std::cout << new_.first << std::endl;
+	std::cout << new_.second << std::endl;
+
+	// a = 3;
+	// b = '1';
+
+	std::cout << new_.first << std::endl;
+	std::cout << new_.second << std::endl;
 }

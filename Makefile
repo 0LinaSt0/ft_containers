@@ -12,7 +12,7 @@
 
 HEADS_DIR		=	includes
 
-HEADS			=	$(addprefix $(HEADS_DIR)/, testsVec.hpp vector.hpp vectorIterator.hpp)
+HEADS			=	$(addprefix $(HEADS_DIR)/, containers.hpp testsVec.hpp vector.hpp vectorIterator.hpp)
 
 SRCS			=	testsForVec.cpp main.cpp
 
@@ -33,13 +33,13 @@ ${PROG_NAME}:	$(SRCS) $(OBJS)
 start:			all
 				$(PROG_NAME)
 
-cate:			 
+cate:
 				$(PROG_NAME) | cat -e
 
 leaks:
 				leaks --atExit -- $(PROG_NAME)
 
-clean:	
+clean:
 				rm -r $(OBJS)
 
 fclean:			clean
