@@ -74,7 +74,7 @@ namespace ft{
 		size_type											countElem;
 		size_type											capacitySize;
 		// Just change size of "capacitySize" variable
-		void	capacityUpdate(size_type amountCapacity){
+		void	_capacityUpdate(size_type amountCapacity){
 			if (capacitySize == 0){
 				capacitySize = amountCapacity;
 			} else if (capacitySize < amountCapacity) {
@@ -89,7 +89,7 @@ namespace ft{
 		/* 	1) destruct needing element (DoIDeallocate - false)
 			2) destruct and deallocate vec
 				(DoIDeallocate - true, freeElems - how much deallocate)*/
-		void	freeMemory(bool DoIDeallocate, size_type freeElems){
+		void	_freeMemory(bool DoIDeallocate, size_type freeElems){
 			for (size_type i = 0; i < countElem; i++){
 					vecAlloc.destroy(vec + i);
 			}
@@ -100,7 +100,7 @@ namespace ft{
 
 		/* Counts distance between two iterators and returns size of the distance */
 		template < class InputIterator >
-			size_type	sizeItersDistance(InputIterator first, InputIterator last){
+			size_type	_sizeItersDistance(InputIterator first, InputIterator last){
 				size_type	distance = 0;
 
 				for (InputIterator countIter(first); countIter != last; countIter++){
@@ -115,7 +115,7 @@ namespace ft{
 				- 'b' if needs put first part of vector to containter
 				- 'e' if needs put last part of vector to containter */
 		template < class D, class InputIterator >
-			void	writeValue(D &container, InputIterator position, char whichPartFl){
+			void	_writeValue(D &container, InputIterator position, char whichPartFl){
 				if (whichPartFl == 'b') {
 					for (InputIterator vecBeging(begin()); vecBeging != position; vecBeging++){
 						(*container) = (*vecBeging);
@@ -157,7 +157,7 @@ namespace ft{
 					typename enable_if<!is_integral<InputIterator>::value,
 												InputIterator>::type tmp = InputIterator()){
 						(void) tmp;
-						countElem = sizeItersDistance(first, last);
+						countElem = _sizeItersDistance(first, last);
 						capacitySize = countElem;
 						vecAlloc = alloc;
 						vec = vecAlloc.allocate(countElem);
@@ -179,17 +179,17 @@ namespace ft{
 
 			operator=(x);
 		}
-		~vector (void) { freeMemory(true, capacitySize); }
+		~vector (void) { _freeMemory(true, capacitySize); }
 
 
 		// ~~~~~~~~~~ Operators ~~~~~~~~~~
 		vector&			operator= (const vector& x){
 			if (capacitySize < x.size()){
-				freeMemory(true, capacitySize);
-				capacityUpdate(x.capacity());
+				_freeMemory(true, capacitySize);
+				_capacityUpdate(x.capacity());
 				vec = vecAlloc.allocate(capacitySize);
 			} else {
-				freeMemory(false, capacitySize);
+				_freeMemory(false, capacitySize);
 			}
 
 			iterator	thisIter(vec);
@@ -211,8 +211,8 @@ namespace ft{
 		/* ~~~~~~~~~~ Iterators ~~~~~~~~~~
 			begin	|	Return iterator to beginning
 			end		|	Return iterator to end
-			!rbegin	|	Return reverse iterator to reverse beginning
-			!rend	|	Return reverse iterator to reverse end
+			rbegin	|	Return reverse iterator to reverse beginning
+			rend	|	Return reverse iterator to reverse end
 		*/
 		iterator			begin() const { iterator iter(vec); return countElem ? iter : end(); }
 		iterator			end() const { iterator iter(vec); return iter + countElem; }
@@ -249,7 +249,7 @@ namespace ft{
 		void		reserve (size_type n){
 			if (n > capacitySize){
 				size_type			oldCapacity = capacitySize;
-				capacityUpdate(n);
+				_capacityUpdate(n);
 				value_type*	tmp;
 
 				tmp = vecAlloc.allocate(capacitySize);
@@ -257,7 +257,7 @@ namespace ft{
 				for (size_type iter = 0; iter < countElem; iter++){
 					tmp[iter] = vec[iter];
 				}
-				freeMemory(true, oldCapacity);
+				_freeMemory(true, oldCapacity);
 				vec = tmp;
 
 			}
@@ -299,7 +299,7 @@ namespace ft{
 								typename enable_if<!is_integral<InputIterator>::value,
 												InputIterator>::type tmp = InputIterator()){
 				(void)tmp;
-				freeMemory(false, countElem);
+				_freeMemory(false, countElem);
 				countElem = 0;
 				for (InputIterator myFirst(first); myFirst != last; myFirst++){
 					countElem++;
@@ -318,7 +318,7 @@ namespace ft{
 			}
 
 		void		assign (size_type n, const value_type& val){
-			freeMemory(false, countElem);
+			_freeMemory(false, countElem);
 			countElem = n;
 			if (countElem){
 				if (countElem > capacitySize){
@@ -350,42 +350,42 @@ namespace ft{
 								typename enable_if<!is_integral<InputIterator>::value,
 												InputIterator>::type tmp = InputIterator()){
 				(void)tmp;
-				size_type	distanceSize = sizeItersDistance(first, last);
+				size_type	distanceSize = _sizeItersDistance(first, last);
 				size_type	oldCapacity = capacitySize;
 				value_type*	t;
 
-				capacityUpdate(countElem+distanceSize);
+				_capacityUpdate(countElem+distanceSize);
 				t = vecAlloc.allocate(capacitySize);
 
 				iterator	tmpIter(t);
-				writeValue(tmpIter, position, 'b');
+				_writeValue(tmpIter, position, 'b');
 				for (InputIterator t(first); t != last; t++){
 					(*tmpIter) = (*t);
 					tmpIter++;
 				}
 
-				writeValue(tmpIter, position, 'e');
+				_writeValue(tmpIter, position, 'e');
 				countElem +=distanceSize;
-				freeMemory(true, oldCapacity);
+				_freeMemory(true, oldCapacity);
 				vec = t;
 			}
 		iterator	insert (iterator position, const value_type& val){
 			size_type	oldCapacity = capacitySize;
 			value_type*	tmp;
 
-			capacityUpdate(countElem+1);
+			_capacityUpdate(countElem+1);
 			tmp = vecAlloc.allocate(capacitySize);
 
 			iterator	tmpIter(tmp);
-			writeValue(tmpIter, position, 'b');
+			_writeValue(tmpIter, position, 'b');
 
 			(*tmpIter) = val;
 			iterator	returnPosition(tmpIter);
 			tmpIter++;
 
-			writeValue(tmpIter, position, 'e');
+			_writeValue(tmpIter, position, 'e');
 			countElem++;
-			freeMemory(true, oldCapacity);
+			_freeMemory(true, oldCapacity);
 			vec = tmp;
 			return(returnPosition);
 		}
@@ -393,20 +393,20 @@ namespace ft{
 			size_type	oldCapacity = capacitySize;
 			value_type*	tmp;
 
-			capacityUpdate(countElem+n);
+			_capacityUpdate(countElem+n);
 			tmp = vecAlloc.allocate(capacitySize);
 
 			iterator	tmpIter(tmp);
-			writeValue(tmpIter, position, 'b');
+			_writeValue(tmpIter, position, 'b');
 
 			for (size_type i=0; i < n; i++){
 				(*tmpIter) = val;
 				tmpIter++;
 			}
 
-			writeValue(tmpIter, position, 'e');
+			_writeValue(tmpIter, position, 'e');
 			countElem += n;
-			freeMemory(true, oldCapacity);
+			_freeMemory(true, oldCapacity);
 			vec = tmp;
 		}
 
@@ -416,12 +416,12 @@ namespace ft{
 			tmp = vecAlloc.allocate(capacitySize);
 			iterator	tmpIter(tmp);
 
-			writeValue(tmpIter, position, 'b');
+			_writeValue(tmpIter, position, 'b');
 
 			iterator	newPosition(position+1);
-			writeValue(tmpIter, newPosition, 'e');
+			_writeValue(tmpIter, newPosition, 'e');
 			countElem--;
-			freeMemory(true, capacitySize);
+			_freeMemory(true, capacitySize);
 			vec = tmp;
 			return (newPosition);
 		}
@@ -431,17 +431,17 @@ namespace ft{
 			tmp = vecAlloc.allocate(capacitySize);
 			iterator	tmpIter(tmp);
 
-			writeValue(tmpIter, first, 'b');
-			writeValue(tmpIter, last, 'e');
-			freeMemory(true, capacitySize);
-			countElem -= sizeItersDistance(first, last);
+			_writeValue(tmpIter, first, 'b');
+			_writeValue(tmpIter, last, 'e');
+			_freeMemory(true, capacitySize);
+			countElem -= _sizeItersDistance(first, last);
 			vec = tmp;
 			return (last);
 		}
 
 		void		swap (vector& x){
 			if (vec){
-				freeMemory(true, countElem);
+				_freeMemory(true, countElem);
 			}
 			countElem = x.size();
 			capacitySize = x.capacity();
@@ -459,7 +459,7 @@ namespace ft{
 			}
 		}
 
-		void		clear(){ freeMemory(false, countElem); countElem = 0; }
+		void		clear(){ _freeMemory(false, countElem); countElem = 0; }
 
 		//Allocator
 		allocator_type	get_allocator() const{ return (vecAlloc); }
@@ -467,26 +467,42 @@ namespace ft{
 
 	template <class vecType, class Alloc>
 		bool operator== (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
-			return true;
+			return equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 
 	template <class vecType, class Alloc>
-		bool operator!= (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
+		bool operator!=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+			return equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
+		}
 
 	template <class vecType, class Alloc>
-		bool operator<  (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
+		bool operator< (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+			return equal(lhs.begin(), lhs.end(), rhs.begin(), _lessCheck);
+		}
 
 	template <class vecType, class Alloc>
-		bool operator<= (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
+		bool operator<=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+			return equal(lhs.begin(), lhs.end(), rhs.begin(), _equalLessCheck);
+		}
 
 	template <class vecType, class Alloc>
-		bool operator>  (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
+		bool operator>(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+			return equal(lhs.begin(), lhs.end(), rhs.begin(), _moreCheck);
+		}
 
 	template <class vecType, class Alloc>
-		bool operator>= (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs);
+		bool operator>=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+			return equal(lhs.begin(), lhs.end(), rhs.begin(), _equalMoreCheck);
+		}
 
 	template <class vecType, class Alloc>
-  		void swap (vector<vecType,Alloc>& x, vector<vecType,Alloc>& y);
+		void swap(vector<vecType,Alloc>& x, vector<vecType,Alloc>& y){
+			vector<vecType, Alloc>	*tmp(x);
+
+			x.~vector();
+			x = y;
+			y = tmp;
+		}
 
 };
 
