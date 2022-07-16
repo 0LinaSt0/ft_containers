@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/13 20:38:12 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/16 23:28:07 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define VECTOR_HPP
 
 #include "vectorIterator.hpp"
+#include "containers.hpp"
 
 /*
 	! - means things which i still don't implement
@@ -62,8 +63,8 @@ namespace ft{
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef ft::iterator<pointer>						iterator;
-		typedef ft::iterator<const_pointer>					const_iterator;
+		typedef ft::iterator<value_type>						iterator;
+		typedef ft::iterator<value_type>					const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 		typedef typename allocator_type::size_type			size_type;
@@ -117,17 +118,43 @@ namespace ft{
 		template < class D, class InputIterator >
 			void	_writeValue(D &container, InputIterator position, char whichPartFl){
 				if (whichPartFl == 'b') {
-					for (InputIterator vecBeging(begin()); vecBeging != position; vecBeging++){
+					for (InputIterator vecBeging(begin()); 
+							vecBeging != position; 
+							vecBeging++){
 						(*container) = (*vecBeging);
 						container++;
 					}
 				} else if (whichPartFl == 'e') {
-					for (InputIterator vecEnd(end()); position != vecEnd; position++){
+					for (InputIterator vecEnd(end()); 
+							position != vecEnd; 
+							position++){
 						(*container) = (*position);
 						container++;
 					}
 				} else { }
 			}
+		
+		// template < class vec1 >
+			void	_exchangesContant(vector& putIn, vector& takeFrom){
+				putIn.vecAlloc = takeFrom.vecAlloc;
+				putIn.countElem = takeFrom.countElem;
+				putIn.capacitySize = takeFrom.capacitySize;
+				putIn.vec = vecAlloc.allocate(putIn.capacitySize);
+				
+				if (!takeFrom.countElem){
+					vec = NULL;
+				} else {
+					iterator	putInIter(putIn.vec);
+					size_t i = 0;
+
+					for (iterator takeFromIter(takeFrom.begin()); 
+							takeFromIter != takeFrom.end(); 
+							takeFromIter++, i++){
+						putInIter[i] = *takeFromIter;
+					}
+				}
+			}
+	
 	public:
 		/* ~~~~~~~~~~ Constructors ~~~~~~~~~~
 			1. explicit vector (const allocator_type&)			|	Empty vector
@@ -170,7 +197,7 @@ namespace ft{
 					}
 		vector (const vector& x){
 			countElem = x.countElem;
-			capacitySize = countElem;
+			capacitySize = x.capacitySize;
 			if (!x.vec){
 				vec = NULL;
 			} else {
@@ -184,13 +211,9 @@ namespace ft{
 
 		// ~~~~~~~~~~ Operators ~~~~~~~~~~
 		vector&			operator= (const vector& x){
-			if (capacitySize < x.size()){
-				_freeMemory(true, capacitySize);
-				_capacityUpdate(x.capacity());
-				vec = vecAlloc.allocate(capacitySize);
-			} else {
-				_freeMemory(false, capacitySize);
-			}
+			_freeMemory(true, capacitySize);
+			capacitySize = x.capacitySize;
+			vec = vecAlloc.allocate(capacitySize);
 
 			iterator	thisIter(vec);
 			size_type	i = 0;
@@ -350,7 +373,12 @@ namespace ft{
 								typename enable_if<!is_integral<InputIterator>::value,
 												InputIterator>::type tmp = InputIterator()){
 				(void)tmp;
-				size_type	distanceSize = _sizeItersDistance(first, last);
+					size_type	distanceSize;
+				try {
+					distanceSize = _sizeItersDistance(first, last);
+				} catch (...) {
+					throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
+				}
 				size_type	oldCapacity = capacitySize;
 				value_type*	t;
 
@@ -359,13 +387,19 @@ namespace ft{
 
 				iterator	tmpIter(t);
 				_writeValue(tmpIter, position, 'b');
-				for (InputIterator t(first); t != last; t++){
-					(*tmpIter) = (*t);
-					tmpIter++;
+				try {
+					for (InputIterator i(first); i != last; i++){
+						(*tmpIter) = (*i);
+						tmpIter++;
+					}
+				} catch (...){
+					vecAlloc.deallocate(t, 0);
+					capacitySize = oldCapacity;
+					throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
 				}
 
 				_writeValue(tmpIter, position, 'e');
-				countElem +=distanceSize;
+				countElem += distanceSize;
 				_freeMemory(true, oldCapacity);
 				vec = t;
 			}
@@ -410,20 +444,25 @@ namespace ft{
 			vec = tmp;
 		}
 
+		//MAYBE TAKE OTHER REALIZATION FROM LAST COMMIT
 		iterator	erase (iterator position){
 			value_type*	tmp;
 
 			tmp = vecAlloc.allocate(capacitySize);
 			iterator	tmpIter(tmp);
+			size_type	distance = _sizeItersDistance((position+1), end());
+			size_type	deletePos = countElem - distance - 1;
 
-			_writeValue(tmpIter, position, 'b');
-
-			iterator	newPosition(position+1);
-			_writeValue(tmpIter, newPosition, 'e');
+			_writeValue(tmpIter, (position+1), 'e');
+			vecAlloc.destroy(vec+deletePos);
 			countElem--;
-			_freeMemory(true, capacitySize);
-			vec = tmp;
-			return (newPosition);
+
+			for (size_type i = deletePos, y = 0; 
+					i < distance; 
+					i++, y++){
+				vec[i] = tmp[y];
+			}
+			return (iterator(vec+deletePos));
 		}
 		iterator	erase (iterator first, iterator last){
 			value_type*	tmp;
@@ -440,23 +479,13 @@ namespace ft{
 		}
 
 		void		swap (vector& x){
-			if (vec){
-				_freeMemory(true, countElem);
-			}
-			countElem = x.size();
-			capacitySize = x.capacity();
-			if (!x.vec){
-				vec = NULL;
-			} else {
-				vec = vecAlloc.allocate(capacitySize);
-			}
-			iterator	thisIter(vec);
-			size_t		i = 0;
-
-			for (iterator xIter(x.begin()); xIter != x.end(); xIter++){
-				thisIter[i] = *xIter;
-				i++;
-			}
+			vector	tmp(*this);
+			
+			_freeMemory(true, countElem);
+			_exchangesContant(*this, x);
+				
+			x.~vector();
+			_exchangesContant(x, tmp);
 		}
 
 		void		clear(){ _freeMemory(false, countElem); countElem = 0; }
@@ -467,43 +496,88 @@ namespace ft{
 
 	template <class vecType, class Alloc>
 		bool operator== (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
-			return equal(lhs.begin(), lhs.end(), rhs.begin());
+			if (lhs.empty() && rhs.empty()) return true;
+			else if (lhs.empty() || rhs.empty()) return false;
+			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 
 	template <class vecType, class Alloc>
 		bool operator!=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
-			return equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
+			if (lhs.empty() && rhs.empty()) return false;
+			else if (lhs.empty() || rhs.empty()) return true;
+			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
 		}
 
 	template <class vecType, class Alloc>
 		bool operator< (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
-			return equal(lhs.begin(), lhs.end(), rhs.begin(), _lessCheck);
+			if (lhs.empty() && rhs.empty()) return false;
+			else if (lhs.empty() && !rhs.empty()) return true;
+			else if (!lhs.empty() && rhs.empty()) return false;
+			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_lessCheck<vecType, vecType>);
 		}
 
 	template <class vecType, class Alloc>
 		bool operator<=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
-			return equal(lhs.begin(), lhs.end(), rhs.begin(), _equalLessCheck);
+			if (lhs.empty() && rhs.empty()) return true;
+			else if (lhs.empty() && !rhs.empty()) return true;
+			else if (!lhs.empty() && rhs.empty()) return false;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalLessCheck<vecType, vecType>);
 		}
 
 	template <class vecType, class Alloc>
 		bool operator>(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
-			return equal(lhs.begin(), lhs.end(), rhs.begin(), _moreCheck);
+			if (lhs.empty() && rhs.empty()) return false;
+			else if (lhs.empty() && !rhs.empty()) return false;
+			else if (!lhs.empty() && rhs.empty()) return true;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_moreCheck<vecType, vecType>);
 		}
 
 	template <class vecType, class Alloc>
 		bool operator>=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
-			return equal(lhs.begin(), lhs.end(), rhs.begin(), _equalMoreCheck);
+			if (lhs.empty() && rhs.empty()) return true;
+			else if (lhs.empty() && !rhs.empty()) return false;
+			else if (!lhs.empty() && rhs.empty()) return true;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalMoreCheck<vecType, vecType>);
 		}
+
+	template <class vecType>
+	// Prints value of vector
+	void	printContent(vecType &vec, bool isItOrigVector){
+		std::cout << "	vector content: ";
+		if (isItOrigVector){
+			for (typename vecType::iterator orig = vec.begin();
+			orig != vec.end(); orig++){
+				std::cout << *orig << "  ";
+			}
+		} else {
+			for (typename vecType::iterator my(vec.begin()); 
+			my != vec.end(); my++){
+				std::cout << *my << "  ";
+			}
+		}
+		(void) isItOrigVector;
+		std::cout << std::endl;
+	}
+template <class vecType>
+	// Prints all information about vector
+	void	printParams (vecType &vec, bool isItOrigVector){
+		std::cout << "COPYCOPYCOPY" << std::endl;
+		printContent(vec, isItOrigVector);
+		std::cout << "	vecAddress: " << &vec << "\n"
+				<< "	count elem: " << vec.size() << "\n"
+				<< "	capaxity size: " << vec.capacity() << "\n"
+				<< "	emptyFlag: " << vec.empty()
+				<< std::endl << std::endl;
+	}
 
 	template <class vecType, class Alloc>
 		void swap(vector<vecType,Alloc>& x, vector<vecType,Alloc>& y){
-			vector<vecType, Alloc>	*tmp(x);
-
-			x.~vector();
-			x = y;
-			y = tmp;
+			// printParams(x, false);
+			// printParams(y, false);
+			x.swap(y);
+			// printParams(x, false);
+			// printParams(y, false);
 		}
-
 };
 
 

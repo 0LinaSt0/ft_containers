@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/13 21:10:10 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/15 21:11:21 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 #ifndef CONTAINERS_HPP
 #define CONTAINERS_HPP
 
+#include "vectorIterator.hpp"
 #include <iostream>
 #include <string>
+#include <memory>
+#include <vector>
 
 
 namespace ft{
@@ -24,6 +27,7 @@ namespace ft{
 	template <class InputIterator1, class InputIterator2>
 		bool equal (InputIterator1 first1, InputIterator1 last1,
 				InputIterator2 first2){
+			if (!first1.base() || !first2.base()) return false;
 			while (first1 != last1){
 				if (*(first1) != *(first2)){
 					return false;
@@ -36,6 +40,7 @@ namespace ft{
 	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
 		bool equal (InputIterator1 first1, InputIterator1 last1,
 				InputIterator2 first2, BinaryPredicate pred){
+			if (!first1.base() || !first2.base()) return false;
 			while (first1 != last1){
 				if (pred(*(first1), *(first2)) == false)
 					return false;
@@ -51,10 +56,10 @@ namespace ft{
 		bool _equalLessCheck(T1 a, T2 b){ return (a <= b) ? true : false; }
 
 	template <class T1, class T2>
-		bool _moreCheck(T1 a, T2 b){ return _lessCheck(a, b) ? false : true; }
+		bool _moreCheck(T1 a, T2 b){ return(_lessCheck(a, b) || a == b ) ? false : true; }
 
 	template <class T1, class T2>
-		bool _equalMoreCheck(T1 a, T2 b){ return _equalLessCheck(a, b) ? false : true; }
+		bool _equalMoreCheck(T1 a, T2 b){ return (_equalLessCheck(a, b) && a != b) ? false : true; }
 
 
 	/*Pair class for constructing two type of elements to ine class objects*/

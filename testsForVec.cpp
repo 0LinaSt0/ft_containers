@@ -6,11 +6,13 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:36:43 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/13 20:06:04 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/16 23:13:59 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/testsVec.hpp"
+
+
 
 void	checkConstructors(){
 		{/* <<<<<<<<<<<<<<< Tests for constructor_iterator >>>>>>>>>>>>>>>*/
@@ -76,18 +78,17 @@ void	checkConstructors(){
 
 void	checkerForVector(void){
 	// checkConstructors();
-{
-	
-}
+
 	{
 		std::cout << "\t~~~~~~~~~~~~~~MY_VECTOR~~~~~~~~~~~~~~" << std::endl;
 
-		// ft::vector<char>	vec(5, 'a');
+		// ft::vector<int>	vector(3, 5);
 		// ft::vector<std::string>	vec(5, "aboba");
 		
 		// ft::vector<char>	vec1(6, 'd');
-		// ft::vector<int>	vec1(3, 'd');
+		ft::vector<int>	vec1(3, 7);
 
+		eraseCheck(vec1, false);
 		
 		/*~~~~Check_itertors~~~~*/
 		// ft::vector<int>	vec;
@@ -105,78 +106,31 @@ void	checkerForVector(void){
 		// /*status*/printVecParams(vec, false);
 		// checkIterators(vec, rev);
 		/*~~~~~~~~~~~~~~~~~~~~*/
-
-		// std::vector<int> v;
-		// vec.assign(1100, 11);
-		// ft::vector<int> tmp(500, 5), tmp2(1000, 10), tmp3(1500, 15), tmp4(3000, 30);
-		// // g_start1 = timer();
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// long *adr1 = reinterpret_cast<long *>(&vec);
-		// long *adr2 = reinterpret_cast<long *>(&tmp);
-		// vec.swap(tmp);
-		// if (reinterpret_cast<long *>(&vec) == adr1 && reinterpret_cast<long *>(&tmp) == adr2)
-		// 	v.push_back(1);
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// vec.swap(tmp3);
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// std::swap(vec, tmp2);
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// std::swap(vec, tmp4);
-		// // g_end1 = timer();
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-
-		ft::vector<int>	myvec(5, 5);
-		ft::vector<int>	vec;
-		std::reverse_iterator<std::vector<int>::iterator>	rev;
-		for(char i=0; i<10; i++){
-			vec.push_back(i);
-		}
-
-		ft::vector<int>::iterator	myvecBeg(myvec.begin());
-		ft::vector<int>::iterator	myvecEnd(myvec.end());
-
-
-		printVecParams(vec, false);
-
-		vec.insert(vec.begin(), myvecBeg, myvecEnd);
-		printVecParams(vec, false);
-
-		// /*status*/printVecParams(vec, false);
-
-		
 	}
 	{
 		std::cout << "\n\n\t~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
 		// std::vector<char>	foo(5, 'a');
 		// std::vector<std::string>	foo(5, "aboba");
 		
-		
+			std::vector<int>	vec1(3, 7);
+
+		eraseCheck(vec1, true);
 		/*~~~~Check_itertors~~~~*/
-		std::vector<int>	myvec(5, 5);
-		std::vector<int>	vec;
-		// std::reverse_iterator<std::vector<int>::iterator>	rev;
-		for(char i=0; i<10; i++){
-			vec.push_back(i);
-		}
+		// std::vector<int>	myvec(5, 5);
+		std::vector<int>	vector;
+		// // std::reverse_iterator<std::vector<int>::iterator>	rev;
+		// for(char i=0; i<10; i++){
+		// 	vec.push_back(i);
+		// }
 
-		std::vector<int>::iterator	myvecBeg(myvec.begin());
-		std::vector<int>::iterator	myvecEnd(myvec.end());
+		// std::vector<int>::iterator	myvecBeg(myvec.begin());
+		// std::vector<int>::iterator	myvecEnd(myvec.end());
 
 
-		printVecParams(vec, true);
+		// printVecParams(vec, true);
 
-		vec.insert(vec.begin(), myvecBeg, myvecEnd);
-		printVecParams(vec, true);
+		// vec.insert(vec.begin(), myvecBeg, myvecEnd);
+		// printVecParams(vec, true);
 
 		// std::vector<char>	vec;
 		// std::reverse_iterator<std::vector<char>::iterator>	rev;
@@ -193,38 +147,6 @@ void	checkerForVector(void){
 
 		// printVecParams(foo, true);
 
-// ~~~~~~~~~~~~~~~~SWAAAAAAAAAP
-		// std::vector<int> v;
-		// vec.assign(1100, 11);
-		// std::vector<int> tmp(500, 5), tmp2(1000, 10), tmp3(1500, 15), tmp4(3000, 30);
-		// // g_start1 = timer();
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// long *adr1 = reinterpret_cast<long *>(&vec);
-		// long *adr2 = reinterpret_cast<long *>(&tmp);
-		// vec.swap(tmp);
-		// if (reinterpret_cast<long *>(&vec) == adr1 && reinterpret_cast<long *>(&tmp) == adr2)
-		// 	v.push_back(1);
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// vec.swap(tmp3);
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// std::swap(vec, tmp2);
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// std::swap(vec, tmp4);
-		// // g_end1 = timer();
-		// v.push_back(vec[2]);
-		// v.push_back(vec.size());
-		// v.push_back(vec.capacity());
-		// /*status*/printVecParams(vec, true);
-// ~~~~~~~~~~~~~~~~SWAAAAAAAAAP
-		
 	}
 }
 

@@ -6,17 +6,14 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:38:01 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/10 18:13:21 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/16 23:13:33 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TESTS_VEC_HPP
 #define TESTS_VEC_HPP
 #include "vector.hpp"
-#include <vector>
-#include <iostream>
-#include <string>
-#include <memory>
+
 
 void	checkerForVector(void);
 
