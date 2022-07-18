@@ -12,8 +12,6 @@
 
 #include "includes/testsVec.hpp"
 #include "includes/containers.hpp"
-#include <utility>
-#include <stdio.h>
 
 int main (void){
 	checkerForVector();

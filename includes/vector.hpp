@@ -54,10 +54,10 @@ namespace ft{
 	template < class D >
 		struct enable_if < true, D > { typedef D type; };
 
-	template < class vecType, class Alloc = std::allocator<vecType> >
+	template < class stackType, class Alloc = std::allocator<stackType> >
 	class	vector{
 	public:
-		typedef vecType										value_type;
+		typedef stackType										value_type;
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
@@ -118,43 +118,43 @@ namespace ft{
 		template < class D, class InputIterator >
 			void	_writeValue(D &container, InputIterator position, char whichPartFl){
 				if (whichPartFl == 'b') {
-					for (InputIterator vecBeging(begin()); 
-							vecBeging != position; 
+					for (InputIterator vecBeging(begin());
+							vecBeging != position;
 							vecBeging++){
 						(*container) = (*vecBeging);
 						container++;
 					}
 				} else if (whichPartFl == 'e') {
-					for (InputIterator vecEnd(end()); 
-							position != vecEnd; 
+					for (InputIterator vecEnd(end());
+							position != vecEnd;
 							position++){
 						(*container) = (*position);
 						container++;
 					}
 				} else { }
 			}
-		
+
 		// template < class vec1 >
 			void	_exchangesContant(vector& putIn, vector& takeFrom){
 				putIn.vecAlloc = takeFrom.vecAlloc;
 				putIn.countElem = takeFrom.countElem;
 				putIn.capacitySize = takeFrom.capacitySize;
 				putIn.vec = vecAlloc.allocate(putIn.capacitySize);
-				
+
 				if (!takeFrom.countElem){
 					vec = NULL;
 				} else {
 					iterator	putInIter(putIn.vec);
 					size_t i = 0;
 
-					for (iterator takeFromIter(takeFrom.begin()); 
-							takeFromIter != takeFrom.end(); 
+					for (iterator takeFromIter(takeFrom.begin());
+							takeFromIter != takeFrom.end();
 							takeFromIter++, i++){
 						putInIter[i] = *takeFromIter;
 					}
 				}
 			}
-	
+
 	public:
 		/* ~~~~~~~~~~ Constructors ~~~~~~~~~~
 			1. explicit vector (const allocator_type&)			|	Empty vector
@@ -457,8 +457,8 @@ namespace ft{
 			vecAlloc.destroy(vec+deletePos);
 			countElem--;
 
-			for (size_type i = deletePos, y = 0; 
-					i < distance; 
+			for (size_type i = deletePos, y = 0;
+					i < distance;
 					i++, y++){
 				vec[i] = tmp[y];
 			}
@@ -480,10 +480,10 @@ namespace ft{
 
 		void		swap (vector& x){
 			vector	tmp(*this);
-			
+
 			_freeMemory(true, countElem);
 			_exchangesContant(*this, x);
-				
+
 			x.~vector();
 			_exchangesContant(x, tmp);
 		}
@@ -494,63 +494,63 @@ namespace ft{
 		allocator_type	get_allocator() const{ return (vecAlloc); }
 	};
 
-	template <class vecType, class Alloc>
-		bool operator== (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+	template <class stackType, class Alloc>
+		bool operator== (const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() || rhs.empty()) return false;
 			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 
-	template <class vecType, class Alloc>
-		bool operator!=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+	template <class stackType, class Alloc>
+		bool operator!=(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() || rhs.empty()) return true;
 			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
 		}
 
-	template <class vecType, class Alloc>
-		bool operator< (const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+	template <class stackType, class Alloc>
+		bool operator< (const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_lessCheck<vecType, vecType>);
+			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_lessCheck<stackType, stackType>);
 		}
 
-	template <class vecType, class Alloc>
-		bool operator<=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+	template <class stackType, class Alloc>
+		bool operator<=(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalLessCheck<vecType, vecType>);
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalLessCheck<stackType, stackType>);
 		}
 
-	template <class vecType, class Alloc>
-		bool operator>(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+	template <class stackType, class Alloc>
+		bool operator>(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_moreCheck<vecType, vecType>);
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_moreCheck<stackType, stackType>);
 		}
 
-	template <class vecType, class Alloc>
-		bool operator>=(const vector<vecType,Alloc>& lhs, const vector<vecType,Alloc>& rhs){
+	template <class stackType, class Alloc>
+		bool operator>=(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalMoreCheck<vecType, vecType>);
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalMoreCheck<stackType, stackType>);
 		}
 
-	template <class vecType>
+	template <class stackType>
 	// Prints value of vector
-	void	printContent(vecType &vec, bool isItOrigVector){
+	void	printContent(stackType &vec, bool isItOrigVector){
 		std::cout << "	vector content: ";
 		if (isItOrigVector){
-			for (typename vecType::iterator orig = vec.begin();
+			for (typename stackType::iterator orig = vec.begin();
 			orig != vec.end(); orig++){
 				std::cout << *orig << "  ";
 			}
 		} else {
-			for (typename vecType::iterator my(vec.begin()); 
+			for (typename stackType::iterator my(vec.begin());
 			my != vec.end(); my++){
 				std::cout << *my << "  ";
 			}
@@ -558,9 +558,9 @@ namespace ft{
 		(void) isItOrigVector;
 		std::cout << std::endl;
 	}
-template <class vecType>
+template <class stackType>
 	// Prints all information about vector
-	void	printParams (vecType &vec, bool isItOrigVector){
+	void	printParams (stackType &vec, bool isItOrigVector){
 		std::cout << "COPYCOPYCOPY" << std::endl;
 		printContent(vec, isItOrigVector);
 		std::cout << "	vecAddress: " << &vec << "\n"
@@ -570,8 +570,8 @@ template <class vecType>
 				<< std::endl << std::endl;
 	}
 
-	template <class vecType, class Alloc>
-		void swap(vector<vecType,Alloc>& x, vector<vecType,Alloc>& y){
+	template <class stackType, class Alloc>
+		void swap(vector<stackType,Alloc>& x, vector<stackType,Alloc>& y){
 			// printParams(x, false);
 			// printParams(y, false);
 			x.swap(y);

@@ -19,18 +19,18 @@
 #include <memory>
 
 namespace ft{
-	template<typename vecType>
+	template<typename stackType>
 		struct remove_pointer
 		{
-			typedef vecType type;
+			typedef stackType type;
 		};
 
-	template<typename vecType>
-		struct remove_pointer<vecType*>
+	template<typename stackType>
+		struct remove_pointer<stackType*>
 		{
-			typedef typename remove_pointer<vecType>::type type;
+			typedef typename remove_pointer<stackType>::type type;
 		};
-	
+
 	template < class Tp >
 		struct iterator_traits {
 			typedef ptrdiff_t 							difference_type; // result of subtracting (-) one iterator from another
@@ -47,7 +47,7 @@ namespace ft{
 	// 		typedef Tp									pointer; // the type of a pointer to an element
 	// 		typedef std::random_access_iterator_tag		iterator_category; // the iterator category
 	// 	} ;
-		
+
 
 	template < class Iter >
 		class	iterator{
@@ -62,7 +62,7 @@ namespace ft{
 			pointer														vectorElem;
 		public:
 			iterator (void) : vectorElem (NULL){ } //default
-			iterator (const pointer vecElem) : vectorElem (vecElem){ } // assign 
+			iterator (const pointer vecElem) : vectorElem (vecElem){ } // assign
 			iterator (const iterator& other) : vectorElem (other.base()){ } // copy
 			~iterator (void){} // destructor
 

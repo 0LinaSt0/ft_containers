@@ -16,10 +16,13 @@
 #define CONTAINERS_HPP
 
 #include "vectorIterator.hpp"
+#include <stdio.h>
 #include <iostream>
 #include <string>
 #include <memory>
 #include <vector>
+#include <deque>
+#include <stack>
 
 
 namespace ft{

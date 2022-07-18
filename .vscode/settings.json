@@ -66,6 +66,11 @@
 		"__functional_base_03": "cpp",
 		"__memory": "cpp",
 		"memory_resource": "cpp",
-		"deque": "cpp"
+		"deque": "cpp",
+		"*.tcc": "cpp",
+		"fstream": "cpp",
+		"clocale": "cpp",
+		"numeric": "cpp",
+		"random": "cpp"
 	}
 }
