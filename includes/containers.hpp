@@ -16,7 +16,6 @@
 #define CONTAINERS_HPP
 
 #include "vectorIterator.hpp"
-#include <stdio.h>
 #include <iostream>
 #include <string>
 #include <memory>
@@ -47,6 +46,7 @@ namespace ft{
 			while (first1 != last1){
 				if (pred(*(first1), *(first2)) == false)
 					return false;
+				// std::cout << "IIIIII" << std::endl;
 				first1++; first2++;
 			}
 			return true;
@@ -59,7 +59,12 @@ namespace ft{
 		bool _equalLessCheck(T1 a, T2 b){ return (a <= b) ? true : false; }
 
 	template <class T1, class T2>
-		bool _moreCheck(T1 a, T2 b){ return(_lessCheck(a, b) || a == b ) ? false : true; }
+		bool _moreCheck(T1 a, T2 b){
+
+			// std::cout << "I NEED TRUE(1):   " << (a == b )
+			// 		<< std::endl;
+			return(_lessCheck(a, b)) ? false : true;
+			}
 
 	template <class T1, class T2>
 		bool _equalMoreCheck(T1 a, T2 b){ return (_equalLessCheck(a, b) && a != b) ? false : true; }

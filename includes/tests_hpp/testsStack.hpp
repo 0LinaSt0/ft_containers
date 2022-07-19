@@ -16,6 +16,8 @@
 #include "testsVec.hpp"
 #include "../stack.hpp"
 
+void	checkerForStack(void);
+
 template <class stackType, class Container>
 	// Prints all information about stack
 	void	printStackParams (stackType &stack, Container& base_container){
@@ -46,25 +48,43 @@ template <class stackType, class Container>
 
 template <class stackType>
 	void	operatorsCheck(stackType &stack1, stackType &stack2){
-		for (int operator = 0; operator < 6; operator++){
-			switch (relation){
+		for (int _operator = 0; _operator < 6; _operator++){
+			switch (_operator){
 				case 0:
-					printf("-> Stack1 == Stack2: %s\n", stack1 == stack2);
+					std::cout << "-> Stack1 == Stack2: "
+								<< std::boolalpha
+								<< (stack1 == stack2)
+								<< std::endl;
 				break;
 				case 1:
-					printf("-> Stack1 != Stack2: %s\n", stack1 != stack2);
+					std::cout << "-> Stack1 != Stack2: "
+								<< std::boolalpha
+								<< (stack1 != stack2)
+								<< std::endl;
 				break;
 				case 2:
-					printf("-> Stack1 < Stack2: %s\n", stack1 < stack2);
+					std::cout << "-> Stack1 < Stack2: "
+								<< std::boolalpha
+								<< (stack1 < stack2)
+								<< std::endl;
 				break;
 				case 3:
-					printf("-> Stack1 <= Stack2: %s\n", stack1 <= stack2);
+					std::cout << "-> Stack1 <= Stack2: "
+								<< std::boolalpha
+								<< (stack1 <= stack2)
+								<< std::endl;
 				break;
 				case 4:
-					printf("-> Stack1 > Stack2: %s\n", stack1 > stack2);
+					std::cout << "-> Stack1 > Stack2: "
+								<< std::boolalpha
+								<< (stack1 > stack2)
+								<< std::endl;
 				break;
 				case 5:
-					printf("-> Stack1 >= Stack2: %s\n", stack1 >= stack2);
+					std::cout << "-> Stack1 >= Stack2: "
+								<< std::boolalpha
+								<< (stack1 >= stack2)
+								<< std::endl;
 				break;
 			}
 		}

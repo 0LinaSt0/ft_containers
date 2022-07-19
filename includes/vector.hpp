@@ -13,7 +13,7 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include "vectorIterator.hpp"
+// #include "vectorIterator.hpp"
 #include "containers.hpp"
 
 /*
@@ -498,14 +498,14 @@ namespace ft{
 		bool operator== (const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() || rhs.empty()) return false;
-			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 
 	template <class stackType, class Alloc>
 		bool operator!=(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() || rhs.empty()) return true;
-			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
 		}
 
 	template <class stackType, class Alloc>
@@ -513,7 +513,7 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			else return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_lessCheck<stackType, stackType>);
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_lessCheck<stackType, stackType>);
 		}
 
 	template <class stackType, class Alloc>
@@ -540,44 +540,8 @@ namespace ft{
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalMoreCheck<stackType, stackType>);
 		}
 
-	template <class stackType>
-	// Prints value of vector
-	void	printContent(stackType &vec, bool isItOrigVector){
-		std::cout << "	vector content: ";
-		if (isItOrigVector){
-			for (typename stackType::iterator orig = vec.begin();
-			orig != vec.end(); orig++){
-				std::cout << *orig << "  ";
-			}
-		} else {
-			for (typename stackType::iterator my(vec.begin());
-			my != vec.end(); my++){
-				std::cout << *my << "  ";
-			}
-		}
-		(void) isItOrigVector;
-		std::cout << std::endl;
-	}
-template <class stackType>
-	// Prints all information about vector
-	void	printParams (stackType &vec, bool isItOrigVector){
-		std::cout << "COPYCOPYCOPY" << std::endl;
-		printContent(vec, isItOrigVector);
-		std::cout << "	vecAddress: " << &vec << "\n"
-				<< "	count elem: " << vec.size() << "\n"
-				<< "	capaxity size: " << vec.capacity() << "\n"
-				<< "	emptyFlag: " << vec.empty()
-				<< std::endl << std::endl;
-	}
-
 	template <class stackType, class Alloc>
-		void swap(vector<stackType,Alloc>& x, vector<stackType,Alloc>& y){
-			// printParams(x, false);
-			// printParams(y, false);
-			x.swap(y);
-			// printParams(x, false);
-			// printParams(y, false);
-		}
+		void swap(vector<stackType,Alloc>& x, vector<stackType,Alloc>& y) { x.swap(y); }
 };
 
 

@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include "../includes/tests_hpp/testsStack.hpp"
+#include "../includes/stack.hpp"
 
-void	checkerForVector(void){
+void	checkerForStack(void){
 	{
 		std::cout << "\t~~~~~~~~~~~~~~MY_STACK~~~~~~~~~~~~~~" << std::endl;
 

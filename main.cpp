@@ -10,9 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/testsVec.hpp"
+#include "includes/tests_hpp/testsVec.hpp"
+#include "includes/tests_hpp/testsStack.hpp"
 #include "includes/containers.hpp"
 
 int main (void){
-	checkerForVector();
+	// checkerForVector();
+	checkerForStack();
 }

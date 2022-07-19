@@ -18,6 +18,24 @@
 namespace ft{
 	template <class T, class Container = std::deque<T> >
 	class stack{
+		template <class tp, class Cntnr>
+			friend bool	operator==(const stack<tp,Cntnr>& lhs, const stack<tp,Cntnr>& rhs);
+
+		template <class tp, class Cntnr>
+			friend bool	operator!=(const stack<tp,Cntnr>& lhs, const stack<tp,Cntnr>& rhs);
+
+		template <class tp, class Cntnr>
+			friend bool	operator<(const stack<tp,Cntnr>& lhs, const stack<tp,Cntnr>& rhs);
+
+		template <class tp, class Cntnr>
+			friend bool	operator<=(const stack<tp,Cntnr>& lhs, const stack<tp,Cntnr>& rhs);
+
+		template <class tp, class Cntnr>
+			friend bool	operator>(const stack<tp,Cntnr>& lhs, const stack<tp,Cntnr>& rhs);
+
+		template <class tp, class Cntnr>
+			friend bool	operator>=(const stack<tp,Cntnr>& lhs, const stack<tp,Cntnr>& rhs);
+
 	public:
 		typedef T								value_type;
 		typedef Container						container_type;
@@ -25,9 +43,10 @@ namespace ft{
 	protected:
 		container_type	ctnr;
 	public:
+
+
 		explicit stack(const container_type& ctnr = container_type())
 						: ctnr(ctnr){}
-		~stack();
 
 		bool	empty() const { return ctnr.empty(); }
 

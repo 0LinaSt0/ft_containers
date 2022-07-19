@@ -14,7 +14,7 @@
 
 
 
-void	checkConstructors(){
+void	checkVecConstructors(){
 		{/* <<<<<<<<<<<<<<< Tests for constructor_iterator >>>>>>>>>>>>>>>*/
 			ft::vector<std::string>	vec(3, "Hola");
 
