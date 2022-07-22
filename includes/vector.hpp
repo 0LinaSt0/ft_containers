@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/16 23:28:07 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/22 21:11:10 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,20 @@ namespace ft{
 	template < class stackType, class Alloc = std::allocator<stackType> >
 	class	vector{
 	public:
-		typedef stackType										value_type;
+		typedef stackType									value_type;
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef ft::iterator<value_type>						iterator;
+		typedef ft::iterator<value_type>					iterator;
 		typedef ft::iterator<value_type>					const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::difference_type	difference_type;
 	private:
-		value_type*											vec;
+		pointer												vec;
 		allocator_type										vecAlloc;
 		size_type											countElem;
 		size_type											capacitySize;
@@ -273,7 +273,7 @@ namespace ft{
 			if (n > capacitySize){
 				size_type			oldCapacity = capacitySize;
 				_capacityUpdate(n);
-				value_type*	tmp;
+				pointer	tmp;
 
 				tmp = vecAlloc.allocate(capacitySize);
 
@@ -380,7 +380,7 @@ namespace ft{
 					throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
 				}
 				size_type	oldCapacity = capacitySize;
-				value_type*	t;
+				pointer	t;
 
 				_capacityUpdate(countElem+distanceSize);
 				t = vecAlloc.allocate(capacitySize);
@@ -405,7 +405,7 @@ namespace ft{
 			}
 		iterator	insert (iterator position, const value_type& val){
 			size_type	oldCapacity = capacitySize;
-			value_type*	tmp;
+			pointer	tmp;
 
 			_capacityUpdate(countElem+1);
 			tmp = vecAlloc.allocate(capacitySize);
@@ -425,7 +425,7 @@ namespace ft{
 		}
 		void		insert (iterator position, size_type n, const value_type& val){
 			size_type	oldCapacity = capacitySize;
-			value_type*	tmp;
+			pointer	tmp;
 
 			_capacityUpdate(countElem+n);
 			tmp = vecAlloc.allocate(capacitySize);
@@ -446,7 +446,7 @@ namespace ft{
 
 		//MAYBE TAKE OTHER REALIZATION FROM LAST COMMIT
 		iterator	erase (iterator position){
-			value_type*	tmp;
+			pointer	tmp;
 
 			tmp = vecAlloc.allocate(capacitySize);
 			iterator	tmpIter(tmp);
@@ -465,7 +465,7 @@ namespace ft{
 			return (iterator(vec+deletePos));
 		}
 		iterator	erase (iterator first, iterator last){
-			value_type*	tmp;
+			pointer	tmp;
 
 			tmp = vecAlloc.allocate(capacitySize);
 			iterator	tmpIter(tmp);

@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/15 21:11:21 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/22 21:54:06 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <vector>
 #include <deque>
 #include <stack>
+#include <map>
 
 
 namespace ft{
@@ -59,12 +60,7 @@ namespace ft{
 		bool _equalLessCheck(T1 a, T2 b){ return (a <= b) ? true : false; }
 
 	template <class T1, class T2>
-		bool _moreCheck(T1 a, T2 b){
-
-			// std::cout << "I NEED TRUE(1):   " << (a == b )
-			// 		<< std::endl;
-			return(_lessCheck(a, b)) ? false : true;
-			}
+		bool _moreCheck(T1 a, T2 b){ return(a > b) ? true : false; }
 
 	template <class T1, class T2>
 		bool _equalMoreCheck(T1 a, T2 b){ return (_equalLessCheck(a, b) && a != b) ? false : true; }
@@ -123,6 +119,101 @@ namespace ft{
 		bool operator>=(const pair<T1,T2>& lhs, const pair<T1,T2>& rhs){
 			return !(lhs < rhs);
 		}
+
+
+	/* Util-functions for realization red-black tree */
+
+	template <class Type> 
+		struct rebind {
+			typedef std::allocator<Type> other;
+		};
+
+	template <class _T, class _Compare>
+		struct _tree_node{
+			typedef _T								value_type;
+			typedef _Compare						key_type;
+			typedef ft::pair<key_type, value_type>	pair_type;
+			typedef _tree_node*						pointer_node;
+			
+			pair_type		value;
+			char			color;
+			pointer_node	previous;
+			pointer_node	next;
+		} ;
+	
+
+
+	template <class _T, class _Compare, class _Allocator>
+		class	_tree{
+		public:
+			typedef _T														value_type;
+			typedef _Compare												value_compare;
+			typedef _tree_node<_T, _Compare>								tree_node;
+			typedef _Allocator												allocator_pair;
+			typedef typename allocator_pair::pointer						pointer_pair;
+			typedef typename allocator_pair::reference						reference_pair;
+			typedef typename _Allocator::template rebind<tree_node>::other	allocator_node;
+			typedef typename allocator_node::pointer						pointer_node;
+			typedef typename allocator_node::reference						reference_node;
+		private:
+			pointer_node	node;
+			bool			countElems;
+			allocator_pair	pairAlloc;
+			allocator_node	nodeAlloc;
+		private:
+			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR FINDING NODE ~~~~~~~~ 
+				
+			*/
+		
+		
+			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~ 
+				
+			*/
+
+
+			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR DELETE NODE ~~~~~~~~~
+				
+			*/
+		
+		public:
+			_tree(void) : node (NULL), countElems(1), 
+							allocator_pair(NULL), allocator_node(NULL) {}
+			~_tree(void) {/*delete*/}
+
+			bool	empty() const { return countElems ? false : true; } 
+
+			/* ~~~~~~~~~~~~ FIND ELEMS FUNCTIONS ~~~~~~~~~~
+				at		|	Returns a reference to the node with key 'n' in tree
+				root	|	Returns a reference to the first root node in tree
+			*/
+			
+			reference_node		at(const value_compare& key) const;
+			reference_node		root(void) const;
+
+
+			/* ~~~~~~~~~~~~MODIFIERS FUNCTIONS ~~~~~~~~~~
+				createNode	|	Create new node and return pointer to it
+				addNode		|	Add coming_node to the right place and return pointer to it
+				deleteNode	|	Delete deleded_node to the right place and return pointer to root
+			*/
+		
+			pointer_node	createNode(const value_compare& nodeKey,
+											const value_type& nodeValue){
+				pointer_node	new_node;
+
+				new_node = nodeAlloc.allocate(1); // dont know how much memory i need
+				new_node->value = pairAlloc.allocate(1); // dont know how much memory i need
+				new_node->value = make_pair(nodeKey, nodeValue);
+				new_node->color = 'r';
+				new_node->previous = NULL;
+				new_node->next = NULL;
+				
+				return new_node;
+			}
+
+			pointer_node	addNode(const pointer_node& coming_node);
+			pointer_node	deleteNode(const pointer_node& deleted_node);
+		} ;
 }
 
 

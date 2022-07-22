@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 14:05:32 by marvin            #+#    #+#             */
-/*   Updated: 2022/07/18 14:05:32 by marvin           ###   ########.fr       */
+/*   Updated: 2022/07/22 19:00:34 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #define STACK_HPP
 
 #include "containers.hpp"
+#include "vector.hpp"
 
 namespace ft{
-	template <class T, class Container = std::deque<T> >
+	template <class T, class Container = ft::vector<T> >
 	class stack{
 		template <class tp, class Cntnr>
 			friend bool	operator==(const stack<tp,Cntnr>& lhs, const stack<tp,Cntnr>& rhs);

@@ -71,6 +71,9 @@
 		"fstream": "cpp",
 		"clocale": "cpp",
 		"numeric": "cpp",
-		"random": "cpp"
+		"random": "cpp",
+		"stack": "cpp",
+		"map": "cpp",
+		"__tree": "cpp"
 	}
 }
