@@ -6,7 +6,7 @@
 #    By: msalena <msalena@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 16:24:48 by msalena           #+#    #+#              #
-#    Updated: 2022/07/22 17:18:23 by msalena          ###   ########.fr        #
+#    Updated: 2022/07/24 20:46:37 by msalena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ HEAD_TESTS		=	$(addprefix $(HEADS_DIR)/tests_hpp/, testsVec.hpp testsStack.hpp)
 
 SRCS_MAIN		=	main.cpp
 
-SRCS_TESTS		=	$(addprefix $(SRCS_DIR)/,testsForVec.cpp testsForStack.cpp)
+SRCS_TESTS		=	$(addprefix $(SRCS_DIR)/,testsForVec.cpp testsForStack.cpp testsForTree.cpp)
 
 OBJS_MAIN		=	$(SRCS_MAIN:.cpp=.o)
 
@@ -28,7 +28,7 @@ OBJS_TESTS		=	$(SRCS_TESTS:.cpp=.o)
 
 PROG_NAME		=	./ft_containers
 
-C++				=	c++ -std=c++98 -Wall -Wextra -Werror
+C++				=	c++ -std=c++98 -Wall -Wextra # -Werror
 
 %.o:			%.cpp $(HEAD_CONT) $(HEAD_TESTS) $(SRCS_MAIN) $(SRCS_TESTS) Makefile
 				$(C++) -c $< -o $@

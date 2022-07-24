@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   testsForTree.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/24 20:44:07 by msalena          ###   ########.fr       */
+/*   Created: 2022/07/24 19:01:12 by msalena           #+#    #+#             */
+/*   Updated: 2022/07/24 20:56:23 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/tests_hpp/testsVec.hpp"
-#include "includes/tests_hpp/testsStack.hpp"
-#include "includes/containers.hpp"
+#include "../includes/containers.hpp"
 
-int main (void){
-	// checkerForVector();
-	// checkerForStack();
-	treeChecks();
+
+void	treeChecks(void){
+	typedef ft::_tree<int, int, std::allocator<ft::pair<int, int> > >	tree;
+	tree	elem;
+	tree::pointer_node a = elem.createNode(1, 12);
+	
+	std::cout << a->value.second << std::endl;
 }

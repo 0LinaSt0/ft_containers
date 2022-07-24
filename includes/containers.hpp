@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/22 21:54:06 by msalena          ###   ########.fr       */
+/*   Updated: 2022/07/24 20:57:49 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include <stack>
 #include <map>
 
+void	treeChecks(void);
 
 namespace ft{
 	/*Equal functions and helpfully functions for their*/
@@ -80,7 +81,7 @@ namespace ft{
 			template < class U, class V >
 				pair (const pair < U, V > &pr) : first (pr.first), second (pr.second) {}
 			pair (const first_type &a, const second_type &b) : first (a), second (b) {}
-			~pair ();
+			~pair () {}
 
 			pair& operator= (const pair& pr) { first = pr.first; second = pr.second; return *this; }
 		} ;
@@ -138,10 +139,19 @@ namespace ft{
 			pair_type		value;
 			char			color;
 			pointer_node	previous;
-			pointer_node	next;
-		} ;
-	
+			pointer_node	nextRight;
+			pointer_node	nextLeft;
 
+			_tree_node&	operator=(const _tree_node& comingTree){
+				value = comingTree.value;
+				color = comingTree.color;
+				previous = comingTree.previous;
+				nextRight = comingTree.nextRight;
+				nextLeft = comingTree.nextLeft;
+
+				return *this;
+			}
+		} ;
 
 	template <class _T, class _Compare, class _Allocator>
 		class	_tree{
@@ -158,17 +168,29 @@ namespace ft{
 		private:
 			pointer_node	node;
 			bool			countElems;
-			allocator_pair	pairAlloc;
 			allocator_node	nodeAlloc;
 		private:
-			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR FINDING NODE ~~~~~~~~ 
-				
-			*/
-		
+			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR FINDING NODE ~~~~~~~~ */
+			pointer_node	_findNode(const value_compare& key) const{
+				pointer_node	lookedNode = node;
+				size_t			i = 0; 
+				for (value_compare nodeKey = node->value.first; 
+						nodeKey != key && i < countElems;
+						i++){
+					if (key > nodeKey){
+						lookedNode = lookedNode->nextRight;
+					} else {
+						lookedNode = lookedNode->nextLeft;
+					}
+					nodeKey = lookedNode->value.first;
+				}
+				return (i == countElems) ? NULL : lookedNode;
+			}
 		
 			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~ 
 				
 			*/
+				
 
 
 			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR DELETE NODE ~~~~~~~~~
@@ -176,19 +198,23 @@ namespace ft{
 			*/
 		
 		public:
-			_tree(void) : node (NULL), countElems(1), 
-							allocator_pair(NULL), allocator_node(NULL) {}
+			_tree(void) : node (NULL), countElems(1) {}
 			~_tree(void) {/*delete*/}
 
 			bool	empty() const { return countElems ? false : true; } 
 
 			/* ~~~~~~~~~~~~ FIND ELEMS FUNCTIONS ~~~~~~~~~~
-				at		|	Returns a reference to the node with key 'n' in tree
+				at		|	Returns a reference to the node with key 'n' in tree or NULL 
+								(if the tree is empty; if coming key was't find)
 				root	|	Returns a reference to the first root node in tree
+						|		or NULL if the tree is empty
 			*/
 			
-			reference_node		at(const value_compare& key) const;
-			reference_node		root(void) const;
+			pointer_node		at(const value_compare& key) const
+				{ return (empty()) ? NULL : _findNode(key); }
+			
+			pointer_node		root(void) const
+				{ return (empty()) ? NULL : node; }
 
 
 			/* ~~~~~~~~~~~~MODIFIERS FUNCTIONS ~~~~~~~~~~
@@ -201,12 +227,12 @@ namespace ft{
 											const value_type& nodeValue){
 				pointer_node	new_node;
 
-				new_node = nodeAlloc.allocate(1); // dont know how much memory i need
-				new_node->value = pairAlloc.allocate(1); // dont know how much memory i need
+				new_node = nodeAlloc.allocate(1);
 				new_node->value = make_pair(nodeKey, nodeValue);
 				new_node->color = 'r';
 				new_node->previous = NULL;
-				new_node->next = NULL;
+				new_node->nextRight = NULL;
+				new_node->nextLeft = NULL;
 				
 				return new_node;
 			}
