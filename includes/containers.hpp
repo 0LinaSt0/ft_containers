@@ -48,7 +48,6 @@ namespace ft{
 			while (first1 != last1){
 				if (pred(*(first1), *(first2)) == false)
 					return false;
-				// std::cout << "IIIIII" << std::endl;
 				first1++; first2++;
 			}
 			return true;
@@ -124,7 +123,7 @@ namespace ft{
 
 	/* Util-functions for realization red-black tree */
 
-	template <class Type> 
+	template <class Type>
 		struct rebind {
 			typedef std::allocator<Type> other;
 		};
@@ -135,9 +134,10 @@ namespace ft{
 			typedef _Compare						key_type;
 			typedef ft::pair<key_type, value_type>	pair_type;
 			typedef _tree_node*						pointer_node;
-			
+
 			pair_type		value;
 			char			color;
+			bool			isItNil;
 			pointer_node	previous;
 			pointer_node	nextRight;
 			pointer_node	nextLeft;
@@ -170,11 +170,23 @@ namespace ft{
 			bool			countElems;
 			allocator_node	nodeAlloc;
 		private:
+			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR DELETE NODE ~~~~~~~~~
+
+			*/
+
+			void	_freeNode(pointer_node destroiedNode){
+				// nodeAlloc.destroy(destroiedNode->value);
+				// nodeAlloc.destroy(destroiedNode->color);
+				// nodeAlloc.destroy(destroiedNode->isItNil);
+
+				nodeAlloc.deallocate(destroiedNode, 1);
+			}
+
 			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR FINDING NODE ~~~~~~~~ */
 			pointer_node	_findNode(const value_compare& key) const{
 				pointer_node	lookedNode = node;
-				size_t			i = 0; 
-				for (value_compare nodeKey = node->value.first; 
+				size_t			i = 0;
+				for (value_compare nodeKey = node->value.first;
 						nodeKey != key && i < countElems;
 						i++){
 					if (key > nodeKey){
@@ -186,33 +198,73 @@ namespace ft{
 				}
 				return (i == countElems) ? NULL : lookedNode;
 			}
-		
-			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~ 
-				
-			*/
-				
 
-
-			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR DELETE NODE ~~~~~~~~~
-				
+			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~
+				_findInsertPlace
+				_addNodeToFindedPlace
+				_redUncle(recurcion)
+				_blackUncle
 			*/
-		
+			pointer_node	_findsInsertPlace(pointer_node comingNode,
+												pointer_node currentNode){
+				if (!currentNode || currentNode->isItNil){
+					return currentNode;
+				} else if (comingNode->value.first > currentNode->value.first){
+					return _findsInsertPlace(comingNode, currentNode->nextRight);
+				} else if (comingNode->value.first < currentNode->value.first){
+					return _findsInsertPlace(comingNode, currentNode->nextLeft);
+				} else {
+					return NULL;
+				}
+			}
+
+			pointer_node	_createdNilNode(pointer_node parent){
+				pointer_node	nilNode;
+
+				nilNode = nodeAlloc.allocate(1);
+				nilNode->color = 'b';
+				nilNode->isItNil = true;
+				nilNode->previous = parent;
+				nilNode->nextRight = NULL;
+				nilNode->nextLeft = NULL;
+
+				return nilNode;
+			}
+
+			void	_addsNodeToFindedPlace(pointer_node addedNode,
+											pointer_node incertionPoint){
+				pointer_node	nilRight = _createdNilNode(addedNode);
+				pointer_node	nilLeft = _createdNilNode(addedNode);
+
+				addedNode->nextRight = nilRight;
+				addedNode->nextLeft = nilLeft;
+
+				if (!countElems){
+					incertionPoint = addedNode;
+					incertionPoint->previous = NULL;
+				} else {
+					addedNode->previous = incertionPoint->previous;
+					_freeNode(incertionPoint);
+				}
+				countElems++;
+			}
+
 		public:
-			_tree(void) : node (NULL), countElems(1) {}
+			_tree(void) : node (NULL), countElems(0) {}
 			~_tree(void) {/*delete*/}
 
-			bool	empty() const { return countElems ? false : true; } 
+			bool	empty(void) const { return countElems ? false : true; }
 
 			/* ~~~~~~~~~~~~ FIND ELEMS FUNCTIONS ~~~~~~~~~~
-				at		|	Returns a reference to the node with key 'n' in tree or NULL 
-								(if the tree is empty; if coming key was't find)
+				at		|	Returns a reference to the node with key 'n' in tree or NULL
+						|		(if the tree is empty; if coming key was't find)
 				root	|	Returns a reference to the first root node in tree
 						|		or NULL if the tree is empty
 			*/
-			
+
 			pointer_node		at(const value_compare& key) const
 				{ return (empty()) ? NULL : _findNode(key); }
-			
+
 			pointer_node		root(void) const
 				{ return (empty()) ? NULL : node; }
 
@@ -222,23 +274,31 @@ namespace ft{
 				addNode		|	Add coming_node to the right place and return pointer to it
 				deleteNode	|	Delete deleded_node to the right place and return pointer to root
 			*/
-		
-			pointer_node	createNode(const value_compare& nodeKey,
-											const value_type& nodeValue){
-				pointer_node	new_node;
 
-				new_node = nodeAlloc.allocate(1);
-				new_node->value = make_pair(nodeKey, nodeValue);
-				new_node->color = 'r';
-				new_node->previous = NULL;
-				new_node->nextRight = NULL;
-				new_node->nextLeft = NULL;
-				
-				return new_node;
+			pointer_node	createNode(const value_compare& node_key,
+											const value_type& node_value){
+				pointer_node	newNode;
+
+				newNode = nodeAlloc.allocate(1);
+				newNode->value = make_pair(node_key, node_value);
+				newNode->color = 'r';
+				newNode->isItNil = false;
+				newNode->previous = NULL;
+				newNode->nextRight = NULL;
+				newNode->nextLeft = NULL;
+
+				return newNode;
 			}
 
-			pointer_node	addNode(const pointer_node& coming_node);
-			pointer_node	deleteNode(const pointer_node& deleted_node);
+			pointer_node	insert(pointer_node coming_node){
+				pointer_node	incertionPoint = node;
+
+				incertionPoint = _findsInsertPlace(coming_node, incertionPoint);
+				_addsNodeToFindedPlace(coming_node, incertionPoint);
+
+				return coming_node;
+			}
+			pointer_node	deleteNode(pointer_node deleted_node);
 		} ;
 }
 
