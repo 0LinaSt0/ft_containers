@@ -25,6 +25,8 @@
 #include <map>
 
 void	treeChecks(void);
+template <class node>
+	void	printAllAboutNode(node& treeNode);
 
 namespace ft{
 	/*Equal functions and helpfully functions for their*/
@@ -153,15 +155,6 @@ namespace ft{
 			}
 		} ;
 
-	// template <class _T, class _Compare, class _Allocator>
-	// 	struct recurtion{
-	// 		typedef _tree_node<_T, _Compare>								tree_node;
-	// 		typedef typename _Allocator::template rebind<tree_node>::other	allocator_node;
-	// 		typedef typename allocator_node::pointer						pointer_node;
-
-	// 		void	_redDad(pointer_node addedNode);
-	// 	} ;
-
 	template <class _T, class _Compare, class _Allocator>
 		class	_tree {//: recurtion<_T, _Compare, _Allocator> {
 		public:
@@ -199,11 +192,8 @@ namespace ft{
 				for (value_compare nodeKey = node->value.first;
 						nodeKey != key && i < countElems;
 						i++){
-					if (key > nodeKey){
-						lookedNode = lookedNode->nextRight;
-					} else {
-						lookedNode = lookedNode->nextLeft;
-					}
+					if (key > nodeKey) { lookedNode = lookedNode->nextRight; }
+					else { lookedNode = lookedNode->nextLeft; }
 					nodeKey = lookedNode->value.first;
 				}
 				return (i == countElems) ? NULL : lookedNode;
@@ -225,7 +215,7 @@ namespace ft{
 				} else if (comingNode->value.first < currentNode->value.first){
 					return _findsInsertPlace(comingNode, currentNode->nextLeft);
 				} else {
-					return NULL;
+					return comingNode;
 				}
 			}
 
@@ -243,25 +233,25 @@ namespace ft{
 			}
 
 			void	_addsNodeToFindedPlace(pointer_node addedNode,
-											pointer_node incertionPoint){
+											pointer_node inceptionPlace){
 				pointer_node	nilRight = _createdNilNode(addedNode);
 				pointer_node	nilLeft = _createdNilNode(addedNode);
 
 				addedNode->nextRight = nilRight;
 				addedNode->nextLeft = nilLeft;
 
-
 				if (!countElems){
 					node = addedNode;
+					node->color = 'b';
 					node->previous = NULL;
 				} else {
-					addedNode->previous = incertionPoint->previous;
-					if (incertionPoint->previous->value.first < addedNode->value.first){
-						incertionPoint->previous->nextRight = addedNode;
+					addedNode->previous = inceptionPlace->previous;
+					if (inceptionPlace->previous->value.first < addedNode->value.first){
+						inceptionPlace->previous->nextRight = addedNode;
 					} else {
-						incertionPoint->previous->nextLeft = addedNode;
+						inceptionPlace->previous->nextLeft = addedNode;
 					}
-					_freeNode(incertionPoint);
+					_freeNode(inceptionPlace);
 				}
 				countElems++;
 			}
@@ -282,59 +272,87 @@ namespace ft{
 				} else { return NULL; }
 			}
 
-			void	_leftTurn(pointer_node oldNode, pointer_node newNode){
+			void	___updateNodesPointers(pointer_node oldNode,
+											pointer_node newNode){
+				if (oldNode->previous) {
+					if (oldNode->previous->value.first < oldNode->value.first) {
+					oldNode->previous->nextRight = newNode;
+					} else {
+						oldNode->previous->nextLeft = newNode;
+					}
+				}
+				newNode->previous = oldNode->previous;
+				oldNode->previous = newNode;
+				if(!newNode->previous)
+					node = newNode;
+			}
+
+			void	___leftTurn(pointer_node oldNode, pointer_node newNode){
 				oldNode->nextRight = newNode->nextLeft;
+				newNode->nextLeft->previous = oldNode;
 				newNode->nextLeft = oldNode;
-				if (oldNode->previous->value.first < oldNode->value.first) {
-					oldNode->previous->nextRight = newNode;
-				} else {
-					oldNode->previous->nextLeft = newNode;
-				}
+				___updateNodesPointers(oldNode, newNode);
 			}
 
-			void	_rightTurn(pointer_node oldNode, pointer_node newNode){
+			void	___rightTurn(pointer_node oldNode, pointer_node newNode){
 				oldNode->nextLeft = newNode->nextRight;
+				newNode->nextRight->previous = oldNode;
 				newNode->nextRight = oldNode;
-				if (oldNode->previous->value.first < oldNode->value.first) {
-					oldNode->previous->nextRight = newNode;
+				___updateNodesPointers(oldNode, newNode);
+			}
+
+			void	___nodeMoreGranddad(pointer_node uncle, pointer_node addedNode){
+				if (addedNode->previous->value.first > addedNode->value.first){
+					___rightTurn(addedNode->previous, addedNode);
+					___leftTurn(uncle->previous, addedNode);
+					addedNode->color = 'b';
 				} else {
-					oldNode->previous->nextLeft = newNode;
+					___leftTurn(uncle->previous, addedNode->previous);
+					addedNode->previous->color = 'b';
 				}
 			}
-			void	_redDad(pointer_node addedNode);
 
+			void	___nodeLessGranddad(pointer_node uncle, pointer_node addedNode){
+				if (addedNode->previous->value.first < addedNode->value.first){
+					___leftTurn(addedNode->previous, addedNode);
+					___rightTurn(uncle->previous, addedNode);
+					addedNode->color = 'b';
+				} else {
+					___rightTurn(uncle->previous, addedNode->previous);
+					addedNode->previous->color = 'b';
+				}
+			}
 
-			void	_blackUncle(pointer_node uncle, pointer_node addedNode);//{
-			// 	uncle->previous->color = 'r';
-			// 	addedNode->previous->color = 'b';
+			void	__blackUncle(pointer_node uncle, pointer_node addedNode){
 
-			// 	if (addedNode->value.first > uncle->previous->value.first){
-			// 		_leftTurn(uncle->previous, addedNode->previous);
-			// 	} else {
-			// 		_rightTurn(uncle->previous, addedNode->previous);
-			// 	}
-			// 	_redDad(addedNode);
-			// }
+				if (addedNode->value.first > uncle->previous->value.first){
+					___nodeMoreGranddad(uncle, addedNode);
+				} else {
+					___nodeLessGranddad(uncle, addedNode);
+				}
+				uncle->previous->color = 'r';
+			}
 
-			void	_redUncle(pointer_node uncle, pointer_node addedNode);//{
-			// 	/*dad*/addedNode->previous->color = 'b';
-			// 	/*uncle*/uncle->color = 'b';
-			// 	/*grandded*/uncle->previous->color = 'r';
-			// 	if (uncle->previous->previous
-			// 		&& uncle->previous->previous->color == 'r'){
-			// 		_redDed(uncle->previous);
-			// 	}
-			// }
+			void	__redUncle(pointer_node uncle, pointer_node addedNode){
+				/*dad*/addedNode->previous->color = 'b';
+				/*uncle*/uncle->color = 'b';
+				if (uncle->previous->previous){
+					/*grandded*/uncle->previous->color = 'r';
+					if (uncle->previous->previous->color == 'r'){
+						_redDad(uncle->previous);
+					}
+				}
+			}
 
-			// void	_redDad(pointer_node addedNode){
-			// 	pointer_node	uncle = _findUncle(addedNode);
+			void	_redDad(pointer_node addedNode){
+				pointer_node	uncle = _findUncle(addedNode);
 
-			// 	if (!uncle){ }
-			// 	else if (!(uncle->previous)) { addedNode->previous->color = 'b'; }
-			// 	else if (uncle->color == 'r') { _redUncle(uncle, addedNode); }
-			// 	else if (uncle->color == 'b') { _blackUncle(uncle, addedNode); }
-			// 	else { return ;}
-			// }
+				if (!uncle){ }
+				else if (!(uncle->previous)) { addedNode->previous->color = 'b'; }
+				else if (uncle->color == 'r') { __redUncle(uncle, addedNode); }
+				else if (uncle->color == 'b') { __blackUncle(uncle, addedNode); }
+				else { return ;}
+			}
 		public:
 			_tree(void) : node (NULL), countElems(0) {}
 			~_tree(void) {/*delete*/}
@@ -379,12 +397,14 @@ namespace ft{
 			}
 
 			pointer_node	insert(pointer_node added_node){
-				pointer_node	incertionPoint = node;
+				pointer_node	inceptionPlace = node;
 
-
-				incertionPoint = _findsInsertPlace(added_node, incertionPoint);
-				_addsNodeToFindedPlace(added_node, incertionPoint);
-				if (added_node->previous->color == 'r')
+				inceptionPlace = _findsInsertPlace(added_node, inceptionPlace);
+				if (inceptionPlace == added_node)
+					return NULL;
+				_addsNodeToFindedPlace(added_node, inceptionPlace);
+				if (added_node->previous
+						&& added_node->previous->color == 'r')
 					{ _redDad(added_node); }
 				return added_node;
 			}
@@ -393,5 +413,5 @@ namespace ft{
 		} ;
 }
 
-#include "tpp_format/tree.tpp"
+// #include "tpp_format/tree.tpp"
 #endif

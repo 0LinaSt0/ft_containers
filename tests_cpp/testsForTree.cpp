@@ -31,6 +31,7 @@ template <class node>
 		std::cout << "	nodeKey: " << treeNode->value.first << "\n";
 		std::cout << "	nodeValue: " << treeNode->value.second << "\n";
 		std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
+		std::cout << "	color: " << treeNode->color << "\n";
 
 		std::cout << "	parent: " << "\n"
 						<< "		adress - " << treeNode->previous << "\n";
@@ -49,39 +50,48 @@ template <class node>
 		std::cout<< std::endl << std::endl;
 	}
 
-template <class tree>
-	void print(tree all){
-		tabs = 0;
-		print_(all.root());
-		std::cout << "_______________________________" << std::endl;
-}
+// template <class tree>
+// 	void printAllTree(tree all){
+// 		tabs = 0;
+// 		printAllTree(all->root());
+// 		std::cout << "_______________________________" << std::endl;
+// }
 
-template <class tree, class node>
-	void	printAllTree(tree all, node current){
-		if (!current) { return ; }
+// template <class tree, class node>
+// 	void	printAllTree(tree& all, node& current){
+// 		if (!current) { return ; }
 
-		tabs += 5;
-		printAllTree(current->nextLeft);
+// 		tabs += 5;
+// 		printAllTree(current->nextLeft);
 
-		for (size_t i = 0; i < tabs; i++) { std::cout << " "; }
+// 		for (size_t i = 0; i < tabs; i++) { std::cout << " "; }
 
-		std::cout << current->value.second << '('
-						<<  ((current == all.root()) ? print(all) : current->previous->value.second)
-						<< ", " << ((current->color == 'r') ? "red" : "black") << ')';
-		std::cout << std::endl;
-		print_(current->nextRight);
-		tabs -= 5;
-	}
+// 		std::cout << current->value.second << '('
+// 						<<  ((current == all.root()) ? printAllTree(all) : current->previous->value.second)
+// 						<< ", " << ((current->color == 'r') ? "red" : "black") << ')';
+// 		std::cout << std::endl;
+// 		printAllTree(current->nextRight);
+// 		tabs -= 5;
+// 	}
 
 void	treeChecks(void){
 	typedef ft::_tree<int, int, std::allocator<ft::pair<int, int> > >	tree;
 	tree	elem;
 	tree::pointer_node a = elem.createNode(15, 1);
 	tree::pointer_node b = elem.createNode(12, 2);
-	tree::pointer_node c = elem.createNode(16, 3);
+	tree::pointer_node c = elem.createNode(17, 3);
 	tree::pointer_node d = elem.createNode(20, 4);
 	tree::pointer_node e = elem.createNode(11, 5);
 	tree::pointer_node f = elem.createNode(34, 6);
+	tree::pointer_node g = elem.createNode(16, 7);
+	tree::pointer_node h = elem.createNode(18, 8);
+	tree::pointer_node i = elem.createNode(19, 9);
+	tree::pointer_node j = elem.createNode(31, 10);
+	tree::pointer_node k = elem.createNode(9, 11);
+	tree::pointer_node l = elem.createNode(22, 12);
+	tree::pointer_node m = elem.createNode(32, 10);
+	tree::pointer_node n = elem.createNode(13, 11);
+	tree::pointer_node o = elem.createNode(35, 12);
 
 	elem.insert(a);
 	elem.insert(b);
@@ -89,12 +99,32 @@ void	treeChecks(void){
 	elem.insert(d);
 	elem.insert(e);
 	elem.insert(f);
+	elem.insert(g);
+	elem.insert(h);
+	elem.insert(i);
+	elem.insert(j);
+	elem.insert(k);
+	elem.insert(l);
+	elem.insert(m);
+	elem.insert(n);
+	elem.insert(o);
 
-	std::cout << elem.empty() << std::endl;
+
+	// std::cout << elem.size() << std::endl;
 	printAllAboutNode(a);
 	printAllAboutNode(b);
 	printAllAboutNode(c);
 	printAllAboutNode(d);
 	printAllAboutNode(e);
 	printAllAboutNode(f);
+	printAllAboutNode(g);
+	printAllAboutNode(h);
+	printAllAboutNode(i);
+	printAllAboutNode(j);
+	printAllAboutNode(k);
+	printAllAboutNode(l);
+	printAllAboutNode(m);
+	printAllAboutNode(n);
+	printAllAboutNode(o);
+
 }
