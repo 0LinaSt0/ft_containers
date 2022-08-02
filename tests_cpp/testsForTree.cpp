@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/containers.hpp"
+#include <stdio.h>
 
 size_t	tabs = 0;
 
@@ -31,7 +32,7 @@ template <class node>
 		std::cout << "	nodeKey: " << treeNode->value.first << "\n";
 		std::cout << "	nodeValue: " << treeNode->value.second << "\n";
 		std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
-		std::cout << "	color: " << treeNode->color << "\n";
+		std::cout << "	color: " << (char)(treeNode->color) << "\n";
 
 		std::cout << "	parent: " << "\n"
 						<< "		adress - " << treeNode->previous << "\n";

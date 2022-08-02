@@ -130,6 +130,12 @@ namespace ft{
 			typedef std::allocator<Type> other;
 		};
 
+	enum	nodeColor{
+		RED = 'r',
+		BLACK = 'b',
+		DOUBLE_BLACK = 'd'
+	} ;
+
 	template <class _T, class _Compare>
 		struct _tree_node{
 			typedef _T								value_type;
@@ -138,7 +144,7 @@ namespace ft{
 			typedef _tree_node*						pointer_node;
 
 			pair_type		value;
-			char			color;
+			nodeColor		color;
 			bool			isItNil;
 			pointer_node	previous;
 			pointer_node	nextRight;
@@ -156,7 +162,7 @@ namespace ft{
 		} ;
 
 	template <class _T, class _Compare, class _Allocator>
-		class	_tree {//: recurtion<_T, _Compare, _Allocator> {
+		class	_tree {
 		public:
 			typedef _T														value_type;
 			typedef _Compare												value_compare;
@@ -173,10 +179,35 @@ namespace ft{
 			allocator_node	nodeAlloc;
 
 		private:
-			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR DELETE NODE ~~~~~~~~~
+			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~*/
 
-			*/
+			void	___updateNodesPointers(pointer_node oldNode,
+											pointer_node newNode);
 
+			void	___nodeMoreGranddad(pointer_node uncle, pointer_node addedNode);
+
+			void	___nodeLessGranddad(pointer_node uncle, pointer_node addedNode);
+
+			void	__blackUncle(pointer_node uncle, pointer_node addedNode);
+
+			void	__redUncle(pointer_node uncle, pointer_node addedNode);
+
+			pointer_node	__findUncle(pointer_node newNode);
+
+
+			/* ~~~~~~~~~~~ USEFUL FUNCTIONS FOR DELETE NODE ~~~~~~~~~*/
+			pointer_node	___findLeastRightChild(pointer_node firstRightNode);
+
+			void	___changeNodesValue(pointer_node whichNode,
+											pointer_node inNode);
+
+			void	__deletedWithTwoGhildren(pointer_node deletedNode);
+
+			void	__deletedWithOneChild(pointer_node deletedNode);
+
+			void	__deletedWithoutChildren(pointer_node deletedNode);
+
+		private:
 			void	_freeNode(pointer_node destroiedNode){
 				// nodeAlloc.destroy(destroiedNode->value);
 				// nodeAlloc.destroy(destroiedNode->color);
@@ -185,7 +216,7 @@ namespace ft{
 				nodeAlloc.deallocate(destroiedNode, 1);
 			}
 
-			/* ~~~~~~~~~~ USEFUL FUNCTIONS FOR FINDING NODE ~~~~~~~~ */
+
 			pointer_node	_findNode(const value_compare& key) const{
 				pointer_node	lookedNode = node;
 				size_t			i = 0;
@@ -199,13 +230,6 @@ namespace ft{
 				return (i == countElems) ? NULL : lookedNode;
 			}
 
-			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~
-				_findInsertPlace
-				_addNodeToFindedPlace
-				_redDad
-				_redUncle(recurcion)
-				_blackUncle
-			*/
 			pointer_node	_findsInsertPlace(pointer_node comingNode,
 												pointer_node currentNode){
 				if (!currentNode || currentNode->isItNil){
@@ -219,11 +243,26 @@ namespace ft{
 				}
 			}
 
+
+			void	_leftTurn(pointer_node oldParent, pointer_node newParent){
+				oldParent->nextRight = newParent->nextLeft;
+				newParent->nextLeft->previous = oldParent;
+				newParent->nextLeft = oldParent;
+				___updateNodesPointers(oldParent, newParent);
+			}
+
+			void	_rightTurn(pointer_node oldParent, pointer_node newParent){
+				oldParent->nextLeft = newParent->nextRight;
+				newParent->nextRight->previous = oldParent;
+				newParent->nextRight = oldParent;
+				___updateNodesPointers(oldParent, newParent);
+			}
+
 			pointer_node	_createdNilNode(pointer_node parent){
 				pointer_node	nilNode;
 
 				nilNode = nodeAlloc.allocate(1);
-				nilNode->color = 'b';
+				nilNode->color = BLACK;
 				nilNode->isItNil = true;
 				nilNode->previous = parent;
 				nilNode->nextRight = NULL;
@@ -242,7 +281,7 @@ namespace ft{
 
 				if (!countElems){
 					node = addedNode;
-					node->color = 'b';
+					node->color = BLACK;
 					node->previous = NULL;
 				} else {
 					addedNode->previous = inceptionPlace->previous;
@@ -256,103 +295,29 @@ namespace ft{
 				countElems++;
 			}
 
-			/*returns:
-				1. NULL - if newNode is root
-				2. newNode - if grandded is root
-				3. uncle - all other */
-			pointer_node	_findUncle(pointer_node newNode){
-				if (newNode->previous){
-					if (newNode->previous->previous){
-						if (newNode->previous->previous->value.first < newNode->value.first){
-							return (newNode->previous->previous->nextLeft);
-						} else {
-							return (newNode->previous->previous->nextRight);
-						}
-					} else { return newNode; }
-				} else { return NULL; }
-			}
-
-			void	___updateNodesPointers(pointer_node oldNode,
-											pointer_node newNode){
-				if (oldNode->previous) {
-					if (oldNode->previous->value.first < oldNode->value.first) {
-					oldNode->previous->nextRight = newNode;
-					} else {
-						oldNode->previous->nextLeft = newNode;
-					}
-				}
-				newNode->previous = oldNode->previous;
-				oldNode->previous = newNode;
-				if(!newNode->previous)
-					node = newNode;
-			}
-
-			void	___leftTurn(pointer_node oldNode, pointer_node newNode){
-				oldNode->nextRight = newNode->nextLeft;
-				newNode->nextLeft->previous = oldNode;
-				newNode->nextLeft = oldNode;
-				___updateNodesPointers(oldNode, newNode);
-			}
-
-			void	___rightTurn(pointer_node oldNode, pointer_node newNode){
-				oldNode->nextLeft = newNode->nextRight;
-				newNode->nextRight->previous = oldNode;
-				newNode->nextRight = oldNode;
-				___updateNodesPointers(oldNode, newNode);
-			}
-
-			void	___nodeMoreGranddad(pointer_node uncle, pointer_node addedNode){
-				if (addedNode->previous->value.first > addedNode->value.first){
-					___rightTurn(addedNode->previous, addedNode);
-					___leftTurn(uncle->previous, addedNode);
-					addedNode->color = 'b';
-				} else {
-					___leftTurn(uncle->previous, addedNode->previous);
-					addedNode->previous->color = 'b';
-				}
-			}
-
-			void	___nodeLessGranddad(pointer_node uncle, pointer_node addedNode){
-				if (addedNode->previous->value.first < addedNode->value.first){
-					___leftTurn(addedNode->previous, addedNode);
-					___rightTurn(uncle->previous, addedNode);
-					addedNode->color = 'b';
-				} else {
-					___rightTurn(uncle->previous, addedNode->previous);
-					addedNode->previous->color = 'b';
-				}
-			}
-
-			void	__blackUncle(pointer_node uncle, pointer_node addedNode){
-
-				if (addedNode->value.first > uncle->previous->value.first){
-					___nodeMoreGranddad(uncle, addedNode);
-				} else {
-					___nodeLessGranddad(uncle, addedNode);
-				}
-				uncle->previous->color = 'r';
-			}
-
-			void	__redUncle(pointer_node uncle, pointer_node addedNode){
-				/*dad*/addedNode->previous->color = 'b';
-				/*uncle*/uncle->color = 'b';
-				if (uncle->previous->previous){
-					/*grandded*/uncle->previous->color = 'r';
-					if (uncle->previous->previous->color == 'r'){
-						_redDad(uncle->previous);
-					}
-				}
-			}
-
 			void	_redDad(pointer_node addedNode){
-				pointer_node	uncle = _findUncle(addedNode);
+				pointer_node	uncle = __findUncle(addedNode);
 
 				if (!uncle){ }
-				else if (!(uncle->previous)) { addedNode->previous->color = 'b'; }
-				else if (uncle->color == 'r') { __redUncle(uncle, addedNode); }
-				else if (uncle->color == 'b') { __blackUncle(uncle, addedNode); }
+				else if (!(uncle->previous)) { addedNode->previous->color = BLACK; }
+				else if (uncle->color == RED) { __redUncle(uncle, addedNode); }
+				else if (uncle->color == BLACK) { __blackUncle(uncle, addedNode); }
 				else { return ;}
 			}
+
+			void	_deleteNode(pointer_node deletedNode){
+				if (!deletedNode->nextRight->isItNil
+						&& !deletedNode->nextLeft->isItNil){
+					__deletedWithTwoGhildren(deletedNode);
+				} else if (deletedNode->color == BLACK
+					&& (!deletedNode->nextRight->isItNil
+							|| !deletedNode->nextLeft->isItNil)) {
+					__deletedWithOneChild(deletedNode);
+				} else {
+					__deletedWithoutChildren(deletedNode);
+				}
+			}
+
 		public:
 			_tree(void) : node (NULL), countElems(0) {}
 			~_tree(void) {/*delete*/}
@@ -377,8 +342,8 @@ namespace ft{
 
 			/* ~~~~~~~~~~~~MODIFIERS FUNCTIONS ~~~~~~~~~~
 				createNode	|	Create new node and return pointer to it
-				addNode		|	Add coming_node to the right place and return pointer to it
-				deleteNode	|	Delete deleded_node to the right place and return pointer to root
+				insert		|	Add added_node to the right place and return pointer to it
+				erase		|	Delete deleded_node to the right place
 			*/
 
 			pointer_node	createNode(const value_compare& node_key,
@@ -387,7 +352,7 @@ namespace ft{
 
 				newNode = nodeAlloc.allocate(1);
 				newNode->value = make_pair(node_key, node_value);
-				newNode->color = 'r';
+				newNode->color = RED;
 				newNode->isItNil = false;
 				newNode->previous = NULL;
 				newNode->nextRight = NULL;
@@ -404,14 +369,25 @@ namespace ft{
 					return NULL;
 				_addsNodeToFindedPlace(added_node, inceptionPlace);
 				if (added_node->previous
-						&& added_node->previous->color == 'r')
+						&& added_node->previous->color == RED)
 					{ _redDad(added_node); }
 				return added_node;
 			}
 
-			pointer_node	deleteNode(pointer_node deleted_node);
+			void	erase(_Compare deleted_key){
+				pointer_node	deletedNode = _findNode(deleted_key);
+
+				if (!deleted_key) { return ; }
+
+				_deleteNode(deletedNode);
+			}
+
+			void	erase(pointer_node deleted_node)
+				{ erase(deleted_node->value.first); }
+
 		} ;
 }
 
-// #include "tpp_format/tree.tpp"
+#include "tpp_format/tree.tpp"
+
 #endif
