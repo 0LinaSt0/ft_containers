@@ -136,6 +136,11 @@ namespace ft{
 		DOUBLE_BLACK = 'd'
 	} ;
 
+	enum	olderYangerBro{
+		OLDER,
+		YANGER
+	} ;
+
 	template <class _T, class _Compare>
 		struct _tree_node{
 			typedef _T								value_type;
@@ -196,10 +201,35 @@ namespace ft{
 
 
 			/* ~~~~~~~~~~~ USEFUL FUNCTIONS FOR DELETE NODE ~~~~~~~~~*/
-			pointer_node	___findLeastRightChild(pointer_node firstRightNode);
 
-			void	___changeNodesValue(pointer_node whichNode,
+			void	__deleteNode(pointer_node deletedNode);
+
+			void	___nodesValueChange(pointer_node whichNode,
 											pointer_node inNode);
+
+			void	___brotherParentChange(pointer_node doubleBlackNode,
+										pair<olderYangerBro, pointer_node> bro);
+
+			pair<olderYangerBro, pointer_node>	___olderYangerBrother(pointer_node doubleBlackNode);
+
+			pointer_node	___findLeastRightChild(pointer_node currentNode);
+
+			void	___blackChildrenBalancing(pointer_node doubleBlackNode,
+											pair<olderYangerBro, pointer_node> bro);
+
+			void	___redLeftChildBalancing(pointer_node doubleBlackNode,
+												pair<olderYangerBro, pointer_node> bro);
+
+			void	___blackLeftChildBalancing(pointer_node doubleBlackNode,
+												pair<olderYangerBro, pointer_node> bro);
+
+			void	___redBrotherBalancing(pointer_node doubleBlackNode,
+										pair<olderYangerBro,pointer_node> bro);
+
+			void	___blackBrotherBalancing(pointer_node doubleBlackNode,
+										pair<olderYangerBro,pointer_node> bro);
+
+			void	__blackBalancing(pointer_node doubleBlackNode);
 
 			void	__deletedWithTwoGhildren(pointer_node deletedNode);
 
@@ -216,6 +246,14 @@ namespace ft{
 				nodeAlloc.deallocate(destroiedNode, 1);
 			}
 
+			void	_printChildren(pointer_node child){
+				if (child){
+					std::cout << "		isitNil - " << std::boolalpha
+													<< child->isItNil << "\n";
+					if (!(child->isItNil))
+						{ std::cout << "		key - " << child->value.first << "\n"; }
+				}
+			}
 
 			pointer_node	_findNode(const value_compare& key) const{
 				pointer_node	lookedNode = node;
@@ -242,7 +280,6 @@ namespace ft{
 					return comingNode;
 				}
 			}
-
 
 			void	_leftTurn(pointer_node oldParent, pointer_node newParent){
 				oldParent->nextRight = newParent->nextLeft;
@@ -303,9 +340,10 @@ namespace ft{
 				else if (uncle->color == RED) { __redUncle(uncle, addedNode); }
 				else if (uncle->color == BLACK) { __blackUncle(uncle, addedNode); }
 				else { return ;}
+				if (!node) { node = addedNode; }
 			}
 
-			void	_deleteNode(pointer_node deletedNode){
+			void	_deleteOptions(pointer_node deletedNode){
 				if (!deletedNode->nextRight->isItNil
 						&& !deletedNode->nextLeft->isItNil){
 					__deletedWithTwoGhildren(deletedNode);
@@ -339,8 +377,42 @@ namespace ft{
 			pointer_node		root(void) const
 				{ return (empty()) ? NULL : node; }
 
+			void	print_node(pointer_node treeNode){
+				std::cout << "NODE_status" << std::endl;
+				std::cout << "	nodeAddress: " << &treeNode << "\n";
+				std::cout << "	nodeKey: " << treeNode->value.first << "\n";
+				std::cout << "	nodeValue: " << treeNode->value.second << "\n";
+				std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
+				std::cout << "	color: " << (char)(treeNode->color) << "\n";
 
-			/* ~~~~~~~~~~~~MODIFIERS FUNCTIONS ~~~~~~~~~~
+				std::cout << "	parent: " << "\n"
+								<< "		adress - " << treeNode->previous << "\n";
+				if (treeNode->previous){
+					std::cout << "		key - " << treeNode->previous->value.first << "\n"
+					<< "		color - " << (char)(treeNode->previous->color) << "\n";
+				}
+
+				std::cout << "	rightChild: " << "\n"
+							<< "		adress - " << treeNode->nextRight << "\n";
+				_printChildren(treeNode->nextRight);
+
+				std::cout << "	leftChild: " << "\n"
+							<< "		adress - " << treeNode->nextLeft << "\n";
+				_printChildren(treeNode->nextLeft);
+				std::cout<< std::endl << std::endl;
+			}
+
+			void	print_tree(pointer_node currentNode){
+				if (!currentNode) { std::cout << "Oopss... Tree doesn't have nodes" << std::endl; return ; }
+
+				if (currentNode->isItNil) { return ; }
+
+				print_tree(currentNode->nextLeft);
+				print_node(currentNode);
+				print_tree(currentNode->nextRight);
+			}
+
+			/* ~~~~~~~~~~~~ MODIFIERS FUNCTIONS ~~~~~~~~~~
 				createNode	|	Create new node and return pointer to it
 				insert		|	Add added_node to the right place and return pointer to it
 				erase		|	Delete deleded_node to the right place
@@ -379,7 +451,7 @@ namespace ft{
 
 				if (!deleted_key) { return ; }
 
-				_deleteNode(deletedNode);
+				_deleteOptions(deletedNode);
 			}
 
 			void	erase(pointer_node deleted_node)
