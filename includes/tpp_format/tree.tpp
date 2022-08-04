@@ -40,10 +40,7 @@ namespace ft {
 										pointer_node newNode){
 			if (oldNode->previous) {
 				if (oldNode->previous->value.first < oldNode->value.first) {
-				// std::cout << oldNode->previous->value.first << std::endl;
-				// std::cout << newNode->value.first << std::endl;
 				oldNode->previous->nextRight = newNode;
-							// print_tree(node);
 				} else {
 					oldNode->previous->nextLeft = newNode;
 				}
@@ -164,10 +161,12 @@ template <class _T, class _Compare, class _Allocator>
 								typename _tree<_T, _Compare, _Allocator>
 								::pointer_node>	_pair;
 
-				if (doubleBlackNode->value.first < doubleBlackNode->previous->value.first)
-					{ return _pair(OLDER, doubleBlackNode->previous->nextRight); }
-
-				return _pair(YANGER, doubleBlackNode->previous->nextLeft);
+				if (doubleBlackNode->previous){
+					if (doubleBlackNode->previous->nextRight != doubleBlackNode)
+						{ return _pair(OLDER, doubleBlackNode->previous->nextRight); }
+					return _pair(YANGER, doubleBlackNode->previous->nextLeft);
+				}
+				return _pair(NONE, NULL);
 			}
 
 
@@ -184,8 +183,7 @@ template <class _T, class _Compare, class _Allocator>
 					doubleBlackNode->previous->color = BLACK;
 				} else {
 					doubleBlackNode->previous->color = DOUBLE_BLACK;
-					___blackBrotherBalancing(doubleBlackNode->previous,
-										___olderYangerBrother(doubleBlackNode->previous));
+					__blackBalancing(doubleBlackNode->previous);
 				}
 			}
 
@@ -258,6 +256,11 @@ template <class _T, class _Compare, class _Allocator>
 
 				_pair	bro(___olderYangerBrother(doubleBlackNode));
 
+				// if (doubleBlackNode->value.first == 32){
+				// 	std::cout << bro.second << std::endl;
+				// 	return ;
+				// }
+
 				if (!doubleBlackNode->previous){
 					doubleBlackNode->color = BLACK;
 				} else if (bro.second->color == RED){
@@ -282,8 +285,13 @@ template <class _T, class _Compare, class _Allocator>
 	template <class _T, class _Compare, class _Allocator>
 		void	_tree<_T, _Compare, _Allocator>::
 			__deletedWithOneChild(pointer_node deletedNode){
-				___nodesValueChange(deletedNode->nextRight, deletedNode);
-				__deleteNode(deletedNode->nextRight);
+				if (deletedNode->nextRight->isItNil){
+					___nodesValueChange(deletedNode->nextLeft, deletedNode);
+					__deleteNode(deletedNode->nextLeft);
+				} else {
+					___nodesValueChange(deletedNode->nextRight, deletedNode);
+					__deleteNode(deletedNode->nextRight);
+				}
 		}
 
 	template <class _T, class _Compare, class _Allocator>
@@ -293,8 +301,9 @@ template <class _T, class _Compare, class _Allocator>
 					__deleteNode(deletedNode);
 				} else {
 					deletedNode->color = DOUBLE_BLACK;
-					__blackBalancing(deletedNode);
 					__deleteNode(deletedNode);
+					__blackBalancing(deletedNode);
+
 				}
 		}
 

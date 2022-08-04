@@ -138,7 +138,8 @@ namespace ft{
 
 	enum	olderYangerBro{
 		OLDER,
-		YANGER
+		YANGER,
+		NONE
 	} ;
 
 	template <class _T, class _Compare>
@@ -258,6 +259,7 @@ namespace ft{
 			pointer_node	_findNode(const value_compare& key) const{
 				pointer_node	lookedNode = node;
 				size_t			i = 0;
+
 				for (value_compare nodeKey = node->value.first;
 						nodeKey != key && i < countElems;
 						i++){
@@ -350,6 +352,9 @@ namespace ft{
 				} else if (deletedNode->color == BLACK
 					&& (!deletedNode->nextRight->isItNil
 							|| !deletedNode->nextLeft->isItNil)) {
+					// if (deletedNode->value.first == 35){
+					// 	std::cout << "AAAAAAA" << std::endl;
+					// }
 					__deletedWithOneChild(deletedNode);
 				} else {
 					__deletedWithoutChildren(deletedNode);
@@ -450,6 +455,11 @@ namespace ft{
 				pointer_node	deletedNode = _findNode(deleted_key);
 
 				if (!deleted_key) { return ; }
+
+				// if (deletedNode->value.first == 34){
+				// 	std::cout << "AAAAAAA" << std::endl;
+				// 	return ;
+				// }
 
 				_deleteOptions(deletedNode);
 			}
