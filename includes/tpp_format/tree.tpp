@@ -193,30 +193,40 @@ template <class _T, class _Compare, class _Allocator>
 										pair<olderYangerBro,
 										typename _tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
+				if (!doubleBlackNode->previous->previous
+						&& doubleBlackNode->isItNil){
+					___brotherParentChange(doubleBlackNode, bro);
+					bro.second->nextLeft->color = BLACK;
+				} else {
+					bro.second->color = RED;
+					bro.second->nextLeft->color = BLACK;
 
+					_rightTurn(bro.second, bro.second->nextLeft);
 
-				bro.second->color = RED;
-				bro.second->nextLeft->color = BLACK;
-
-				_rightTurn(bro.second, bro.second->nextLeft);
-
-				___blackLeftChildBalancing(doubleBlackNode,
-									___olderYangerBrother(doubleBlackNode));
-
+					___redRightChildBalancing(doubleBlackNode,
+										___olderYangerBrother(doubleBlackNode));
+				}
 			}
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_tree<_T, _Compare, _Allocator>::
-			___blackLeftChildBalancing(pointer_node doubleBlackNode,
+			___redRightChildBalancing(pointer_node doubleBlackNode,
 										pair<olderYangerBro,
 										typename _tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
-				doubleBlackNode->color = BLACK;
-				bro.second->color = doubleBlackNode->previous->color;
-				bro.second->nextRight->color = BLACK;
-				doubleBlackNode->previous->color = BLACK;
-
-				___brotherParentChange(doubleBlackNode, bro);
+				if (!doubleBlackNode->previous->previous
+						&& doubleBlackNode->isItNil){
+					bro.second->nextRight->color = BLACK;
+					_leftTurn(bro.second, bro.second->nextRight);
+					___brotherParentChange(doubleBlackNode,
+										___olderYangerBrother(doubleBlackNode));
+				} else {
+					doubleBlackNode->color = BLACK;
+					bro.second->color = doubleBlackNode->previous->color;
+					bro.second->nextRight->color = BLACK;
+					doubleBlackNode->previous->color = BLACK;
+					___brotherParentChange(doubleBlackNode, bro);
+				}
 			}
 
 	template <class _T, class _Compare, class _Allocator>
@@ -243,7 +253,7 @@ template <class _T, class _Compare, class _Allocator>
 				} else if (bro.second->nextLeft->color == RED) {
 					___redLeftChildBalancing(doubleBlackNode, bro);
 				} else {
-					___blackLeftChildBalancing(doubleBlackNode, bro);
+					___redRightChildBalancing(doubleBlackNode, bro);
 				}
 			}
 

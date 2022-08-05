@@ -221,7 +221,7 @@ namespace ft{
 			void	___redLeftChildBalancing(pointer_node doubleBlackNode,
 												pair<olderYangerBro, pointer_node> bro);
 
-			void	___blackLeftChildBalancing(pointer_node doubleBlackNode,
+			void	___redRightChildBalancing(pointer_node doubleBlackNode,
 												pair<olderYangerBro, pointer_node> bro);
 
 			void	___redBrotherBalancing(pointer_node doubleBlackNode,
@@ -456,12 +456,11 @@ namespace ft{
 
 				if (!deleted_key) { return ; }
 
-				// if (deletedNode->value.first == 34){
-				// 	std::cout << "AAAAAAA" << std::endl;
-				// 	return ;
-				// }
-
 				_deleteOptions(deletedNode);
+				if (node->isItNil){
+					_freeNode(node);
+					node = NULL;
+				}
 			}
 
 			void	erase(pointer_node deleted_node)

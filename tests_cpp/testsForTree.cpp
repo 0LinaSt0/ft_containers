@@ -36,19 +36,22 @@ void	treeChecks(void){
 
 	elem.erase(11);
 	elem.erase(17);
-	elem.erase(22);
 
+	elem.erase(22);
 	elem.erase(19);
 	elem.erase(31);
 	elem.erase(15);
 	elem.erase(9);
+
 	elem.erase(13);
 	elem.erase(34);
 	elem.erase(35);
 	elem.erase(32);
 	elem.erase(18);
 	elem.erase(33);
-	// elem.erase(16);
+	elem.erase(16);
+	elem.erase(20);
+	elem.erase(12);
 
 
 	elem.print_tree(elem.root());
