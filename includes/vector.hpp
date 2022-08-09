@@ -63,10 +63,10 @@ namespace ft{
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef ft::iterator<value_type>					iterator;
-		typedef ft::iterator<value_type>					const_iterator;
-		typedef ft::reverse_iterator<iterator>				reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+		typedef ft::iterVec<value_type>						iterator;
+		typedef ft::iterVec<value_type>						const_iterator;
+		typedef ft::revIterVec<iterator>					reverse_iterator;
+		typedef ft::revIterVec<const_iterator>				const_reverse_iterator;
 		typedef typename allocator_type::size_type			size_type;
 		typedef typename allocator_type::difference_type	difference_type;
 	private:

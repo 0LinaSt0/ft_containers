@@ -12,6 +12,7 @@
 
 #include "../includes/containers.hpp"
 #include <stdio.h>
+#include <map>
 
 void	treeChecks(void){
 	typedef ft::_tree<int, int, std::allocator<ft::pair<int, int> > >	tree;
@@ -55,6 +56,8 @@ void	treeChecks(void){
 
 
 	elem.print_tree(elem.root());
+
+	std::map<int, int>	a;
 
 
 }
