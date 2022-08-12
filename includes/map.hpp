@@ -20,10 +20,25 @@ namespace ft{
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
-			typedef ft::iterMap<value_type>						iterator;
-			typedef ft::iterMap<value_type>						const_iterator;
-			typedef ft::revIterMap<iterator>					reverse_iterator;
-			typedef ft::revIterMap<const_iterator>				const_reverse_iterator;
+ 		private:
+			_rb_tree<		tree;
+			allocator_type	treeAlloc;
+			key_compare		treeCompare;
+		public:
+			explicit map (const key_compare& comp = key_compare(),
+							const allocator_type& alloc = allocator_type())
+					: treeCompare(comp), treeAlloc(alloc) {}
+			template <class InputIterator>
+				map (InputIterator first, InputIterator last,
+						const key_compare& comp = key_compare(),
+						const allocator_type& alloc = allocator_type())
+					: treeCompare(comp), treeAlloc(alloc) {
+
+				}
+			map (const map& x);
+			~map();
+
+			map& operator= (const map& x);
 		} ;
 }
 

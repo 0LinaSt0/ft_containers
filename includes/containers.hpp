@@ -122,7 +122,6 @@ namespace ft{
 			return !(lhs < rhs);
 		}
 
-
 	/* Util-functions for realization red-black tree */
 
 	template <class Type>
@@ -144,6 +143,8 @@ namespace ft{
 
 	template <class _T, class _Compare>
 		struct _tree_node{
+			typedef _tree_node*						node_ptr;
+
 			typedef _T								value_type;
 			typedef _Compare						key_type;
 			typedef ft::pair<key_type, value_type>	pair_type;
@@ -167,18 +168,64 @@ namespace ft{
 			}
 		} ;
 
-	template <class _T, class _Compare, class _Allocator>
-		class	_tree {
+	template < class Tp >
+		struct iterator_traits {
+			typedef ptrdiff_t 							difference_type; // result of subtracting (-) one iterator from another
+			typedef Tp									value_type; // the type of the element
+			typedef value_type&							reference; // the type of a reference to an element
+			typedef Tp*									pointer; // the type of a pointer to an element
+			typedef std::bidirectional_iterator_tag		iterator_category; // the iterator category
+		} ;
+
+	template < class mapped_type >
+		class _rb_tree_iter{
 		public:
-			typedef _T														value_type;
-			typedef _Compare												value_compare;
-			typedef _tree_node<_T, _Compare>								tree_node;
-			typedef _Allocator												allocator_pair;
-			typedef typename allocator_pair::pointer						pointer_pair;
-			typedef typename allocator_pair::reference						reference_pair;
-			typedef typename _Allocator::template rebind<tree_node>::other	allocator_node;
-			typedef typename allocator_node::pointer						pointer_node;
-			typedef typename allocator_node::reference						reference_node;
+			typedef mapped_type													iterator_type;
+			typedef typename iterator_traits<mapped_type>::difference_type		difference_type;
+			typedef typename iterator_traits<mapped_type>::value_type			value_type;
+			typedef typename iterator_traits<mapped_type>::pointer				pointer;
+			typedef typename iterator_traits<mapped_type>::reference			reference;
+			typedef typename iterator_traits<mapped_type>::iterator_category	iterator_category;
+
+			typedef typename _tree_node::node_ptr								node_ptr;
+		protected:
+			node_ptr	tree;
+		public:
+			_rb_tree_iter	(void) : tree (NULL) { }
+			_rb_tree_iter (const node_ptr tree) : tree(tree) { }
+			_rb_tree_iter (const _rb_tree_iter& otherTree) : tree(otherTree.base()) { }
+			~_rb_tree_iter (void) { }
+
+			reference		operator* (void) const { return *tree->value; }
+			pointer			operator->(void) const { return tree->value; }
+			_rb_tree_iter&	operator=(const _rb_tree_iter& other) { tree = other.tree; return *this; }
+			_rb_tree_iter&	operator++(void) { ++vectorElem; return *this; }
+			_rb_tree_iter	operator++(int) { _rb_tree_iter _new(*this); ++(*this); return _new; }
+			_rb_tree_iter&	operator--(void) { --vectorElem; return *this; }
+			_rb_tree_iter	operator--(int) { _rb_tree_iter _new(*this); --(*this); return _new; }
+
+			pointer		base(void) const { return vectorElem; }
+		} ;
+
+	template <class _Key, class _T, class _Allocator>
+		class	_rb_tree {
+		public:
+			typedef _Key														key_type;
+			typedef _T															mapped_type;
+			typedef _tree_node<mapped_type, key_type>							tree_node;
+			typedef _Allocator													allocator_pair;
+			typedef typename allocator_pair::pointer							pointer_pair;
+			typedef typename allocator_pair::reference							reference_pair;
+			typedef typename allocator_pair::template rebind<tree_node>::other	allocator_node;
+			typedef typename allocator_node::pointer							pointer_node;
+			typedef typename allocator_node::reference							reference_node;
+
+			// typedef ft::_rb_tree_iter<tree_node>								iterator;
+			// typedef ft::_rb_tree_iter<tree_node>								const_iterator;
+			// typedef ft::_rb_tree_rev_iter<iterator>								reverse_iterator;
+			// typedef ft::_rb_tree_rev_iter<const_iterator>						const_reverse_iterator;
+			// typedef ptrdiff_t													difference_type;
+			// typedef size_t														size_type;
 		private:
 			pointer_node	node;
 			size_t			countElems;
@@ -256,11 +303,13 @@ namespace ft{
 				}
 			}
 
-			pointer_node	_findNode(const value_compare& key) const{
+			pointer_node	_findNode(const key_type& key) const{
+				if (!node){ return NULL; }
+
 				pointer_node	lookedNode = node;
 				size_t			i = 0;
 
-				for (value_compare nodeKey = node->value.first;
+				for (key_type nodeKey = node->value.first;
 						nodeKey != key && i < countElems;
 						i++){
 					if (key > nodeKey) { lookedNode = lookedNode->nextRight; }
@@ -352,9 +401,6 @@ namespace ft{
 				} else if (deletedNode->color == BLACK
 					&& (!deletedNode->nextRight->isItNil
 							|| !deletedNode->nextLeft->isItNil)) {
-					// if (deletedNode->value.first == 35){
-					// 	std::cout << "AAAAAAA" << std::endl;
-					// }
 					__deletedWithOneChild(deletedNode);
 				} else {
 					__deletedWithoutChildren(deletedNode);
@@ -362,8 +408,8 @@ namespace ft{
 			}
 
 		public:
-			_tree(void) : node (NULL), countElems(0) {}
-			~_tree(void) {/*delete*/}
+			_rb_tree(void) : node (NULL), countElems(0) {}
+			~_rb_tree(void) {/*delete*/}
 
 			bool	empty(void) const { return countElems ? false : true; }
 
@@ -376,7 +422,7 @@ namespace ft{
 						|		or NULL if the tree is empty
 			*/
 
-			pointer_node		at(const value_compare& key) const
+			pointer_node		at(const key_type& key) const
 				{ return (empty()) ? NULL : _findNode(key); }
 
 			pointer_node		root(void) const
@@ -423,8 +469,8 @@ namespace ft{
 				erase		|	Delete deleded_node to the right place
 			*/
 
-			pointer_node	createNode(const value_compare& node_key,
-											const value_type& node_value){
+			pointer_node	createNode(const key_type& node_key,
+											const mapped_type& node_value){
 				pointer_node	newNode;
 
 				newNode = nodeAlloc.allocate(1);
@@ -443,7 +489,7 @@ namespace ft{
 
 				inceptionPlace = _findsInsertPlace(added_node, inceptionPlace);
 				if (inceptionPlace == added_node)
-					return NULL;
+					return inceptionPlace;
 				_addsNodeToFindedPlace(added_node, inceptionPlace);
 				if (added_node->previous
 						&& added_node->previous->color == RED)
@@ -451,16 +497,17 @@ namespace ft{
 				return added_node;
 			}
 
-			void	erase(_Compare deleted_key){
+			void	erase(_Key deleted_key){
 				pointer_node	deletedNode = _findNode(deleted_key);
 
-				if (!deleted_key) { return ; }
+				if (!deleted_key || !deletedNode) { return ; }
 
 				_deleteOptions(deletedNode);
 				if (node->isItNil){
 					_freeNode(node);
 					node = NULL;
 				}
+				countElems--;
 			}
 
 			void	erase(pointer_node deleted_node)

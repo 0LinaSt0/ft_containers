@@ -19,17 +19,17 @@
 #include <memory>
 
 namespace ft{
-	template<typename stackType>
-		struct remove_pointer
-		{
-			typedef stackType type;
-		};
+	// template<typename stackType>
+	// 	struct remove_pointer
+	// 	{
+	// 		typedef stackType type;
+	// 	};
 
-	template<typename stackType>
-		struct remove_pointer<stackType*>
-		{
-			typedef typename remove_pointer<stackType>::type type;
-		};
+	// template<typename stackType>
+	// 	struct remove_pointer<stackType*>
+	// 	{
+	// 		typedef typename remove_pointer<stackType>::type type;
+	// 	};
 
 	template < class Tp >
 		struct iterator_traits {
