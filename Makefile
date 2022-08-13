@@ -18,6 +18,8 @@ HEAD_CONT		=	$(addprefix $(HEADS_DIR)/, containers.hpp vector.hpp vectorIterator
 
 HEAD_TESTS		=	$(addprefix $(HEADS_DIR)/tests_hpp/, testsVec.hpp testsStack.hpp)
 
+TPP_FILES		=	$(addprefix $(HEADS_DIR)/tpp_format/, tree.tpp)
+
 SRCS_MAIN		=	main.cpp
 
 SRCS_TESTS		=	$(addprefix $(SRCS_DIR)/,testsForVec.cpp testsForStack.cpp testsForTree.cpp)
@@ -28,9 +30,9 @@ OBJS_TESTS		=	$(SRCS_TESTS:.cpp=.o)
 
 PROG_NAME		=	./ft_containers
 
-C++				=	c++ -std=c++98 -Wall -Wextra # -Werror
+C++				=	c++ -std=c++98 -Wall -Wextra -Werror #-g
 
-%.o:			%.cpp $(HEAD_CONT) $(HEAD_TESTS) $(SRCS_MAIN) $(SRCS_TESTS) Makefile
+%.o:			%.cpp $(HEAD_CONT) $(HEAD_TESTS) $(SRCS_MAIN) $(SRCS_TESTS) $(TPP_FILES) Makefile
 				$(C++) -c $< -o $@
 
 all:			$(PROG_NAME)

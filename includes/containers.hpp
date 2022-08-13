@@ -168,44 +168,44 @@ namespace ft{
 			}
 		} ;
 
-	template < class Tp >
-		struct iterator_traits {
-			typedef ptrdiff_t 							difference_type; // result of subtracting (-) one iterator from another
-			typedef Tp									value_type; // the type of the element
-			typedef value_type&							reference; // the type of a reference to an element
-			typedef Tp*									pointer; // the type of a pointer to an element
-			typedef std::bidirectional_iterator_tag		iterator_category; // the iterator category
-		} ;
+	// template < class Tp >
+	// 	struct iterator_traits {
+	// 		typedef ptrdiff_t 							difference_type; // result of subtracting (-) one iterator from another
+	// 		typedef Tp									value_type; // the type of the element
+	// 		typedef value_type&							reference; // the type of a reference to an element
+	// 		typedef Tp*									pointer; // the type of a pointer to an element
+	// 		typedef std::bidirectional_iterator_tag		iterator_category; // the iterator category
+	// 	} ;
 
-	template < class mapped_type >
-		class _rb_tree_iter{
-		public:
-			typedef mapped_type													iterator_type;
-			typedef typename iterator_traits<mapped_type>::difference_type		difference_type;
-			typedef typename iterator_traits<mapped_type>::value_type			value_type;
-			typedef typename iterator_traits<mapped_type>::pointer				pointer;
-			typedef typename iterator_traits<mapped_type>::reference			reference;
-			typedef typename iterator_traits<mapped_type>::iterator_category	iterator_category;
+	// template < class mapped_type >
+	// 	class _rb_tree_iter{
+	// 	public:
+	// 		typedef mapped_type													iterator_type;
+	// 		typedef typename iterator_traits<mapped_type>::difference_type		difference_type;
+	// 		typedef typename iterator_traits<mapped_type>::value_type			value_type;
+	// 		typedef typename iterator_traits<mapped_type>::pointer				pointer;
+	// 		typedef typename iterator_traits<mapped_type>::reference			reference;
+	// 		typedef typename iterator_traits<mapped_type>::iterator_category	iterator_category;
 
-			typedef typename _tree_node::node_ptr								node_ptr;
-		protected:
-			node_ptr	tree;
-		public:
-			_rb_tree_iter	(void) : tree (NULL) { }
-			_rb_tree_iter (const node_ptr tree) : tree(tree) { }
-			_rb_tree_iter (const _rb_tree_iter& otherTree) : tree(otherTree.base()) { }
-			~_rb_tree_iter (void) { }
+	// 		typedef typename _tree_node::node_ptr								node_ptr;
+	// 	protected:
+	// 		node_ptr	tree;
+	// 	public:
+	// 		_rb_tree_iter	(void) : tree (NULL) { }
+	// 		_rb_tree_iter (const node_ptr tree) : tree(tree) { }
+	// 		_rb_tree_iter (const _rb_tree_iter& otherTree) : tree(otherTree.base()) { }
+	// 		~_rb_tree_iter (void) { }
 
-			reference		operator* (void) const { return *tree->value; }
-			pointer			operator->(void) const { return tree->value; }
-			_rb_tree_iter&	operator=(const _rb_tree_iter& other) { tree = other.tree; return *this; }
-			_rb_tree_iter&	operator++(void) { ++vectorElem; return *this; }
-			_rb_tree_iter	operator++(int) { _rb_tree_iter _new(*this); ++(*this); return _new; }
-			_rb_tree_iter&	operator--(void) { --vectorElem; return *this; }
-			_rb_tree_iter	operator--(int) { _rb_tree_iter _new(*this); --(*this); return _new; }
+	// 		reference		operator* (void) const { return *tree->value; }
+	// 		pointer			operator->(void) const { return tree->value; }
+	// 		_rb_tree_iter&	operator=(const _rb_tree_iter& other) { tree = other.tree; return *this; }
+	// 		_rb_tree_iter&	operator++(void) { ++vectorElem; return *this; }
+	// 		_rb_tree_iter	operator++(int) { _rb_tree_iter _new(*this); ++(*this); return _new; }
+	// 		_rb_tree_iter&	operator--(void) { --vectorElem; return *this; }
+	// 		_rb_tree_iter	operator--(int) { _rb_tree_iter _new(*this); --(*this); return _new; }
 
-			pointer		base(void) const { return vectorElem; }
-		} ;
+	// 		pointer		base(void) const { return vectorElem; }
+	// 	} ;
 
 	template <class _Key, class _T, class _Allocator>
 		class	_rb_tree {
@@ -262,6 +262,9 @@ namespace ft{
 
 			pointer_node	___findLeastRightChild(pointer_node currentNode);
 
+			void	___yangerBrotherBalancing(pointer_node doubleBlackNode,
+										pair<olderYangerBro, pointer_node> bro);
+
 			void	___blackChildrenBalancing(pointer_node doubleBlackNode,
 											pair<olderYangerBro, pointer_node> bro);
 
@@ -314,9 +317,10 @@ namespace ft{
 						i++){
 					if (key > nodeKey) { lookedNode = lookedNode->nextRight; }
 					else { lookedNode = lookedNode->nextLeft; }
+					if (lookedNode->isItNil) { return NULL; }
 					nodeKey = lookedNode->value.first;
 				}
-				return (i == countElems) ? NULL : lookedNode;
+				return lookedNode;
 			}
 
 			pointer_node	_findsInsertPlace(pointer_node comingNode,

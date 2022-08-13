@@ -169,6 +169,20 @@ template <class _T, class _Compare, class _Allocator>
 				return _pair(NONE, NULL);
 			}
 
+	template <class _T, class _Compare, class _Allocator>
+		void	_rb_tree<_T, _Compare, _Allocator>::
+			___yangerBrotherBalancing(pointer_node doubleBlackNode,
+										pair<olderYangerBro,
+										typename _rb_tree<_T, _Compare, _Allocator>
+										::pointer_node> bro){
+				doubleBlackNode->color = BLACK;
+				bro.second->color = BLACK;
+				bro.second->nextLeft->color = RED;
+				bro.second->previous->color = RED;
+				std::cout << bro.second->value.first << std::endl;
+				_rightTurn(bro.second->previous, bro.second);
+				// print_tree(node);
+			}
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
@@ -197,6 +211,8 @@ template <class _T, class _Compare, class _Allocator>
 						&& doubleBlackNode->isItNil){
 					___brotherParentChange(doubleBlackNode, bro);
 					bro.second->nextLeft->color = BLACK;
+				} else if (bro.first == YANGER){
+					___yangerBrotherBalancing(doubleBlackNode, bro);
 				} else {
 					bro.second->color = RED;
 					bro.second->nextLeft->color = BLACK;
@@ -220,11 +236,16 @@ template <class _T, class _Compare, class _Allocator>
 					_leftTurn(bro.second, bro.second->nextRight);
 					___brotherParentChange(doubleBlackNode,
 										___olderYangerBrother(doubleBlackNode));
+				} else if (bro.first == YANGER) {
+					_leftTurn(bro.second, bro.second->nextRight);
+					// print_tree(node);
+					___yangerBrotherBalancing(doubleBlackNode, 
+										___olderYangerBrother(doubleBlackNode));
 				} else {
-					doubleBlackNode->color = BLACK;
-					bro.second->color = doubleBlackNode->previous->color;
-					bro.second->nextRight->color = BLACK;
-					doubleBlackNode->previous->color = BLACK;
+						doubleBlackNode->color = BLACK;
+						bro.second->color = doubleBlackNode->previous->color;
+						bro.second->nextRight->color = BLACK;
+						doubleBlackNode->previous->color = BLACK;
 					___brotherParentChange(doubleBlackNode, bro);
 				}
 			}
@@ -282,6 +303,7 @@ template <class _T, class _Compare, class _Allocator>
 				pointer_node	leastRightChild;
 
 				leastRightChild = ___findLeastRightChild(deletedNode->nextRight);
+				
 				___nodesValueChange(leastRightChild, deletedNode);
 
 				_deleteOptions(leastRightChild);
