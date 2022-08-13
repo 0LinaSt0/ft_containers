@@ -168,44 +168,34 @@ namespace ft{
 			}
 		} ;
 
-	// template < class Tp >
-	// 	struct iterator_traits {
-	// 		typedef ptrdiff_t 							difference_type; // result of subtracting (-) one iterator from another
-	// 		typedef Tp									value_type; // the type of the element
-	// 		typedef value_type&							reference; // the type of a reference to an element
-	// 		typedef Tp*									pointer; // the type of a pointer to an element
-	// 		typedef std::bidirectional_iterator_tag		iterator_category; // the iterator category
-	// 	} ;
+	template < class mapped_type, class key_type >
+		class _rb_tree_iter{
+		public:
+			typedef ptrdiff_t											difference_type;
+			typedef mapped_type											value_type;
+			typedef value_type&											pointer;
+			typedef value_type*											reference;
+			typedef std::bidirectional_iterator_tag						iterator_category;
 
-	// template < class mapped_type >
-	// 	class _rb_tree_iter{
-	// 	public:
-	// 		typedef mapped_type													iterator_type;
-	// 		typedef typename iterator_traits<mapped_type>::difference_type		difference_type;
-	// 		typedef typename iterator_traits<mapped_type>::value_type			value_type;
-	// 		typedef typename iterator_traits<mapped_type>::pointer				pointer;
-	// 		typedef typename iterator_traits<mapped_type>::reference			reference;
-	// 		typedef typename iterator_traits<mapped_type>::iterator_category	iterator_category;
+			typedef typename _tree_node<value_type, key_type>::node_ptr	node_ptr;
+		protected:
+			node_ptr	node;
+		public:
+			_rb_tree_iter(void) : node (NULL) { }
+			_rb_tree_iter(const node_ptr tree) : node(tree) { }
+			_rb_tree_iter(const _rb_tree_iter& otherTree) : node(otherTree.base()) { }
+			~_rb_tree_iter(void) { }
 
-	// 		typedef typename _tree_node::node_ptr								node_ptr;
-	// 	protected:
-	// 		node_ptr	tree;
-	// 	public:
-	// 		_rb_tree_iter	(void) : tree (NULL) { }
-	// 		_rb_tree_iter (const node_ptr tree) : tree(tree) { }
-	// 		_rb_tree_iter (const _rb_tree_iter& otherTree) : tree(otherTree.base()) { }
-	// 		~_rb_tree_iter (void) { }
+			reference		operator* (void) const { return *node->value; }
+			pointer			operator->(void) const { return node->value; }
+			_rb_tree_iter&	operator=(const _rb_tree_iter& other) { node = other.node; return *this; }
+			_rb_tree_iter&	operator++(void) { node = node->nextRight; return *this; }
+			_rb_tree_iter	operator++(int) { node_ptr _new = *node; node = node->nextRight; return _new; }
+			_rb_tree_iter&	operator--(void) { node = node->previous; return *this; }
+			_rb_tree_iter	operator--(int) { node_ptr _new = *node; node = node->previous; return _new; }
 
-	// 		reference		operator* (void) const { return *tree->value; }
-	// 		pointer			operator->(void) const { return tree->value; }
-	// 		_rb_tree_iter&	operator=(const _rb_tree_iter& other) { tree = other.tree; return *this; }
-	// 		_rb_tree_iter&	operator++(void) { ++vectorElem; return *this; }
-	// 		_rb_tree_iter	operator++(int) { _rb_tree_iter _new(*this); ++(*this); return _new; }
-	// 		_rb_tree_iter&	operator--(void) { --vectorElem; return *this; }
-	// 		_rb_tree_iter	operator--(int) { _rb_tree_iter _new(*this); --(*this); return _new; }
-
-	// 		pointer		base(void) const { return vectorElem; }
-	// 	} ;
+			pointer		base(void) const { return *node; }
+		} ;
 
 	template <class _Key, class _T, class _Allocator>
 		class	_rb_tree {
@@ -295,6 +285,17 @@ namespace ft{
 				// nodeAlloc.destroy(destroiedNode->isItNil);
 
 				nodeAlloc.deallocate(destroiedNode, 1);
+			}
+
+			void	_freeTree(pointer_node node){
+				if (!node || node->isItNil) { return ; }
+				
+				_freeTree(node->nextLeft);
+				// std::cout << "l: " << node->nextLeft->value.first << std::endl;
+				_freeNode(node->nextLeft);
+				_freeTree(node->nextRight);
+				// std::cout << "r: " << node->nextRight->value.first << std::endl;
+				_freeNode(node->nextRight);
 			}
 
 			void	_printChildren(pointer_node child){
@@ -413,7 +414,7 @@ namespace ft{
 
 		public:
 			_rb_tree(void) : node (NULL), countElems(0) {}
-			~_rb_tree(void) {/*delete*/}
+			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
 
 			bool	empty(void) const { return countElems ? false : true; }
 

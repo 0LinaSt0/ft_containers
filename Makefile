@@ -46,7 +46,7 @@ start:			all
 cate:
 				$(PROG_NAME) | cat -e
 
-leaks:
+leaks:			all
 				leaks --atExit -- $(PROG_NAME)
 
 clean:
