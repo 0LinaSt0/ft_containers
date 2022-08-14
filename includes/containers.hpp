@@ -141,21 +141,16 @@ namespace ft{
 		NONE
 	} ;
 
-	template <class _T, class _Compare>
+	template <class value_type>
 		struct _tree_node{
-			typedef _tree_node*						node_ptr;
+			typedef _tree_node*						pointre_node;
 
-			typedef _T								value_type;
-			typedef _Compare						key_type;
-			typedef ft::pair<key_type, value_type>	pair_type;
-			typedef _tree_node*						pointer_node;
-
-			pair_type		value;
+			value_type		value;
 			nodeColor		color;
 			bool			isItNil;
-			pointer_node	previous;
-			pointer_node	nextRight;
-			pointer_node	nextLeft;
+			pointre_node	previous;
+			pointre_node	nextRight;
+			pointre_node	nextLeft;
 
 			_tree_node&	operator=(const _tree_node& comingTree){
 				value = comingTree.value;
@@ -168,21 +163,20 @@ namespace ft{
 			}
 		} ;
 
-	template < class mapped_type, class key_type >
+	template < class value_type >
 		class _rb_tree_iter{
 		public:
 			typedef ptrdiff_t											difference_type;
-			typedef mapped_type											value_type;
 			typedef value_type&											pointer;
 			typedef value_type*											reference;
 			typedef std::bidirectional_iterator_tag						iterator_category;
 
-			typedef typename _tree_node<value_type, key_type>::node_ptr	node_ptr;
+			typedef typename _tree_node<value_type>::node_ptr	pointer_node;
 		protected:
-			node_ptr	node;
+			pointer_node	node;
 		public:
 			_rb_tree_iter(void) : node (NULL) { }
-			_rb_tree_iter(const node_ptr tree) : node(tree) { }
+			_rb_tree_iter(const pointer_node tree) : node(tree) { }
 			_rb_tree_iter(const _rb_tree_iter& otherTree) : node(otherTree.base()) { }
 			~_rb_tree_iter(void) { }
 
@@ -190,38 +184,59 @@ namespace ft{
 			pointer			operator->(void) const { return node->value; }
 			_rb_tree_iter&	operator=(const _rb_tree_iter& other) { node = other.node; return *this; }
 			_rb_tree_iter&	operator++(void) { node = node->nextRight; return *this; }
-			_rb_tree_iter	operator++(int) { node_ptr _new = *node; node = node->nextRight; return _new; }
+			_rb_tree_iter	operator++(int) { pointer_node _new = *node; node = node->nextRight; return _new; }
 			_rb_tree_iter&	operator--(void) { node = node->previous; return *this; }
-			_rb_tree_iter	operator--(int) { node_ptr _new = *node; node = node->previous; return _new; }
+			_rb_tree_iter	operator--(int) { pointer_node _new = *node; node = node->previous; return _new; }
 
 			pointer		base(void) const { return *node; }
 		} ;
 
-	template <class _Key, class _T, class _Allocator>
+	template <class _T, class _Compare, class _Allocator>
 		class	_rb_tree {
 		public:
-			typedef _Key														key_type;
-			typedef _T															mapped_type;
-			typedef _tree_node<mapped_type, key_type>							tree_node;
-			typedef _Allocator													allocator_pair;
-			typedef typename allocator_pair::pointer							pointer_pair;
-			typedef typename allocator_pair::reference							reference_pair;
-			typedef typename allocator_pair::template rebind<tree_node>::other	allocator_node;
+			typedef _T															value_type;
+			typedef _Compare													compare_class;
+			typedef _tree_node<value_type>										tree_node;
+			typedef _Allocator													allocator_type;
+			typedef typename allocator_type::pointer							pointer_type;
+			typedef typename allocator_type::reference							reference_type;
+			typedef typename allocator_type::template rebind<tree_node>::other	allocator_node;
 			typedef typename allocator_node::pointer							pointer_node;
 			typedef typename allocator_node::reference							reference_node;
 
-			// typedef ft::_rb_tree_iter<tree_node>								iterator;
-			// typedef ft::_rb_tree_iter<tree_node>								const_iterator;
+			typedef ft::_rb_tree_iter<value_type>								iterator;
+			typedef ft::_rb_tree_iter<value_type>								const_iterator;
 			// typedef ft::_rb_tree_rev_iter<iterator>								reverse_iterator;
 			// typedef ft::_rb_tree_rev_iter<const_iterator>						const_reverse_iterator;
-			// typedef ptrdiff_t													difference_type;
-			// typedef size_t														size_type;
+			typedef ptrdiff_t													difference_type;
+			typedef size_t														size_type;
+
 		private:
 			pointer_node	node;
-			size_t			countElems;
+			// compare_class	compare;
+			class value_compare;
+			/*FOR TESTING MAP*/ value_compare	compare;
+			size_type		countElems;
 			allocator_node	nodeAlloc;
 
 		private:
+			/*FORE CHECKING*/
+			class value_compare
+			{
+				friend class _rb_tree;
+			
+				protected:
+					_Compare comp;
+					value_compare () {}  // constructed with map's comparison object
+					public:
+					typedef bool result_type;
+					typedef value_type first_argument_type;
+					typedef value_type second_argument_type;
+					bool operator() (const value_type& x, const value_type& y) const
+					{
+						return comp(x.first, y.first);
+					}
+			} ;
 			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~*/
 
 			void	___updateNodesPointers(pointer_node oldNode,
@@ -242,8 +257,9 @@ namespace ft{
 
 			void	__deleteNode(pointer_node deletedNode);
 
-			void	___nodesValueChange(pointer_node whichNode,
-											pointer_node inNode);
+			void	___pointersSwap(pointer_node to, pointer_node from);
+
+			void	___nodesSwap(pointer_node finded, pointer_node deleted);
 
 			void	___brotherParentChange(pointer_node doubleBlackNode,
 										pair<olderYangerBro, pointer_node> bro);
@@ -279,23 +295,24 @@ namespace ft{
 			void	__deletedWithoutChildren(pointer_node deletedNode);
 
 		private:
-			void	_freeNode(pointer_node destroiedNode){
-				// nodeAlloc.destroy(destroiedNode->value);
-				// nodeAlloc.destroy(destroiedNode->color);
-				// nodeAlloc.destroy(destroiedNode->isItNil);
-
-				nodeAlloc.deallocate(destroiedNode, 1);
-			}
+			void	_freeNode(pointer_node destroiedNode)
+				{ nodeAlloc.deallocate(destroiedNode, 1); }
 
 			void	_freeTree(pointer_node node){
 				if (!node || node->isItNil) { return ; }
 				
 				_freeTree(node->nextLeft);
-				// std::cout << "l: " << node->nextLeft->value.first << std::endl;
 				_freeNode(node->nextLeft);
 				_freeTree(node->nextRight);
-				// std::cout << "r: " << node->nextRight->value.first << std::endl;
 				_freeNode(node->nextRight);
+			}
+
+			pointer_node	_endElem() const {
+				pointer_node	last_node = node;
+
+				while (node && !last_node->isItNil)
+					{ last_node = last_node->nextRight; }
+				return last_node;
 			}
 
 			void	_printChildren(pointer_node child){
@@ -303,23 +320,24 @@ namespace ft{
 					std::cout << "		isitNil - " << std::boolalpha
 													<< child->isItNil << "\n";
 					if (!(child->isItNil))
-						{ std::cout << "		key - " << child->value.first << "\n"; }
+						{ std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
+						// { std::cout << "		key - " << child->value << "\n"; }/*for set*/
 				}
 			}
 
-			pointer_node	_findNode(const key_type& key) const{
+			pointer_node	_findNode(const value_type& finding) const{
 				if (!node){ return NULL; }
 
 				pointer_node	lookedNode = node;
-				size_t			i = 0;
 
-				for (key_type nodeKey = node->value.first;
-						nodeKey != key && i < countElems;
-						i++){
-					if (key > nodeKey) { lookedNode = lookedNode->nextRight; }
-					else { lookedNode = lookedNode->nextLeft; }
+				while(1){
+					if (!compare(lookedNode->value, finding) 
+							&& !compare(finding, lookedNode->value)) { 
+					break; 
+					} else if (compare(lookedNode->value, finding)) { 
+						lookedNode = lookedNode->nextRight; 
+					} else { lookedNode = lookedNode->nextLeft; }
 					if (lookedNode->isItNil) { return NULL; }
-					nodeKey = lookedNode->value.first;
 				}
 				return lookedNode;
 			}
@@ -328,9 +346,9 @@ namespace ft{
 												pointer_node currentNode){
 				if (!currentNode || currentNode->isItNil){
 					return currentNode;
-				} else if (comingNode->value.first > currentNode->value.first){
+				} else if (compare(currentNode->value, comingNode->value)){
 					return _findsInsertPlace(comingNode, currentNode->nextRight);
-				} else if (comingNode->value.first < currentNode->value.first){
+				} else if (compare(comingNode->value, currentNode->value)){
 					return _findsInsertPlace(comingNode, currentNode->nextLeft);
 				} else {
 					return comingNode;
@@ -378,7 +396,7 @@ namespace ft{
 					node->previous = NULL;
 				} else {
 					addedNode->previous = inceptionPlace->previous;
-					if (inceptionPlace->previous->value.first < addedNode->value.first){
+					if (compare(inceptionPlace->previous->value, addedNode->value)){
 						inceptionPlace->previous->nextRight = addedNode;
 					} else {
 						inceptionPlace->previous->nextLeft = addedNode;
@@ -413,38 +431,119 @@ namespace ft{
 			}
 
 		public:
-			_rb_tree(void) : node (NULL), countElems(0) {}
+			explicit _rb_tree(void) : node (NULL), countElems(0) {}
+			template <class InputIterator> 
+				_rb_tree(InputIterator first, InputIterator last);
+			_rb_tree(const _rb_tree& other);
 			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
 
+			_rb_tree& operator= (const _rb_tree& x);
+
+			/*Iterators: begin, end, rbegin, rend*/
+			iterator begin() { return countElems ? iterator(node) : end(); }
+			const_iterator begin() const { return countElems ? const_iterator(node) : end(); }
+			iterator end() { return _endElem(); }
+			const_iterator end() const { return _endElem(); }
+			// reverse_iterator rbegin();
+			// const_reverse_iterator rbegin() const;
+			// reverse_iterator rend();
+			// const_reverse_iterator rend() const;
+
+			/*Capacity: empty, size, max_size*/
 			bool	empty(void) const { return countElems ? false : true; }
 
 			size_t	size(void) const { return countElems; }
 
-			/* ~~~~~~~~~~~~ FIND ELEMS FUNCTIONS ~~~~~~~~~~
-				at		|	Returns a reference to the node with key 'n' in tree or NULL
+			size_type max_size() const { return nodeAlloc.max_size(); }
+
+
+			/* ~~~~~~~~~~~~ MODIFIERS ~~~~~~~~~~
+				createMapNode	|	Create new map node and return pointer to it (FOR TESTING)
+				insert			|	Add added_node to the right place and return pointer to it
+				erase			|	Delete deleded_node to the right place
+				swap, clear*/
+			template< class key, class value >
+				pointer_node	createMapNode(const key& node_key,
+												const value& node_value){
+					pointer_node	newNode;
+
+					newNode = nodeAlloc.allocate(1);
+					newNode->value = pair<key, value>(node_key, node_value);
+					newNode->color = RED;
+					newNode->isItNil = false;
+					newNode->previous = NULL;
+					newNode->nextRight = NULL;
+					newNode->nextLeft = NULL;
+
+					return newNode;
+				}
+
+			pointer_node	insert(pointer_node added_node){
+				pointer_node	inceptionPlace = node;
+
+				inceptionPlace = _findsInsertPlace(added_node, inceptionPlace);
+				if (inceptionPlace == added_node)
+					return inceptionPlace;
+				_addsNodeToFindedPlace(added_node, inceptionPlace);
+				if (added_node->previous
+						&& added_node->previous->color == RED)
+					{ _redDad(added_node); }
+				return added_node;
+			}
+
+			pair<iterator,bool> insert (const value_type& val);
+			
+			iterator insert (iterator position, const value_type& val);
+			
+			template <class InputIterator>
+				void insert (InputIterator first, InputIterator last);
+
+			void	erase(const value_type& val){
+				pointer_node	deletedNode = _findNode(val);
+
+				if (!deletedNode) { return ; }
+
+				_deleteOptions(deletedNode);
+				if (node->isItNil){
+					_freeNode(node);
+					node = NULL;
+				}
+				countElems--;
+			}
+
+			/* ~~~~~~~~~~~~ OPERATIONS ~~~~~~~~~~
+				at		|	Returns a pointer to the node with value_type 'n' in tree or NULL
 						|		(if the tree is empty; if coming key was't find)
-				root	|	Returns a reference to the first root node in tree
+				root	|	Returns a pointer to the first root node in tree
 						|		or NULL if the tree is empty
+
+				find, count, lower_bound, upper_bound, equal_range
 			*/
 
-			pointer_node		at(const key_type& key) const
-				{ return (empty()) ? NULL : _findNode(key); }
+			pointer_node	at(const value_type& n) const
+				{ return (empty()) ? NULL : _findNode(n); }
 
-			pointer_node		root(void) const
+			pointer_node	root(void) const
 				{ return (empty()) ? NULL : node; }
+
+			/* ~~~~~~~~~~~~ PRINTING_FUNCTIONS ~~~~~~~~~~
+				print_node	|	print coming node
+				print_tree	|	print tree, taking root node
+			*/
 
 			void	print_node(pointer_node treeNode){
 				std::cout << "NODE_status" << std::endl;
 				std::cout << "	nodeAddress: " << &treeNode << "\n";
-				std::cout << "	nodeKey: " << treeNode->value.first << "\n";
-				std::cout << "	nodeValue: " << treeNode->value.second << "\n";
+				std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
+				// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
 				std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
 				std::cout << "	color: " << (char)(treeNode->color) << "\n";
 
 				std::cout << "	parent: " << "\n"
 								<< "		adress - " << treeNode->previous << "\n";
 				if (treeNode->previous){
-					std::cout << "		key - " << treeNode->previous->value.first << "\n"
+					std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
+					// std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
 					<< "		color - " << (char)(treeNode->previous->color) << "\n";
 				}
 
@@ -467,56 +566,6 @@ namespace ft{
 				print_node(currentNode);
 				print_tree(currentNode->nextRight);
 			}
-
-			/* ~~~~~~~~~~~~ MODIFIERS FUNCTIONS ~~~~~~~~~~
-				createNode	|	Create new node and return pointer to it
-				insert		|	Add added_node to the right place and return pointer to it
-				erase		|	Delete deleded_node to the right place
-			*/
-
-			pointer_node	createNode(const key_type& node_key,
-											const mapped_type& node_value){
-				pointer_node	newNode;
-
-				newNode = nodeAlloc.allocate(1);
-				newNode->value = make_pair(node_key, node_value);
-				newNode->color = RED;
-				newNode->isItNil = false;
-				newNode->previous = NULL;
-				newNode->nextRight = NULL;
-				newNode->nextLeft = NULL;
-
-				return newNode;
-			}
-
-			pointer_node	insert(pointer_node added_node){
-				pointer_node	inceptionPlace = node;
-
-				inceptionPlace = _findsInsertPlace(added_node, inceptionPlace);
-				if (inceptionPlace == added_node)
-					return inceptionPlace;
-				_addsNodeToFindedPlace(added_node, inceptionPlace);
-				if (added_node->previous
-						&& added_node->previous->color == RED)
-					{ _redDad(added_node); }
-				return added_node;
-			}
-
-			void	erase(_Key deleted_key){
-				pointer_node	deletedNode = _findNode(deleted_key);
-
-				if (!deleted_key || !deletedNode) { return ; }
-
-				_deleteOptions(deletedNode);
-				if (node->isItNil){
-					_freeNode(node);
-					node = NULL;
-				}
-				countElems--;
-			}
-
-			void	erase(pointer_node deleted_node)
-				{ erase(deleted_node->value.first); }
 
 		} ;
 }

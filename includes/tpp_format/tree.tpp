@@ -25,7 +25,7 @@ namespace ft {
 			__findUncle(pointer_node newNode){
 				if (newNode->previous){
 					if (newNode->previous->previous){
-						if (newNode->previous->previous->value.first < newNode->value.first){
+						if (compare(newNode->previous->previous->value, newNode->value)){
 							return (newNode->previous->previous->nextLeft);
 						} else {
 							return (newNode->previous->previous->nextRight);
@@ -39,7 +39,7 @@ namespace ft {
 				___updateNodesPointers(pointer_node oldNode,
 										pointer_node newNode){
 			if (oldNode->previous) {
-				if (oldNode->previous->value.first < oldNode->value.first) {
+				if (compare(oldNode->previous->value, oldNode->value)) {
 				oldNode->previous->nextRight = newNode;
 				} else {
 					oldNode->previous->nextLeft = newNode;
@@ -55,7 +55,7 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 				___nodeMoreGranddad(pointer_node uncle, pointer_node addedNode){
-			if (addedNode->previous->value.first > addedNode->value.first){
+			if (compare(addedNode->value, addedNode->previous->value)){
 				_rightTurn(addedNode->previous, addedNode);
 				_leftTurn(uncle->previous, addedNode);
 				addedNode->color = BLACK;
@@ -68,7 +68,7 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 				___nodeLessGranddad(pointer_node uncle, pointer_node addedNode){
-			if (addedNode->previous->value.first < addedNode->value.first){
+			if (compare(addedNode->previous->value, addedNode->value)){
 				_leftTurn(addedNode->previous, addedNode);
 				_rightTurn(uncle->previous, addedNode);
 				addedNode->color = BLACK;
@@ -82,7 +82,7 @@ namespace ft {
 		void	_rb_tree<_T, _Compare, _Allocator>::
 				__blackUncle(pointer_node uncle, pointer_node addedNode){
 
-			if (addedNode->value.first > uncle->previous->value.first){
+			if (compare(uncle->previous->value, addedNode->value)){
 				___nodeMoreGranddad(uncle, addedNode);
 			} else {
 				___nodeLessGranddad(uncle, addedNode);
@@ -90,18 +90,18 @@ namespace ft {
 			uncle->previous->color = RED;
 		}
 
-template <class _T, class _Compare, class _Allocator>
-		void	_rb_tree<_T, _Compare, _Allocator>::
-				__redUncle(pointer_node uncle, pointer_node addedNode){
-			/*dad*/addedNode->previous->color = BLACK;
-			/*uncle*/uncle->color = BLACK;
-			if (uncle->previous->previous){
-				/*grandded*/uncle->previous->color = RED;
-				if (uncle->previous->previous->color == RED){
-					_redDad(uncle->previous);
+	template <class _T, class _Compare, class _Allocator>
+			void	_rb_tree<_T, _Compare, _Allocator>::
+					__redUncle(pointer_node uncle, pointer_node addedNode){
+				/*dad*/addedNode->previous->color = BLACK;
+				/*uncle*/uncle->color = BLACK;
+				if (uncle->previous->previous){
+					/*grandded*/uncle->previous->color = RED;
+					if (uncle->previous->previous->color == RED){
+						_redDad(uncle->previous);
+					}
 				}
 			}
-		}
 
 
 
@@ -121,7 +121,6 @@ template <class _T, class _Compare, class _Allocator>
 			__deleteNode(pointer_node deletedNode){
 				_freeNode(deletedNode->nextRight);
 				_freeNode(deletedNode->nextLeft);
-				// /*?????*/nodeAlloc.destroy(deletedNode->value);
 				deletedNode->nextRight = NULL;
 				deletedNode->nextLeft = NULL;
 				deletedNode->color = BLACK;
@@ -130,14 +129,55 @@ template <class _T, class _Compare, class _Allocator>
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
-			___nodesValueChange(pointer_node whichNode,
-									pointer_node inNode){
-				typedef typename tree_node::pair_type	value_pair;
+			___pointersSwap(pointer_node to,
+								pointer_node from){
+			to->color = from->color;
 
-				value_pair	tmp = inNode->value;
+			/*change left child*/
+			if (!compare(to->value, from->nextLeft->value) 
+				&& !compare(from->nextLeft->value, to->value)){
+				to->nextLeft = from;
+			} else { 
+				from->nextLeft->previous = to;
+				to->nextLeft = from->nextLeft; }
 
-				inNode->value = whichNode->value;
-				whichNode->value = tmp;
+			/*change right child*/
+			if (!compare(to->value, from->nextRight->value) 
+				&& !compare(from->nextRight->value, to->value)){
+				to->nextRight = from;
+			} else { 
+				from->nextRight->previous = to;
+				to->nextRight = from->nextRight; }
+
+
+			if (!compare(to->value, from->previous->value) 
+				&& !compare(from->previous->value, to->value)){
+				/*change IN parent*/
+				if (to->previous){
+					if (compare(to->previous->value, to->value)) { 
+						to->previous->nextRight = from; 
+					} else { to->previous->nextLeft = from; }
+				} 
+				/*change parent*/
+				to->previous = from;
+			} else { to->previous = from->previous; }
+			
+		}
+	
+	template <class _T, class _Compare, class _Allocator>
+		void	_rb_tree<_T, _Compare, _Allocator>::
+			___nodesSwap(pointer_node finded,
+								pointer_node deleted){
+			pointer_node		tmpNode = nodeAlloc.allocate(1);
+			nodeAlloc.construct(tmpNode, *deleted);
+
+			if (!deleted->previous) { node = finded; }
+
+			___pointersSwap(deleted, finded);
+			___pointersSwap(finded, tmpNode);
+			std::cout<< "AAA: "  << deleted->value.first << "  ->  "  << deleted->previous->value.first << std::endl;
+			std::cout << "AAA: " << finded->value.first << "  ->  "  << finded->nextRight->value.first << std::endl;
+			// exit(0);
 		}
 
 	template <class _T, class _Compare, class _Allocator>
@@ -179,9 +219,7 @@ template <class _T, class _Compare, class _Allocator>
 				bro.second->color = BLACK;
 				bro.second->nextLeft->color = RED;
 				bro.second->previous->color = RED;
-				std::cout << bro.second->value.first << std::endl;
 				_rightTurn(bro.second->previous, bro.second);
-				// print_tree(node);
 			}
 
 	template <class _T, class _Compare, class _Allocator>
@@ -218,7 +256,6 @@ template <class _T, class _Compare, class _Allocator>
 					bro.second->nextLeft->color = BLACK;
 
 					_rightTurn(bro.second, bro.second->nextLeft);
-
 					___redRightChildBalancing(doubleBlackNode,
 										___olderYangerBrother(doubleBlackNode));
 				}
@@ -238,7 +275,6 @@ template <class _T, class _Compare, class _Allocator>
 										___olderYangerBrother(doubleBlackNode));
 				} else if (bro.first == YANGER) {
 					_leftTurn(bro.second, bro.second->nextRight);
-					// print_tree(node);
 					___yangerBrotherBalancing(doubleBlackNode, 
 										___olderYangerBrother(doubleBlackNode));
 				} else {
@@ -303,21 +339,36 @@ template <class _T, class _Compare, class _Allocator>
 				pointer_node	leastRightChild;
 
 				leastRightChild = ___findLeastRightChild(deletedNode->nextRight);
-				
-				___nodesValueChange(leastRightChild, deletedNode);
 
-				_deleteOptions(leastRightChild);
+				___nodesSwap(leastRightChild, deletedNode);
+				// std::cout << "\nDELETED: " << deletedNode->value.first << std::endl;
+				// std::cout << "COLOR: " << (char)(deletedNode->color) << std::endl;
+				// std::cout << "PARENT: " << deletedNode->previous->value.first << std::endl;
+				// if (compare(deletedNode->previous->value,deletedNode->value)){
+				// 	std::cout << "PARENT's: " << deletedNode->previous->nextRight->value.first << std::endl;
+				// }
+				// std::cout << "LEFT: " << deletedNode->nextLeft->isItNil << std::endl;
+				// std::cout << "RIGHT: " << deletedNode->nextRight->value.first << std::endl;
+				// exit (0);
+				_deleteOptions(deletedNode);
 		}
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			__deletedWithOneChild(pointer_node deletedNode){
 				if (deletedNode->nextRight->isItNil){
-					___nodesValueChange(deletedNode->nextLeft, deletedNode);
-					__deleteNode(deletedNode->nextLeft);
+					___nodesSwap(deletedNode->nextLeft, deletedNode);
+					__deleteNode(deletedNode);
 				} else {
-					___nodesValueChange(deletedNode->nextRight, deletedNode);
-					__deleteNode(deletedNode->nextRight);
+					___nodesSwap(deletedNode->nextRight, deletedNode);
+				// std::cout << "\nDELETED: " << deletedNode->value.first << std::endl;
+				// std::cout << "COLOR: " << (char)(deletedNode->color) << std::endl;
+				// std::cout << "PARENT: " << deletedNode->previous->value.first << std::endl;
+				// std::cout << "PARENT's: " << deletedNode->previous->nextRight->value.first << std::endl;
+				// std::cout << "LEFT: " << deletedNode->nextLeft->isItNil << std::endl;
+				// std::cout << "RIGHT: " << deletedNode->nextRight->isItNil << std::endl;
+				// exit (0);
+					__deleteNode(deletedNode);
 				}
 		}
 
@@ -330,7 +381,6 @@ template <class _T, class _Compare, class _Allocator>
 					deletedNode->color = DOUBLE_BLACK;
 					__deleteNode(deletedNode);
 					__blackBalancing(deletedNode);
-
 				}
 		}
 
