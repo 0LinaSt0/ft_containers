@@ -224,7 +224,7 @@ namespace ft{
 			class value_compare
 			{
 				friend class _rb_tree;
-			
+
 				protected:
 					_Compare comp;
 					value_compare () {}  // constructed with map's comparison object
@@ -246,9 +246,9 @@ namespace ft{
 
 			void	___nodeLessGranddad(pointer_node uncle, pointer_node addedNode);
 
-			void	__blackUncle(pointer_node uncle, pointer_node addedNode);
+			void	__blackUncle(pointer_node& uncle, pointer_node& addedNode);
 
-			void	__redUncle(pointer_node uncle, pointer_node addedNode);
+			void	__redUncle(pointer_node& uncle, pointer_node& addedNode);
 
 			pointer_node	__findUncle(pointer_node newNode);
 
@@ -257,9 +257,27 @@ namespace ft{
 
 			void	__deleteNode(pointer_node deletedNode);
 
-			void	___pointersSwap(pointer_node to, pointer_node from);
+			void	___pointersSwap(pointer_node& to, pointer_node& from);
 
-			void	___nodesSwap(pointer_node finded, pointer_node deleted);
+			void	____childrenParentSwap(pointer_node& finded, pointer_node& deleted,
+										bool isNodeNeigbours);
+
+			void	____childrenSwap(pointer_node& finded, pointer_node& deleted,
+										bool isNodeNeigbours);
+
+			void	____parentChildrenSwap(pointer_node& finded, pointer_node& deleted,
+										bool isNodeNeigbours);
+
+			void	____parentsSwap(pointer_node& finded, pointer_node& deleted,
+										bool isNodeNeigbours);
+
+			void	____optionsSwap(pointer_node& finded, pointer_node& deleted,
+										bool isNodeNeigbours);
+
+			bool	____isNodeNeigboursSwap(pointer_node& finded,
+												pointer_node& deleted);
+
+			void	___nodesSwap(pointer_node& finded, pointer_node& deleted);
 
 			void	___brotherParentChange(pointer_node doubleBlackNode,
 										pair<olderYangerBro, pointer_node> bro);
@@ -300,7 +318,7 @@ namespace ft{
 
 			void	_freeTree(pointer_node node){
 				if (!node || node->isItNil) { return ; }
-				
+
 				_freeTree(node->nextLeft);
 				_freeNode(node->nextLeft);
 				_freeTree(node->nextRight);
@@ -325,17 +343,17 @@ namespace ft{
 				}
 			}
 
-			pointer_node	_findNode(const value_type& finding) const{
+			pointer_node	_findNode(const value_type finding) const{
 				if (!node){ return NULL; }
 
 				pointer_node	lookedNode = node;
 
 				while(1){
-					if (!compare(lookedNode->value, finding) 
-							&& !compare(finding, lookedNode->value)) { 
-					break; 
-					} else if (compare(lookedNode->value, finding)) { 
-						lookedNode = lookedNode->nextRight; 
+					if (!compare(lookedNode->value, finding)
+							&& !compare(finding, lookedNode->value)) {
+					break;
+					} else if (compare(lookedNode->value, finding)) {
+						lookedNode = lookedNode->nextRight;
 					} else { lookedNode = lookedNode->nextLeft; }
 					if (lookedNode->isItNil) { return NULL; }
 				}
@@ -355,8 +373,10 @@ namespace ft{
 				}
 			}
 
-			void	_leftTurn(pointer_node oldParent, pointer_node newParent){
+			void	_leftTurn(pointer_node& oldParent, pointer_node& newParent){
 				oldParent->nextRight = newParent->nextLeft;
+				std::cout << newParent->value.first << std::endl;
+				return ;
 				newParent->nextLeft->previous = oldParent;
 				newParent->nextLeft = oldParent;
 				___updateNodesPointers(oldParent, newParent);
@@ -406,7 +426,7 @@ namespace ft{
 				countElems++;
 			}
 
-			void	_redDad(pointer_node addedNode){
+			void	_redDad(pointer_node& addedNode){
 				pointer_node	uncle = __findUncle(addedNode);
 
 				if (!uncle){ }
@@ -417,7 +437,7 @@ namespace ft{
 				if (!node) { node = addedNode; }
 			}
 
-			void	_deleteOptions(pointer_node deletedNode){
+			void	_deleteOptions(pointer_node& deletedNode){
 				if (!deletedNode->nextRight->isItNil
 						&& !deletedNode->nextLeft->isItNil){
 					__deletedWithTwoGhildren(deletedNode);
@@ -432,7 +452,7 @@ namespace ft{
 
 		public:
 			explicit _rb_tree(void) : node (NULL), countElems(0) {}
-			template <class InputIterator> 
+			template <class InputIterator>
 				_rb_tree(InputIterator first, InputIterator last);
 			_rb_tree(const _rb_tree& other);
 			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
@@ -465,9 +485,7 @@ namespace ft{
 			template< class key, class value >
 				pointer_node	createMapNode(const key& node_key,
 												const value& node_value){
-					pointer_node	newNode;
-
-					newNode = nodeAlloc.allocate(1);
+					pointer_node	newNode = nodeAlloc.allocate(1);
 					newNode->value = pair<key, value>(node_key, node_value);
 					newNode->color = RED;
 					newNode->isItNil = false;
@@ -492,9 +510,9 @@ namespace ft{
 			}
 
 			pair<iterator,bool> insert (const value_type& val);
-			
+
 			iterator insert (iterator position, const value_type& val);
-			
+
 			template <class InputIterator>
 				void insert (InputIterator first, InputIterator last);
 
@@ -565,10 +583,10 @@ namespace ft{
 				print_tree(currentNode->nextLeft);
 				print_node(currentNode);
 				print_tree(currentNode->nextRight);
-			}
 
+			}
 		} ;
-}
+} ;
 
 #include "tpp_format/tree.tpp"
 

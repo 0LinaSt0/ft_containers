@@ -18,6 +18,7 @@ typedef ft::pair<int, int>			_pair;
 
 template <class _tree>
 	void	checkInsert(_tree& tree){
+
 		tree.insert(tree.createMapNode(15, 1));
 		tree.insert(tree.createMapNode(12, 2));
 		tree.insert(tree.createMapNode(17, 3));
@@ -72,8 +73,8 @@ void	treeChecks(void){
 		checkErase(tree);
 
 
-		tree.print_tree(tree.root());
-		std::cout << "TREE_SIZE: " << tree.size() << std::endl;
+		// tree.print_tree(tree.root());
+		// std::cout << "TREE_SIZE: " << tree.size() << std::endl;
 	}
 	{
 		// std::map<int, int>		map;
