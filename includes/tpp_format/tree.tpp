@@ -40,7 +40,7 @@ namespace ft {
 				___updateNodesPointers(pointer_node oldNode,
 										pointer_node newNode){
 			if (oldNode->previous) {
-				if (compare(oldNode->previous->value, oldNode->value)) {
+				if (compare(oldNode->previous->value, newNode->value)) {
 				oldNode->previous->nextRight = newNode;
 				} else {
 					oldNode->previous->nextLeft = newNode;
@@ -145,8 +145,8 @@ namespace ft {
 		}
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
-				____childrenParentSwap(pointer_node& finded,
-											pointer_node& deleted,
+				____childrenParentSwap(pointer_node finded,
+											pointer_node deleted,
 											bool isNodeNeigbours){
 			bool	deletedLessFinded
 				= compare(deleted->value, finded->value);
@@ -165,8 +165,8 @@ namespace ft {
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
-				____childrenSwap(pointer_node& finded,
-									pointer_node& deleted,
+				____childrenSwap(pointer_node finded,
+									pointer_node deleted,
 									bool isNodeNeigbours){
 			bool	deletedLessFinded
 						= compare(deleted->value, finded->value);
@@ -189,26 +189,26 @@ namespace ft {
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
-				____parentChildrenSwap(pointer_node& finded,
-										pointer_node& deleted,
+				____parentChildrenSwap(pointer_node finded,
+										pointer_node deleted,
 										bool isNodeNeigbours){
 			/*parents children swap*/
 			if (deleted->previous){
 				if (compare(deleted->value, deleted->previous->value))
 						deleted->previous->nextLeft = finded;
 				else { deleted->previous->nextRight = finded;}
-				if (!isNodeNeigbours){
-					(compare(finded->value, finded->previous->value))
-						? finded->previous->nextLeft = deleted
-						: finded->previous->nextRight = deleted;
-				}
+			}
+			if (!isNodeNeigbours){
+				(compare(finded->value, finded->previous->value))
+					? finded->previous->nextLeft = deleted
+					: finded->previous->nextRight = deleted;
 			}
 		}
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
-				____parentsSwap(pointer_node& finded,
-									pointer_node& deleted,
+				____parentsSwap(pointer_node finded,
+									pointer_node deleted,
 									bool isNodeNeigbours){
 			/*parents swap*/
 			if (isNodeNeigbours){
@@ -220,19 +220,20 @@ namespace ft {
 
 	template <class _T, class _Compare, class _Allocator>
 			void	_rb_tree<_T, _Compare, _Allocator>::
-				____optionsSwap(pointer_node& finded,
-									pointer_node& deleted,
+				____optionsSwap(pointer_node finded,
+									pointer_node deleted,
 									bool isNodeNeigbours){
 		____childrenParentSwap(finded, deleted, isNodeNeigbours);
 		____childrenSwap(finded, deleted, isNodeNeigbours);
 		____parentChildrenSwap(finded, deleted, isNodeNeigbours);
 		____parentsSwap(finded, deleted, isNodeNeigbours);
+		if (!finded->previous) { node = &(*finded); }
 	}
 
 	template <class _T, class _Compare, class _Allocator>
 		bool	_rb_tree<_T, _Compare, _Allocator>::
-			____isNodeNeigboursSwap(pointer_node& finded,
-									pointer_node& deleted){
+			____isNodeNeigboursSwap(pointer_node finded,
+									pointer_node deleted){
 			if ((!compare(deleted->nextRight->value, finded->value)
 					&& !compare(finded->value, deleted->nextRight->value))
 					|| (!compare(deleted->nextLeft->value, finded->value)
@@ -243,8 +244,8 @@ namespace ft {
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
-			___nodesSwap(pointer_node& finded,
-							pointer_node& deleted){
+			___nodesSwap(pointer_node finded,
+							pointer_node deleted){
 			nodeColor	tmpColor = deleted->color;
 
 			deleted->color = finded->color;
@@ -415,7 +416,6 @@ namespace ft {
 				leastRightChild = ___findLeastRightChild(deletedNode->nextRight);
 
 				___nodesSwap(leastRightChild, deletedNode);
-
 				_deleteOptions(deletedNode);
 		}
 
@@ -429,13 +429,7 @@ namespace ft {
 					__deleteNode(deletedNode);
 				} else {
 					deletedNode->nextRight->color = deletedNode->color;
-				print_node(deletedNode->nextRight);
-				// print_node(deletedNode->nextRight->nextRight->previous);
-
-				// return ;
 					_leftTurn(deletedNode, deletedNode->nextRight);
-					// print_tree(node);
-						// return ;
 					__deleteNode(deletedNode);
 				}
 		}

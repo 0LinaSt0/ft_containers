@@ -40,25 +40,25 @@ template <class _tree>
 template <class _tree>
 	void	checkErase(_tree& tree){
 		tree.erase(_pair(11, 5));
-		// tree.erase(_pair(17, 3));
+		tree.erase(_pair(17, 3));
 
-		// tree.erase(_pair(22, 12));
-		// tree.erase(_pair(19, 9));
-		// tree.erase(_pair(31, 10));
-		// tree.erase(_pair(15, 1));
-		// tree.erase(_pair(9, 11));
+		tree.erase(_pair(22, 12));
+		tree.erase(_pair(19, 9));
+		tree.erase(_pair(31, 10));
+		tree.erase(_pair(15, 1));
+		tree.erase(_pair(9, 11));
 
-		// tree.erase(_pair(13, 11));
-		// tree.erase(_pair(34, 6));
-		// tree.erase(_pair(35, 12));
-		// tree.erase(_pair(32, 10));
-		// tree.erase(_pair(18, 8));
+		tree.erase(_pair(13, 11));
+		tree.erase(_pair(34, 6));
+		tree.erase(_pair(35, 12));
+		tree.erase(_pair(32, 10));
+		tree.erase(_pair(18, 8));
 
 		// tree.erase(_pair(33, 20));
-		// tree.erase(_pair(16, 7));
-		// tree.erase(_pair(20, 4));
-		// tree.erase(_pair(12, 2));
-		// tree.erase(_pair(2, 3)); /*tree doesn't have this element*/
+		tree.erase(_pair(16, 7));
+		tree.erase(_pair(20, 4));
+		tree.erase(_pair(12, 2));
+		tree.erase(_pair(2, 3)); /*tree doesn't have this element*/
 	}
 
 
@@ -73,8 +73,8 @@ void	treeChecks(void){
 		checkErase(tree);
 
 
-		// tree.print_tree(tree.root());
-		// std::cout << "TREE_SIZE: " << tree.size() << std::endl;
+		tree.print_tree(tree.root());
+		std::cout << "TREE_SIZE: " << tree.size() << std::endl;
 	}
 	{
 		// std::map<int, int>		map;

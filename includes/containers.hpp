@@ -259,25 +259,25 @@ namespace ft{
 
 			void	___pointersSwap(pointer_node& to, pointer_node& from);
 
-			void	____childrenParentSwap(pointer_node& finded, pointer_node& deleted,
+			void	____childrenParentSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
 
-			void	____childrenSwap(pointer_node& finded, pointer_node& deleted,
+			void	____childrenSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
 
-			void	____parentChildrenSwap(pointer_node& finded, pointer_node& deleted,
+			void	____parentChildrenSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
 
-			void	____parentsSwap(pointer_node& finded, pointer_node& deleted,
+			void	____parentsSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
 
-			void	____optionsSwap(pointer_node& finded, pointer_node& deleted,
+			void	____optionsSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
 
-			bool	____isNodeNeigboursSwap(pointer_node& finded,
-												pointer_node& deleted);
+			bool	____isNodeNeigboursSwap(pointer_node finded,
+												pointer_node deleted);
 
-			void	___nodesSwap(pointer_node& finded, pointer_node& deleted);
+			void	___nodesSwap(pointer_node finded, pointer_node deleted);
 
 			void	___brotherParentChange(pointer_node doubleBlackNode,
 										pair<olderYangerBro, pointer_node> bro);
@@ -373,10 +373,8 @@ namespace ft{
 				}
 			}
 
-			void	_leftTurn(pointer_node& oldParent, pointer_node& newParent){
+			void	_leftTurn(pointer_node oldParent, pointer_node newParent){
 				oldParent->nextRight = newParent->nextLeft;
-				std::cout << newParent->value.first << std::endl;
-				return ;
 				newParent->nextLeft->previous = oldParent;
 				newParent->nextLeft = oldParent;
 				___updateNodesPointers(oldParent, newParent);
@@ -521,7 +519,8 @@ namespace ft{
 
 				if (!deletedNode) { return ; }
 
-				_deleteOptions(deletedNode);
+				 _deleteOptions(deletedNode);
+
 				if (node->isItNil){
 					_freeNode(node);
 					node = NULL;
@@ -551,7 +550,7 @@ namespace ft{
 
 			void	print_node(pointer_node treeNode){
 				std::cout << "NODE_status" << std::endl;
-				std::cout << "	nodeAddress: " << &treeNode << "\n";
+				std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
 				std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
 				// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
 				std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
