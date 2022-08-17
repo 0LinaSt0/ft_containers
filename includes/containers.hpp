@@ -171,13 +171,13 @@ namespace ft{
 			typedef value_type*											reference;
 			typedef std::bidirectional_iterator_tag						iterator_category;
 
-			typedef typename _tree_node<value_type>::node_ptr	pointer_node;
+			typedef typename _tree_node<value_type>::pointre_node		pointer_node;
 		protected:
 			pointer_node	node;
 		public:
 			_rb_tree_iter(void) : node (NULL) { }
 			_rb_tree_iter(const pointer_node tree) : node(tree) { }
-			_rb_tree_iter(const _rb_tree_iter& otherTree) : node(otherTree.base()) { }
+			// _rb_tree_iter(const _rb_tree_iter& otherTree) : node(otherTree.base()) { }
 			~_rb_tree_iter(void) { }
 
 			reference		operator* (void) const { return *node->value; }
@@ -239,18 +239,17 @@ namespace ft{
 			} ;
 			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~*/
 
+			pointer_node	__findUncle(pointer_node newNode);
+
 			void	___updateNodesPointers(pointer_node oldNode,
 											pointer_node newNode);
 
 			void	___nodeMoreGranddad(pointer_node uncle, pointer_node addedNode);
-
 			void	___nodeLessGranddad(pointer_node uncle, pointer_node addedNode);
 
-			void	__blackUncle(pointer_node& uncle, pointer_node& addedNode);
+			void	__blackUncle(pointer_node uncle, pointer_node addedNode);
+			void	__redUncle(pointer_node uncle, pointer_node addedNode);
 
-			void	__redUncle(pointer_node& uncle, pointer_node& addedNode);
-
-			pointer_node	__findUncle(pointer_node newNode);
 
 
 			/* ~~~~~~~~~~~ USEFUL FUNCTIONS FOR DELETE NODE ~~~~~~~~~*/
@@ -258,61 +257,59 @@ namespace ft{
 			void	__deleteNode(pointer_node deletedNode);
 
 			void	___pointersSwap(pointer_node& to, pointer_node& from);
-
 			void	____childrenParentSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
-
 			void	____childrenSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
-
 			void	____parentChildrenSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
-
 			void	____parentsSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
-
 			void	____optionsSwap(pointer_node finded, pointer_node deleted,
 										bool isNodeNeigbours);
-
 			bool	____isNodeNeigboursSwap(pointer_node finded,
 												pointer_node deleted);
-
 			void	___nodesSwap(pointer_node finded, pointer_node deleted);
+
 
 			void	___brotherParentChange(pointer_node doubleBlackNode,
 										pair<olderYangerBro, pointer_node> bro);
-
 			pair<olderYangerBro, pointer_node>	___olderYangerBrother(pointer_node doubleBlackNode);
-
 			pointer_node	___findLeastRightChild(pointer_node currentNode);
+
 
 			void	___yangerBrotherBalancing(pointer_node doubleBlackNode,
 										pair<olderYangerBro, pointer_node> bro);
-
 			void	___blackChildrenBalancing(pointer_node doubleBlackNode,
 											pair<olderYangerBro, pointer_node> bro);
-
 			void	___redLeftChildBalancing(pointer_node doubleBlackNode,
 												pair<olderYangerBro, pointer_node> bro);
-
 			void	___redRightChildBalancing(pointer_node doubleBlackNode,
 												pair<olderYangerBro, pointer_node> bro);
-
 			void	___redBrotherBalancing(pointer_node doubleBlackNode,
 										pair<olderYangerBro,pointer_node> bro);
-
 			void	___blackBrotherBalancing(pointer_node doubleBlackNode,
 										pair<olderYangerBro,pointer_node> bro);
-
 			void	__blackBalancing(pointer_node doubleBlackNode);
 
 			void	__deletedWithTwoGhildren(pointer_node deletedNode);
-
 			void	__deletedWithOneChild(pointer_node deletedNode);
-
 			void	__deletedWithoutChildren(pointer_node deletedNode);
 
 		private:
+			pointer_node	_createNode(const value_type& val){
+					pointer_node	newNode = nodeAlloc.allocate(1);
+					newNode->value = val;
+					newNode->color = RED;
+					newNode->isItNil = false;
+					newNode->previous = NULL;
+					newNode->nextRight = NULL;
+					newNode->nextLeft = NULL;
+
+					return newNode;
+				}
+
+
 			void	_freeNode(pointer_node destroiedNode)
 				{ nodeAlloc.deallocate(destroiedNode, 1); }
 
@@ -333,17 +330,7 @@ namespace ft{
 				return last_node;
 			}
 
-			void	_printChildren(pointer_node child){
-				if (child){
-					std::cout << "		isitNil - " << std::boolalpha
-													<< child->isItNil << "\n";
-					if (!(child->isItNil))
-						{ std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
-						// { std::cout << "		key - " << child->value << "\n"; }/*for set*/
-				}
-			}
-
-			pointer_node	_findNode(const value_type finding) const{
+			pointer_node	_findNode(const value_type& finding) const{
 				if (!node){ return NULL; }
 
 				pointer_node	lookedNode = node;
@@ -476,48 +463,43 @@ namespace ft{
 
 
 			/* ~~~~~~~~~~~~ MODIFIERS ~~~~~~~~~~
-				createMapNode	|	Create new map node and return pointer to it (FOR TESTING)
-				insert			|	Add added_node to the right place and return pointer to it
+				insert			|	Add added_node to the right place
 				erase			|	Delete deleded_node to the right place
 				swap, clear*/
-			template< class key, class value >
-				pointer_node	createMapNode(const key& node_key,
-												const value& node_value){
-					pointer_node	newNode = nodeAlloc.allocate(1);
-					newNode->value = pair<key, value>(node_key, node_value);
-					newNode->color = RED;
-					newNode->isItNil = false;
-					newNode->previous = NULL;
-					newNode->nextRight = NULL;
-					newNode->nextLeft = NULL;
 
-					return newNode;
-				}
+			pair<iterator,bool> insert (const value_type& val){
+				pointer_node	insertPlace = node;
+				pointer_node	added_node = _createNode(val);
 
-			pointer_node	insert(pointer_node added_node){
-				pointer_node	inceptionPlace = node;
-
-				inceptionPlace = _findsInsertPlace(added_node, inceptionPlace);
-				if (inceptionPlace == added_node)
-					return inceptionPlace;
-				_addsNodeToFindedPlace(added_node, inceptionPlace);
+				insertPlace = _findsInsertPlace(added_node, insertPlace);
+				if (insertPlace == added_node)
+					{ return pair<iterator, bool>
+									(iterator(added_node), false); }
+				_addsNodeToFindedPlace(added_node, insertPlace);
 				if (added_node->previous
 						&& added_node->previous->color == RED)
 					{ _redDad(added_node); }
-				return added_node;
+				return pair<iterator, bool>(iterator(added_node), true);
 			}
 
-			pair<iterator,bool> insert (const value_type& val);
-
-			iterator insert (iterator position, const value_type& val);
+			iterator insert (iterator position, const value_type& val){
+				if (!compare(position->value.first, val)
+						&& !compare(val, position->value.first)){
+					return position;
+				} else (compare(position->value.first, val))
+			}
 
 			template <class InputIterator>
-				void insert (InputIterator first, InputIterator last);
+				void insert (InputIterator first, InputIterator last){
+					for (iterator it(first); it != last; it++){
+						insert(*it);
+					}
+				}
 
-			void	erase(const value_type& val){
+			size_type	erase(const value_type& val){
 				pointer_node	deletedNode = _findNode(val);
 
-				if (!deletedNode) { return ; }
+				if (!deletedNode) { return 0; }
 
 				 _deleteOptions(deletedNode);
 
@@ -526,7 +508,18 @@ namespace ft{
 					node = NULL;
 				}
 				countElems--;
+				return 1;
 			}
+
+			void erase (iterator position){	erase(*position); }
+
+			void erase (iterator first, iterator last){
+				for (iterator it(first); it != last; it++){
+					erase(*it);
+				}
+			}
+
+			void clear() { _freeTree(node); node == NULL; }
 
 			/* ~~~~~~~~~~~~ OPERATIONS ~~~~~~~~~~
 				at		|	Returns a pointer to the node with value_type 'n' in tree or NULL
@@ -548,6 +541,16 @@ namespace ft{
 				print_tree	|	print tree, taking root node
 			*/
 
+			void	printChildren(pointer_node child){
+				if (child){
+					std::cout << "		isitNil - " << std::boolalpha
+													<< child->isItNil << "\n";
+					if (!(child->isItNil))
+						{ std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
+						// { std::cout << "		key - " << child->value << "\n"; }/*for set*/
+				}
+			}
+
 			void	print_node(pointer_node treeNode){
 				std::cout << "NODE_status" << std::endl;
 				std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
@@ -566,11 +569,11 @@ namespace ft{
 
 				std::cout << "	rightChild: " << "\n"
 							<< "		adress - " << treeNode->nextRight << "\n";
-				_printChildren(treeNode->nextRight);
+				printChildren(treeNode->nextRight);
 
 				std::cout << "	leftChild: " << "\n"
 							<< "		adress - " << treeNode->nextLeft << "\n";
-				_printChildren(treeNode->nextLeft);
+				printChildren(treeNode->nextLeft);
 				std::cout<< std::endl << std::endl;
 			}
 

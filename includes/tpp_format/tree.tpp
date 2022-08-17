@@ -83,8 +83,8 @@ namespace ft {
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
-				__blackUncle(pointer_node& uncle,
-								pointer_node& addedNode){
+				__blackUncle(pointer_node uncle,
+								pointer_node addedNode){
 
 			if (compare(uncle->previous->value, addedNode->value)){
 				___nodeMoreGranddad(uncle, addedNode);
@@ -98,8 +98,8 @@ namespace ft {
 
 	template <class _T, class _Compare, class _Allocator>
 			void	_rb_tree<_T, _Compare, _Allocator>::
-					__redUncle(pointer_node& uncle,
-									pointer_node& addedNode){
+					__redUncle(pointer_node uncle,
+									pointer_node addedNode){
 				/*dad*/addedNode->previous->color = BLACK;
 				/*uncle*/uncle->color = BLACK;
 				if (uncle->previous->previous){
@@ -292,8 +292,13 @@ namespace ft {
 										::pointer_node> bro){
 				doubleBlackNode->color = BLACK;
 				bro.second->color = BLACK;
-				bro.second->nextLeft->color = RED;
-				bro.second->previous->color = RED;
+				if (bro.second->previous->color == RED){
+					bro.second->nextLeft->color = RED;
+					bro.second->previous->color = RED;
+				} else {
+					bro.second->nextLeft->color = BLACK;
+					bro.second->previous->color = BLACK;
+				}
 				_rightTurn(bro.second->previous, bro.second);
 			}
 
