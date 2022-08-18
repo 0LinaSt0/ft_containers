@@ -65,21 +65,35 @@ typedef ft::_rb_tree<_pair, std::less<int>, std::allocator<_pair> >	_tree_int;
 
 void	treeChecks(void){
 	{
-		_tree_int	tree;
+		// _tree_int	tree;
 
-		checkInsert(tree);
+		// checkInsert(tree);
 
-		checkErase(tree);
+		// checkErase(tree);
 
 
-		tree.print_tree(tree.root());
-		std::cout << "TREE_SIZE: " << tree.size() << std::endl;
+		// tree.print_tree(tree.root());
+		// std::cout << "TREE_SIZE: " << tree.size() << std::endl;
 	}
 	{
-		// std::map<int, int>		map;
-		// std::set<int>			set;
+		std::map<int, int>		map;
 
+		map.insert(std::pair<int, int>(1, 1));
+		map.insert(std::pair<int, int>(2, 1));
+		map.insert(std::pair<int, int>(3, 1));
+		map.insert(std::pair<int, int>(4, 1));
+		map.insert(std::pair<int, int>(5, 1));
+		map.insert(std::pair<int, int>(6, 1));
+		map.insert(std::pair<int, int>(7, 1));
+		map.insert(std::pair<int, int>(8, 1));
+
+		for(std::map<int, int>::iterator it(map.begin());
+					it != map.end();
+					it++){
+				std::cout << (*it).first << std::endl;
+			}
 		// std::cout << map.begin()->first << std::endl;
 		// // std::cout << set.begin()->first << std::endl;
+
 	}
 }

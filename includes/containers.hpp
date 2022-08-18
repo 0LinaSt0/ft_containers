@@ -174,24 +174,94 @@ namespace ft{
 			typedef typename _tree_node<value_type>::pointre_node		pointer_node;
 		protected:
 			pointer_node	node;
+
+			pointer_node	_findNextNode(pointer_node elem){
+				pointer_node	returned = elem;
+
+				if (returned->nextRight->isItNil){
+					pointer_node parent = returned->previous;
+					while(parent && returned == parent->nextRight){
+						returned = parent;
+						parent = parent->previous;
+					}
+					if (!parent) { returned = elem->nextRight; }
+					if (returned->nextRight != parent) { returned = parent; }
+				} else {
+					returned = returned->nextRight;
+					while (!returned->nextLeft->isItNil) {
+						returned = returned->nextLeft;
+					}
+				}
+				return returned;
+			}
+
+			pointer_node	_findPrevNode(pointer_node elem){
+				pointer_node	returned = elem;
+
+				if (returned->nextLeft->isItNil){
+					pointer_node parent = returned->previous;
+					while(parent && returned == parent->nextLeft){
+						returned = parent;
+						parent = parent->previous;
+					}
+					if (!parent) { returned = elem->nextLeft; }
+					if (returned->nextLeft != parent) { returned = parent; }
+				} else {
+					returned = returned->nextLeft;
+					while (!returned->nextRight->isItNil) {
+						returned = returned->nextRight;
+					}
+				}
+				return returned;
+			}
 		public:
 			_rb_tree_iter(void) : node (NULL) { }
+			_rb_tree_iter(const _rb_tree_iter& tree) { node = tree.node; }
 			_rb_tree_iter(const pointer_node tree) : node(tree) { }
-			// _rb_tree_iter(const _rb_tree_iter& otherTree) : node(otherTree.base()) { }
 			~_rb_tree_iter(void) { }
 
 			reference		operator* (void) const { return *node->value; }
 			pointer			operator->(void) const { return node->value; }
 			_rb_tree_iter&	operator=(const _rb_tree_iter& other) { node = other.node; return *this; }
-			_rb_tree_iter&	operator++(void) { node = node->nextRight; return *this; }
-			_rb_tree_iter	operator++(int) { pointer_node _new = *node; node = node->nextRight; return _new; }
-			_rb_tree_iter&	operator--(void) { node = node->previous; return *this; }
-			_rb_tree_iter	operator--(int) { pointer_node _new = *node; node = node->previous; return _new; }
+			_rb_tree_iter&	operator++(void) { node = _findNextNode(node); return *this; }
+			_rb_tree_iter	operator++(int) { pointer_node _new = *node; node = _findNextNode(node); return _new; }
+			_rb_tree_iter&	operator--(void) { node = _findPrevNode(node); return *this; }
+			_rb_tree_iter	operator--(int) { pointer_node _new = *node; node = _findPrevNode(node); return _new; }
 
 			pointer		base(void) const { return *node; }
 		} ;
 
-	template <class _T, class _Compare, class _Allocator>
+	template < class rbIter>
+		class	_rb_tree_rev_iter : public _rb_tree_iter <rbIter>{
+		protected:
+			rbIter	iterTree;
+		public:
+			typedef typename rbIter::difference_type	difference_type;
+			typedef typename rbIter::value_type			value_type;
+			typedef typename rbIter::pointer			pointer;
+			typedef typename rbIter::reference			reference;
+			typedef typename rbIter::iterator_category	iterator_category;
+			typedef _rb_tree_rev_iter					rbRevIter;
+
+			_rb_tree_rev_iter(void) : iterTree (NULL) { }
+			_rb_tree_rev_iter(const rbRevIter& revIter) { iterTree = revIter.iterTree; }
+			_rb_tree_rev_iter(const rbIter revIter) : iterTree(revIter) { }
+			~_rb_tree_rev_iter(void) { }
+
+			reference	operator* (void) const { rbIter t = iterTree; return *(--t)->value; }
+			pointer		operator->(void) const { return &(operator*()); }
+			/*???*/rbRevIter&	operator=(const rbRevIter& other) { iterTree = other.iterTree; return *this; }
+			rbRevIter&	operator++(void) { --iterTree; return *this; }
+			rbRevIter	operator++(int) { rbRevIter _new(*this); --iterTree; return _new; }
+			rbRevIter&	operator--(void) { ++iterTree; return *this; }
+			rbRevIter	operator--(int) { rbRevIter _new(*this); --iterTree; return _new; }
+
+			pointer		base(void) const { return iterTree; }
+
+		} ;
+
+	template <class _T, class _Compare,
+					class _Allocator = std::allocator<_T> >
 		class	_rb_tree {
 		public:
 			typedef _T															value_type;
@@ -436,19 +506,25 @@ namespace ft{
 			}
 
 		public:
-			explicit _rb_tree(void) : node (NULL), countElems(0) {}
-			template <class InputIterator>
-				_rb_tree(InputIterator first, InputIterator last);
-			_rb_tree(const _rb_tree& other);
+			_rb_tree(void) : node (NULL), countElems(0) {}
+			_rb_tree(const compare_class& comp,
+						const allocator_type& a = allocator_type())
+						: node(NULL), compare(comp), countElems(0),
+						allocator_node(a) { }
+			_rb_tree(const _rb_tree& other) { operator=(other); }
 			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
 
-			_rb_tree& operator= (const _rb_tree& x);
+			_rb_tree& operator= (const _rb_tree& x){
+				node = x.node;
+				countElems = x.countElems;
+				allocator_node(x.nodeAlloc);
+			}
 
 			/*Iterators: begin, end, rbegin, rend*/
 			iterator begin() { return countElems ? iterator(node) : end(); }
 			const_iterator begin() const { return countElems ? const_iterator(node) : end(); }
-			iterator end() { return _endElem(); }
-			const_iterator end() const { return _endElem(); }
+			iterator end() { return iterator((_endElem())->nextRight); }
+			const_iterator end() const { return const_iterator(end()); }
 			// reverse_iterator rbegin();
 			// const_reverse_iterator rbegin() const;
 			// reverse_iterator rend();
@@ -482,12 +558,12 @@ namespace ft{
 				return pair<iterator, bool>(iterator(added_node), true);
 			}
 
-			iterator insert (iterator position, const value_type& val){
-				if (!compare(position->value.first, val)
-						&& !compare(val, position->value.first)){
-					return position;
-				} else (compare(position->value.first, val))
-			}
+			/*NEED INITIALAZE*/
+			// iterator insert (iterator position, const value_type& val){
+			// 	if (compare(position->value.first, val)){
+
+			// 	}
+			// }
 
 			template <class InputIterator>
 				void insert (InputIterator first, InputIterator last){

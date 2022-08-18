@@ -102,16 +102,16 @@ namespace ft{
 
 			//Operator
 			reference	operator*(void) const { Iter ret = current; return (*--ret); }
-			revIterVec	operator+(difference_type n) const { revIterVec it (current - n); return it; }
-			revIterVec	operator-(difference_type n) const { return revIterVec(current + n); }
+			reference	operator[] (difference_type n) const { return *(current + n); }
+			pointer		operator->(void) const { return &(operator*()); }
 			revIterVec&	operator++(void) { --current; return *this; }
 			revIterVec	operator++(int) { revIterVec it(*this); --current; return it; }
 			revIterVec&	operator--(void) { ++current; return *this; }
 			revIterVec	operator--(int) { revIterVec it(*this); ++current; return it; }
+			revIterVec	operator+(difference_type n) const { revIterVec it (current - n); return it; }
+			revIterVec	operator-(difference_type n) const { return revIterVec(current + n); }
 			revIterVec&	operator+=(difference_type n) { current-= n; return *this; }
 			revIterVec&	operator-=(difference_type n) { current += n; return *this; }
-			pointer		operator->(void) const { return &(operator*()); }
-			reference	operator[] (difference_type n) const { return *(current + n); }
 
 			Iter base() const { return current; }
 		} ;
