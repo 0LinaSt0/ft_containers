@@ -16,6 +16,7 @@
 
 typedef ft::pair<int, int>			_pair;
 typedef ft::_rb_tree<_pair, std::less<int>, std::allocator<_pair> >	_tree_int;
+typedef typename _tree_int::iterator	_tree_iter;
 
 	void	checkInsert(_tree_int& tree){
 
@@ -35,6 +36,16 @@ typedef ft::_rb_tree<_pair, std::less<int>, std::allocator<_pair> >	_tree_int;
 		tree.insert(_pair(13, 11));
 		tree.insert(_pair(35, 12));
 		tree.insert(_pair(33, 20));
+
+		_tree_iter	it(tree.at(_pair(19, 9)));
+
+		tree.insert(it, _pair(20, 5));
+		it = _tree_iter(tree.at(_pair(22, 9)));
+		tree.insert(it, _pair(38, 12));
+		it = _tree_iter(tree.at(_pair(17, 3)));
+		tree.insert(it, _pair(3, 12));
+		it = _tree_iter(tree.at(_pair(17, 3)));
+		tree.insert(it, _pair(35, 12));
 	}
 
 	void	checkErase(_tree_int& tree){
@@ -65,33 +76,43 @@ typedef ft::_rb_tree<_pair, std::less<int>, std::allocator<_pair> >	_tree_int;
 
 void	treeChecks(void){
 	{
-		// _tree_int	tree;
+		_tree_int	tree;
 
-		// checkInsert(tree);
+		// std::cout << *it.first << std::endl;
+		// std::cout << (tree.at(_pair(19, 9)))->value.first << std::endl;
+		// return ;
+
+		checkInsert(tree);
+
 
 		// checkErase(tree);
 
 
-		// tree.print_tree(tree.root());
-		// std::cout << "TREE_SIZE: " << tree.size() << std::endl;
+		// tree.print_node(it.base());
+
+
+
+
+		tree.print_tree(tree.root());
+		std::cout << "TREE_SIZE: " << tree.size() << std::endl;
 	}
 	{
-		std::map<int, int>		map;
+		// std::map<int, int>		map;
 
-		map.insert(std::pair<int, int>(1, 1));
-		map.insert(std::pair<int, int>(2, 1));
-		map.insert(std::pair<int, int>(3, 1));
-		map.insert(std::pair<int, int>(4, 1));
-		map.insert(std::pair<int, int>(5, 1));
-		map.insert(std::pair<int, int>(6, 1));
-		map.insert(std::pair<int, int>(7, 1));
-		map.insert(std::pair<int, int>(8, 1));
+		// map.insert(std::pair<int, int>(1, 1));
+		// map.insert(std::pair<int, int>(2, 1));
+		// map.insert(std::pair<int, int>(3, 1));
+		// map.insert(std::pair<int, int>(4, 1));
+		// map.insert(std::pair<int, int>(5, 1));
+		// map.insert(std::pair<int, int>(6, 1));
+		// map.insert(std::pair<int, int>(7, 1));
+		// map.insert(std::pair<int, int>(8, 1));
 
-		for(std::map<int, int>::iterator it(map.begin());
-					it != map.end();
-					it++){
-				std::cout << (*it).first << std::endl;
-			}
+		// for(std::map<int, int>::iterator it(map.begin());
+		// 			it != map.end();
+		// 			it++){
+		// 		std::cout << (*it).first << std::endl;
+		// 	}
 		// std::cout << map.begin()->first << std::endl;
 		// // std::cout << set.begin()->first << std::endl;
 

@@ -167,8 +167,8 @@ namespace ft{
 		class _rb_tree_iter{
 		public:
 			typedef ptrdiff_t											difference_type;
-			typedef value_type&											pointer;
-			typedef value_type*											reference;
+			typedef value_type*											pointer;
+			typedef value_type&											reference;
 			typedef std::bidirectional_iterator_tag						iterator_category;
 
 			typedef typename _tree_node<value_type>::pointre_node		pointer_node;
@@ -228,7 +228,7 @@ namespace ft{
 			_rb_tree_iter&	operator--(void) { node = _findPrevNode(node); return *this; }
 			_rb_tree_iter	operator--(int) { pointer_node _new = *node; node = _findPrevNode(node); return _new; }
 
-			pointer		base(void) const { return *node; }
+			pointer_node	base(void) const { return node; }
 		} ;
 
 	template < class rbIter>
@@ -256,7 +256,7 @@ namespace ft{
 			rbRevIter&	operator--(void) { ++iterTree; return *this; }
 			rbRevIter	operator--(int) { rbRevIter _new(*this); --iterTree; return _new; }
 
-			pointer		base(void) const { return iterTree; }
+			rbIter		base(void) const { return iterTree; }
 
 		} ;
 
@@ -505,6 +505,22 @@ namespace ft{
 				}
 			}
 
+			pair<iterator,bool> _insertNode (const value_type& val,
+												pointer_node beginning){
+				pointer_node	insertPlace = beginning;
+				pointer_node	added_node = _createNode(val);
+
+				insertPlace = _findsInsertPlace(added_node, insertPlace);
+				if (insertPlace == added_node)
+					{ return pair<iterator, bool>
+									(iterator(added_node), false); }
+				_addsNodeToFindedPlace(added_node, insertPlace);
+				if (added_node->previous
+						&& added_node->previous->color == RED)
+					{ _redDad(added_node); }
+				return pair<iterator, bool>(iterator(added_node), true);
+			}
+
 		public:
 			_rb_tree(void) : node (NULL), countElems(0) {}
 			_rb_tree(const compare_class& comp,
@@ -544,26 +560,35 @@ namespace ft{
 				swap, clear*/
 
 			pair<iterator,bool> insert (const value_type& val){
-				pointer_node	insertPlace = node;
-				pointer_node	added_node = _createNode(val);
-
-				insertPlace = _findsInsertPlace(added_node, insertPlace);
-				if (insertPlace == added_node)
-					{ return pair<iterator, bool>
-									(iterator(added_node), false); }
-				_addsNodeToFindedPlace(added_node, insertPlace);
-				if (added_node->previous
-						&& added_node->previous->color == RED)
-					{ _redDad(added_node); }
-				return pair<iterator, bool>(iterator(added_node), true);
+				return _insertNode(val, node);
 			}
 
-			/*NEED INITIALAZE*/
-			// iterator insert (iterator position, const value_type& val){
-			// 	if (compare(position->value.first, val)){
+			iterator insert (iterator position, const value_type& val){
+				pointer_node	pos = position.base();
+				pointer_node	elemFinded = _findNode(*position);
 
-			// 	}
-			// }
+				if (elemFinded) { return iterator(elemFinded); }
+
+				switch (compare(pos->value, val)) {
+					case true:{
+						bool	isItRightPlace = true;
+
+						if (pos->previous
+							&& compare(pos->value,
+								pos->previous->value)
+							&& compare(pos->previous->value, val))
+							{ isItRightPlace = false; }
+						if (isItRightPlace){
+							return (_insertNode(val, pos)).first;
+							break;
+						}
+					}
+
+					default:
+						return (insert(val)).first;
+						break;
+				}
+			}
 
 			template <class InputIterator>
 				void insert (InputIterator first, InputIterator last){
