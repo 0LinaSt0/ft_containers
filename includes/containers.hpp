@@ -177,7 +177,6 @@ namespace ft{
 
 			pointer_node	_findNextNode(pointer_node elem){
 				pointer_node	returned = elem;
-
 				if (returned->nextRight->isItNil){
 					pointer_node parent = returned->previous;
 					while(parent && returned == parent->nextRight){
@@ -192,11 +191,14 @@ namespace ft{
 						returned = returned->nextLeft;
 					}
 				}
+				// exit (0);
 				return returned;
 			}
 
 			pointer_node	_findPrevNode(pointer_node elem){
 				pointer_node	returned = elem;
+
+				if (returned->isItNil) { return returned->previous; }
 
 				if (returned->nextLeft->isItNil){
 					pointer_node parent = returned->previous;
@@ -220,13 +222,13 @@ namespace ft{
 			_rb_tree_iter(const pointer_node tree) : node(tree) { }
 			~_rb_tree_iter(void) { }
 
-			reference		operator* (void) const { return *node->value; }
+			reference		operator* (void) const { return (*node).value; }
 			pointer			operator->(void) const { return node->value; }
 			_rb_tree_iter&	operator=(const _rb_tree_iter& other) { node = other.node; return *this; }
 			_rb_tree_iter&	operator++(void) { node = _findNextNode(node); return *this; }
-			_rb_tree_iter	operator++(int) { pointer_node _new = *node; node = _findNextNode(node); return _new; }
+			_rb_tree_iter	operator++(int) { _rb_tree_iter _new = *this; node = _findNextNode(node); return _new; }
 			_rb_tree_iter&	operator--(void) { node = _findPrevNode(node); return *this; }
-			_rb_tree_iter	operator--(int) { pointer_node _new = *node; node = _findPrevNode(node); return _new; }
+			_rb_tree_iter	operator--(int) { _rb_tree_iter _new = *this; node = _findPrevNode(node); return _new; }
 
 			pointer_node	base(void) const { return node; }
 		} ;
@@ -260,6 +262,20 @@ namespace ft{
 
 		} ;
 
+		template <class Iter1, class Iter2>
+			bool		operator==(const _rb_tree_iter<Iter1>& a, const _rb_tree_iter<Iter2>& b)
+				{ return a.base() == b.base(); }
+		template <class Iter1, class Iter2>
+			bool		operator!=(const _rb_tree_iter<Iter1>& a, const _rb_tree_iter<Iter2>& b) 
+				{ return a.base() != b.base(); }
+
+			template <class Iter1, class Iter2>
+			bool		operator==(const _rb_tree_rev_iter<Iter1>& a, const _rb_tree_rev_iter<Iter2>& b)
+				{ return a.base() == b.base(); }
+		template <class Iter1, class Iter2>
+			bool		operator!=(const _rb_tree_rev_iter<Iter1>& a, const _rb_tree_rev_iter<Iter2>& b) 
+				{ return a.base() != b.base(); }
+
 	template <class _T, class _Compare,
 					class _Allocator = std::allocator<_T> >
 		class	_rb_tree {
@@ -276,8 +292,8 @@ namespace ft{
 
 			typedef ft::_rb_tree_iter<value_type>								iterator;
 			typedef ft::_rb_tree_iter<value_type>								const_iterator;
-			// typedef ft::_rb_tree_rev_iter<iterator>								reverse_iterator;
-			// typedef ft::_rb_tree_rev_iter<const_iterator>						const_reverse_iterator;
+			typedef ft::_rb_tree_rev_iter<iterator>								reverse_iterator;
+			typedef ft::_rb_tree_rev_iter<const_iterator>						const_reverse_iterator;
 			typedef ptrdiff_t													difference_type;
 			typedef size_t														size_type;
 
@@ -392,14 +408,6 @@ namespace ft{
 				_freeNode(node->nextRight);
 			}
 
-			pointer_node	_endElem() const {
-				pointer_node	last_node = node;
-
-				while (node && !last_node->isItNil)
-					{ last_node = last_node->nextRight; }
-				return last_node;
-			}
-
 			pointer_node	_findNode(const value_type& finding) const{
 				if (!node){ return NULL; }
 
@@ -505,15 +513,20 @@ namespace ft{
 				}
 			}
 
-			pair<iterator,bool> _insertNode (const value_type& val,
-												pointer_node beginning){
-				pointer_node	insertPlace = beginning;
-				pointer_node	added_node = _createNode(val);
+			pointer_node	_theLeastNode(pointer_node current){
+				if (current->nextLeft->isItNil)
+					{ return current; }
+				return _theLeastNode(current->nextLeft);
+			}
 
-				insertPlace = _findsInsertPlace(added_node, insertPlace);
-				if (insertPlace == added_node)
-					{ return pair<iterator, bool>
-									(iterator(added_node), false); }
+			pointer_node	_theLargestNode(pointer_node current){
+				if (current->nextRight->isItNil)
+					{ return current; }
+				return _theLargestNode(current->nextRight);
+			}
+
+			pair<iterator,bool> _insertNode (pointer_node added_node,
+												pointer_node insertPlace){
 				_addsNodeToFindedPlace(added_node, insertPlace);
 				if (added_node->previous
 						&& added_node->previous->color == RED)
@@ -537,14 +550,23 @@ namespace ft{
 			}
 
 			/*Iterators: begin, end, rbegin, rend*/
-			iterator begin() { return countElems ? iterator(node) : end(); }
-			const_iterator begin() const { return countElems ? const_iterator(node) : end(); }
-			iterator end() { return iterator((_endElem())->nextRight); }
-			const_iterator end() const { return const_iterator(end()); }
-			// reverse_iterator rbegin();
-			// const_reverse_iterator rbegin() const;
-			// reverse_iterator rend();
-			// const_reverse_iterator rend() const;
+			iterator begin() { return countElems ? iterator(_theLeastNode(node)) : end(); }
+
+			const_iterator begin() const { 
+				return countElems ? const_iterator(_theLeastNode(node)) : end(); }
+
+			iterator end() { return iterator((_theLargestNode(node))->nextRight); }
+
+			const_iterator end() const { 
+				return const_iterator((_theLargestNode(node))->nextRight); }
+
+			reverse_iterator rbegin() { return reverse_iterator(end()); }
+
+			const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+
+			reverse_iterator rend() { return reverse_iterator(begin()); }
+
+			const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
 
 			/*Capacity: empty, size, max_size*/
 			bool	empty(void) const { return countElems ? false : true; }
@@ -560,34 +582,30 @@ namespace ft{
 				swap, clear*/
 
 			pair<iterator,bool> insert (const value_type& val){
-				return _insertNode(val, node);
+				pointer_node	insertPlace = node;
+				pointer_node	added_node = _createNode(val);
+
+				insertPlace = _findsInsertPlace(added_node, insertPlace);
+				if (insertPlace == added_node)
+					{ return pair<iterator, bool>
+									(iterator(added_node), false); }
+				return _insertNode(added_node, insertPlace);
 			}
 
 			iterator insert (iterator position, const value_type& val){
-				pointer_node	pos = position.base();
-				pointer_node	elemFinded = _findNode(*position);
+				pointer_node	pos1 = position.base();
+				pointer_node	pos2 = (++position).base();
 
-				if (elemFinded) { return iterator(elemFinded); }
-
-				switch (compare(pos->value, val)) {
-					case true:{
-						bool	isItRightPlace = true;
-
-						if (pos->previous
-							&& compare(pos->value,
-								pos->previous->value)
-							&& compare(pos->previous->value, val))
-							{ isItRightPlace = false; }
-						if (isItRightPlace){
-							return (_insertNode(val, pos)).first;
-							break;
-						}
-					}
-
-					default:
-						return (insert(val)).first;
-						break;
-				}
+				if (compare(pos1->value, val)
+						&& compare(val, pos2->value)){
+					return _insertNode(_createNode(val), pos1).first;
+				} else if (!compare(pos1->value, val)
+							&& !compare(val, pos1->value)){
+					return (iterator(pos1));
+				} else if (!compare(pos2->value, val)
+							&& !compare(val, pos2->value)){
+					return (iterator(pos2));
+				} else { return insert(val).first; }
 			}
 
 			template <class InputIterator>
@@ -615,8 +633,11 @@ namespace ft{
 			void erase (iterator position){	erase(*position); }
 
 			void erase (iterator first, iterator last){
-				for (iterator it(first); it != last; it++){
-					erase(*it);
+				iterator	tmp = first;
+				for (iterator it(first); it != last; ){
+					++it;
+					erase(*tmp);
+					tmp = it;
 				}
 			}
 

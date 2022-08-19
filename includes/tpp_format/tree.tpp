@@ -129,6 +129,7 @@ namespace ft {
 			__deleteNode(pointer_node deletedNode){
 				_freeNode(deletedNode->nextRight);
 				_freeNode(deletedNode->nextLeft);
+				// deletedNode->previous = NULL;
 				deletedNode->nextRight = NULL;
 				deletedNode->nextLeft = NULL;
 				deletedNode->color = BLACK;
@@ -325,17 +326,20 @@ namespace ft {
 										pair<olderYangerBro,
 										typename _rb_tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
-				if (!doubleBlackNode->previous->previous
-						&& doubleBlackNode->isItNil){
-					___brotherParentChange(doubleBlackNode, bro);
-					bro.second->nextLeft->color = BLACK;
-				} else if (bro.first == YANGER){
+				// if (!doubleBlackNode->previous->previous
+				// 		&& doubleBlackNode->isItNil){
+				// 	___brotherParentChange(doubleBlackNode, bro);
+				// 	bro.second->nextLeft->color = BLACK;
+				// } else 
+				if (bro.first == YANGER){
 					___yangerBrotherBalancing(doubleBlackNode, bro);
 				} else {
 					bro.second->color = RED;
 					bro.second->nextLeft->color = BLACK;
 
 					_rightTurn(bro.second, bro.second->nextLeft);
+					// ___olderYangerBrother(doubleBlackNode);
+					// if(bro.second->value.first == 38) { print_node(bro.second); }
 					___redRightChildBalancing(doubleBlackNode,
 										___olderYangerBrother(doubleBlackNode));
 				}
@@ -347,13 +351,14 @@ namespace ft {
 										pair<olderYangerBro,
 										typename _rb_tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
-				if (!doubleBlackNode->previous->previous
-						&& doubleBlackNode->isItNil){
-					bro.second->nextRight->color = BLACK;
-					_leftTurn(bro.second, bro.second->nextRight);
-					___brotherParentChange(doubleBlackNode,
-										___olderYangerBrother(doubleBlackNode));
-				} else if (bro.first == YANGER) {
+				// if (!doubleBlackNode->previous->previous
+				// 		&& doubleBlackNode->isItNil){
+				// 	bro.second->nextRight->color = BLACK;
+				// 	_leftTurn(bro.second, bro.second->nextRight);
+				// 	___brotherParentChange(doubleBlackNode,
+				// 						___olderYangerBrother(doubleBlackNode));
+				// } else 
+				if (bro.first == YANGER) {
 					_leftTurn(bro.second, bro.second->nextRight);
 					___yangerBrotherBalancing(doubleBlackNode,
 										___olderYangerBrother(doubleBlackNode));

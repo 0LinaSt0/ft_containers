@@ -16,7 +16,7 @@
 
 typedef ft::pair<int, int>			_pair;
 typedef ft::_rb_tree<_pair, std::less<int>, std::allocator<_pair> >	_tree_int;
-typedef typename _tree_int::iterator	_tree_iter;
+typedef _tree_int::iterator	_tree_iter;
 
 	void	checkInsert(_tree_int& tree){
 
@@ -49,17 +49,17 @@ typedef typename _tree_int::iterator	_tree_iter;
 	}
 
 	void	checkErase(_tree_int& tree){
-		// tree.erase(_pair(11, 5));
-		// tree.erase(_pair(17, 3));
+		tree.erase(_pair(11, 5));
+		tree.erase(_pair(17, 3));
 
-		// tree.erase(_pair(22, 12));
+		tree.erase(_pair(22, 12));
 		// tree.erase(_pair(19, 9));
 		tree.erase(_pair(31, 10));
 		// tree.erase(_pair(15, 1));
 		// tree.erase(_pair(9, 11));
 
 		tree.erase(_pair(13, 11));
-		// tree.erase(_pair(34, 6));
+		tree.erase(_pair(34, 6));
 		tree.erase(_pair(35, 12));
 		tree.erase(_pair(16, 7));
 		tree.erase(_pair(32, 10));
@@ -68,8 +68,19 @@ typedef typename _tree_int::iterator	_tree_iter;
 		tree.erase(_pair(33, 20));
 		// tree.erase(_pair(31, 10));/*repeat deleting 32 */
 		tree.erase(_pair(20, 4));
-		// tree.erase(_pair(12, 2));
+		tree.erase(_pair(12, 2));
 		tree.erase(_pair(2, 3)); /*tree doesn't have this element*/
+
+		_tree_iter	it(tree.at(_pair(19, 9)));
+
+		tree.erase(it);
+
+
+		tree.erase(_pair(3, 3));
+		
+
+		tree.erase(tree.begin(), --(--(tree.end())));
+
 	}
 
 
@@ -78,18 +89,10 @@ void	treeChecks(void){
 	{
 		_tree_int	tree;
 
-		// std::cout << *it.first << std::endl;
-		// std::cout << (tree.at(_pair(19, 9)))->value.first << std::endl;
-		// return ;
-
 		checkInsert(tree);
 
 
-		// checkErase(tree);
-
-
-		// tree.print_node(it.base());
-
+		checkErase(tree);
 
 
 
@@ -107,6 +110,11 @@ void	treeChecks(void){
 		// map.insert(std::pair<int, int>(6, 1));
 		// map.insert(std::pair<int, int>(7, 1));
 		// map.insert(std::pair<int, int>(8, 1));
+
+		// std::map<int, int>::iterator	it(map.end());
+
+		// // it--;	
+		// std::cout << (*(--it)).first << std::endl;
 
 		// for(std::map<int, int>::iterator it(map.begin());
 		// 			it != map.end();
