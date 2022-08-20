@@ -86,6 +86,7 @@
 		"thread": "cpp",
 		"ranges": "cpp",
 		"stop_token": "cpp",
-		"set": "cpp"
+		"set": "cpp",
+		"version": "cpp"
 	}
 }

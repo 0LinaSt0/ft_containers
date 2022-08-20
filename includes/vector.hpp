@@ -54,11 +54,11 @@ namespace ft{
 	template < class D >
 		struct enable_if < true, D > { typedef D type; };
 
-	template < class stackType, class Alloc = std::allocator<stackType> >
+	template < class stackType, class _Alloc = std::allocator<stackType> >
 	class	vector{
 	public:
 		typedef stackType									value_type;
-		typedef Alloc										allocator_type;
+		typedef _Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
 		typedef typename allocator_type::pointer			pointer;
@@ -196,13 +196,13 @@ namespace ft{
 						}
 					}
 		vector (const vector& x){
-			countElem = x.countElem;
-			capacitySize = x.capacitySize;
-			if (!x.vec){
-				vec = NULL;
-			} else {
-				vec = vecAlloc.allocate(capacitySize);
-			}
+			// countElem = x.countElem;
+			// capacitySize = x.capacitySize;
+			// if (!x.vec){
+			// 	vec = NULL;
+			// } else {
+			// 	vec = vecAlloc.allocate(capacitySize);
+			// }
 
 			operator=(x);
 		}
@@ -494,54 +494,54 @@ namespace ft{
 		allocator_type	get_allocator() const{ return (vecAlloc); }
 	};
 
-	template <class stackType, class Alloc>
-		bool operator== (const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
+	template <class stackType, class _Alloc>
+		bool operator== (const vector<stackType,_Alloc>& lhs, const vector<stackType,_Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() || rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 
-	template <class stackType, class Alloc>
-		bool operator!=(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
+	template <class stackType, class _Alloc>
+		bool operator!=(const vector<stackType,_Alloc>& lhs, const vector<stackType,_Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() || rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
 		}
 
-	template <class stackType, class Alloc>
-		bool operator< (const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
+	template <class stackType, class _Alloc>
+		bool operator< (const vector<stackType,_Alloc>& lhs, const vector<stackType,_Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_lessCheck<stackType, stackType>);
 		}
 
-	template <class stackType, class Alloc>
-		bool operator<=(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
+	template <class stackType, class _Alloc>
+		bool operator<=(const vector<stackType,_Alloc>& lhs, const vector<stackType,_Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalLessCheck<stackType, stackType>);
 		}
 
-	template <class stackType, class Alloc>
-		bool operator>(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
+	template <class stackType, class _Alloc>
+		bool operator>(const vector<stackType,_Alloc>& lhs, const vector<stackType,_Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_moreCheck<stackType, stackType>);
 		}
 
-	template <class stackType, class Alloc>
-		bool operator>=(const vector<stackType,Alloc>& lhs, const vector<stackType,Alloc>& rhs){
+	template <class stackType, class _Alloc>
+		bool operator>=(const vector<stackType,_Alloc>& lhs, const vector<stackType,_Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalMoreCheck<stackType, stackType>);
 		}
 
-	template <class stackType, class Alloc>
-		void swap(vector<stackType,Alloc>& x, vector<stackType,Alloc>& y) { x.swap(y); }
+	template <class stackType, class _Alloc>
+		void swap(vector<stackType,_Alloc>& x, vector<stackType,_Alloc>& y) { x.swap(y); }
 };
 
 

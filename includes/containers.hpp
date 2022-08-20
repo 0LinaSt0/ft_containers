@@ -276,7 +276,7 @@ namespace ft{
 				{ return a.base() != b.base(); }
 
 	template <class _T, class _Compare,
-					class _Allocator = std::allocator<_T> >
+					class _Allocator>
 		class	_rb_tree {
 		public:
 			typedef _T															value_type;
@@ -298,30 +298,27 @@ namespace ft{
 
 		private:
 			pointer_node	node;
-			// compare_class	compare;
-			class value_compare;
-			/*FOR TESTING MAP*/ value_compare	compare;
+			compare_class	compare;
+			// class value_compare;
+			// /*FOR TESTING MAP*/ value_compare	compare;
 			size_type		countElems;
 			allocator_node	nodeAlloc;
 
 		private:
-			/*FORE CHECKING*/
-			class value_compare
-			{
-				friend class _rb_tree;
+			// /*FORE CHECKING*/
+			// class value_compare
+			// {
+			// 	friend class _rb_tree;
 
-				protected:
-					_Compare comp;
-					value_compare () {}  // constructed with map's comparison object
-					public:
-					typedef bool result_type;
-					typedef value_type first_argument_type;
-					typedef value_type second_argument_type;
-					bool operator() (const value_type& x, const value_type& y) const
-					{
-						return comp(x.first, y.first);
-					}
-			} ;
+			// 	protected:
+			// 		_Compare comp;
+			// 		value_compare () {}
+			// 	public:
+			// 		bool operator() (const value_type& x, const value_type& y) const
+			// 		{
+			// 			return comp(x.first, y.first);
+			// 		}
+			// } ;
 			/* ~~~~~~~~~~~~ USEFUL FUNCTIONS FOR ADD NODE ~~~~~~~~~~*/
 
 			pointer_node	__findUncle(pointer_node newNode);
@@ -544,22 +541,21 @@ namespace ft{
 				}
 				return current;
 			}
+
 		public:
-			_rb_tree(void) : node (NULL), countElems(0) {}
-			_rb_tree(const compare_class& comp,
-						const allocator_type& a = allocator_type())
-						: node(NULL), compare(comp), countElems(0),
-						allocator_node(a) { }
+			_rb_tree(void) : node (NULL), countElems(0), compare() {}
 			_rb_tree(const _rb_tree& other) { operator=(other); }
 			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
 
 			_rb_tree& operator= (const _rb_tree& x){
+				_freeTree(node);
 				node = x.node;
 				countElems = x.countElems;
 				allocator_node(x.nodeAlloc);
 			}
 
 			/*Iterators: begin, end, rbegin, rend*/
+
 			iterator begin() { return countElems ? iterator(_theLeastNode(node)) : end(); }
 
 			const_iterator begin() const { 
@@ -579,11 +575,12 @@ namespace ft{
 			const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
 
 			/*Capacity: empty, size, max_size*/
+
 			bool	empty(void) const { return countElems ? false : true; }
 
-			size_t	size(void) const { return countElems; }
+			size_type	size(void) const { return countElems; }
 
-			size_type max_size() const { return nodeAlloc.max_size(); }
+			size_type	max_size() const { return nodeAlloc.max_size(); }
 
 
 			/* ~~~~~~~~~~~~ MODIFIERS ~~~~~~~~~~
@@ -652,7 +649,7 @@ namespace ft{
 				}
 			}
 
-			void clear() { _freeTree(node); node == NULL; }
+			void clear(void) { _freeTree(node); node == NULL; }
 
 			/* ~~~~~~~~~~~~ OPERATIONS ~~~~~~~~~~
 				at			|	Returns a pointer to the node with key 'n' or NULL
@@ -670,25 +667,27 @@ namespace ft{
 
 			iterator	find(const value_type& n) const{
 				pointer_node	finding = _findNode(n);
-				return (empty() || !finding) ? end() : iterator(finding); }
+				return (empty() || !finding) ? end() : iterator(finding); 
+			}
 			
-			size_type count (const value_type& val) const
+			size_type	count(const value_type& val) const
 				{ return at(val) ? 1 : 0; }
 
 			pointer_node	root(void) const
 				{ return (empty()) ? NULL : node; }
 
-			iterator lower_bound (const value_type& val) const{
+			iterator	lower_bound(const value_type& val) const{
 				iterator	comingElem = find(val);
 
 				return (comingElem == end()) ? _greaterElem(val)
 												: comingElem;
 			}
 
-			iterator upper_bound (const value_type& val) const
-				{ return _greaterElem(val); }
+			iterator	upper_bound(const value_type& val) const{ 
+				return _greaterElem(val); 
+			}
 
-			pair<iterator,iterator> equal_range (const value_type& val) const{
+			pair<iterator,iterator>	equal_range(const value_type& val) const{
 				iterator	comingElem = find(val);
 
 				if (comingElem == end()){
@@ -703,7 +702,7 @@ namespace ft{
 
 			/* ~~~~~~~~~~~~ ALLOCATOR ~~~~~~~~~~*/
 
-			allocator_type get_allocator() const { return allocator_type(); }
+			allocator_type	get_allocator(void) const { return allocator_type(); }
 
 
 			/* ~~~~~~~~~~~~ PRINTING_FUNCTIONS ~~~~~~~~~~
