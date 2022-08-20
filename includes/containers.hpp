@@ -191,7 +191,6 @@ namespace ft{
 						returned = returned->nextLeft;
 					}
 				}
-				// exit (0);
 				return returned;
 			}
 
@@ -513,13 +512,13 @@ namespace ft{
 				}
 			}
 
-			pointer_node	_theLeastNode(pointer_node current){
+			pointer_node	_theLeastNode(pointer_node current) const{
 				if (current->nextLeft->isItNil)
 					{ return current; }
 				return _theLeastNode(current->nextLeft);
 			}
 
-			pointer_node	_theLargestNode(pointer_node current){
+			pointer_node	_theLargestNode(pointer_node current) const{
 				if (current->nextRight->isItNil)
 					{ return current; }
 				return _theLargestNode(current->nextRight);
@@ -534,6 +533,17 @@ namespace ft{
 				return pair<iterator, bool>(iterator(added_node), true);
 			}
 
+			iterator	_greaterElem(value_type comingVal) const {
+				iterator	current = begin();
+
+				while (!current.base()->isItNil 
+						&& (compare(*current, comingVal)
+						|| (!compare(*current, comingVal)
+						&& !compare(comingVal, *current)))){
+					current++;
+				}
+				return current;
+			}
 		public:
 			_rb_tree(void) : node (NULL), countElems(0) {}
 			_rb_tree(const compare_class& comp,
@@ -579,7 +589,8 @@ namespace ft{
 			/* ~~~~~~~~~~~~ MODIFIERS ~~~~~~~~~~
 				insert			|	Add added_node to the right place
 				erase			|	Delete deleded_node to the right place
-				swap, clear*/
+				clear			|	Free all nodes in tree
+			*/
 
 			pair<iterator,bool> insert (const value_type& val){
 				pointer_node	insertPlace = node;
@@ -644,19 +655,56 @@ namespace ft{
 			void clear() { _freeTree(node); node == NULL; }
 
 			/* ~~~~~~~~~~~~ OPERATIONS ~~~~~~~~~~
-				at		|	Returns a pointer to the node with value_type 'n' in tree or NULL
-						|		(if the tree is empty; if coming key was't find)
-				root	|	Returns a pointer to the first root node in tree
-						|		or NULL if the tree is empty
-
-				find, count, lower_bound, upper_bound, equal_range
+				at			|	Returns a pointer to the node with key 'n' or NULL
+				root		|	Returns a pointer to the first root node in tree or NULL
+				find		|	Returns an iter to the node with key 'n' or end()
+				count		|	Return 1 if key 'val' was found or 0
+				lower_bound	|	Return an iter to the node with key 'val' or end()
+				upper_bound	|	Return an iter to the node with greater then node with key 'val' or end()
+				equal_range	|	Return a pair<iter, iter> with an iter to node with key 'val and n iter to next node
+							|		or pair<iter, iter> with to iters to node which greater then node with key 'val' or end()
 			*/
 
 			pointer_node	at(const value_type& n) const
 				{ return (empty()) ? NULL : _findNode(n); }
 
+			iterator	find(const value_type& n) const{
+				pointer_node	finding = _findNode(n);
+				return (empty() || !finding) ? end() : iterator(finding); }
+			
+			size_type count (const value_type& val) const
+				{ return at(val) ? 1 : 0; }
+
 			pointer_node	root(void) const
 				{ return (empty()) ? NULL : node; }
+
+			iterator lower_bound (const value_type& val) const{
+				iterator	comingElem = find(val);
+
+				return (comingElem == end()) ? _greaterElem(val)
+												: comingElem;
+			}
+
+			iterator upper_bound (const value_type& val) const
+				{ return _greaterElem(val); }
+
+			pair<iterator,iterator> equal_range (const value_type& val) const{
+				iterator	comingElem = find(val);
+
+				if (comingElem == end()){
+					iterator	returnedElem = _greaterElem(val);
+					if (returnedElem.base()->isItNil) { returnedElem--; }
+					return (pair<iterator, iterator>(returnedElem, returnedElem));
+				} else {
+					iterator	coming = comingElem; 
+					return (pair<iterator, iterator>(coming, (++comingElem)));
+				}
+			}
+
+			/* ~~~~~~~~~~~~ ALLOCATOR ~~~~~~~~~~*/
+
+			allocator_type get_allocator() const { return allocator_type(); }
+
 
 			/* ~~~~~~~~~~~~ PRINTING_FUNCTIONS ~~~~~~~~~~
 				print_node	|	print coming node

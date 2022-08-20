@@ -17,6 +17,7 @@
 typedef ft::pair<int, int>			_pair;
 typedef ft::_rb_tree<_pair, std::less<int>, std::allocator<_pair> >	_tree_int;
 typedef _tree_int::iterator	_tree_iter;
+typedef ft::pair<_tree_iter, _tree_iter>			_pair_iter;
 
 	void	checkInsert(_tree_int& tree){
 
@@ -58,11 +59,11 @@ typedef _tree_int::iterator	_tree_iter;
 		// tree.erase(_pair(15, 1));
 		// tree.erase(_pair(9, 11));
 
-		tree.erase(_pair(13, 11));
+		// tree.erase(_pair(13, 11));
 		tree.erase(_pair(34, 6));
-		tree.erase(_pair(35, 12));
-		tree.erase(_pair(16, 7));
-		tree.erase(_pair(32, 10));
+		// tree.erase(_pair(35, 12));
+		// tree.erase(_pair(16, 7));
+		// tree.erase(_pair(32, 10));
 		tree.erase(_pair(18, 8));
 
 		tree.erase(_pair(33, 20));
@@ -79,50 +80,126 @@ typedef _tree_int::iterator	_tree_iter;
 		tree.erase(_pair(3, 3));
 		
 
-		tree.erase(tree.begin(), --(--(tree.end())));
+		tree.erase(tree.begin(), (--(--(--(--(--(tree.end())))))));
 
 	}
 
+	void	checkOperationsFuncs(_tree_int& tree){
+		_tree_iter	fifteen = tree.find(_pair(15, 4));
+		_tree_iter	ninety = tree.find(_pair(90, 4));
+		_tree_iter	thirtyTwo = tree.find(_pair(32, 4));
 
+		std::cout << "<<<<< FIND CHECK >>>>>>" << std::endl;
+		std::cout << "Is 15 in tree?: ";
+		if (fifteen.base()->isItNil) { 
+			std::cout << std::boolalpha << false << std::endl;
+		} else { std::cout << std::boolalpha << true << std::endl; }
+		
+		std::cout << "Is 90 in tree?: ";
+		if (ninety.base()->isItNil) { 
+			std::cout << std::boolalpha << false << std::endl;
+		} else { std::cout << std::boolalpha << true << std::endl; }
+		std::cout << std::endl;
 
-void	treeChecks(void){
-	{
-		_tree_int	tree;
+		std::cout << "<<<<< COUNT CHECK >>>>>>" << std::endl;
+		std::cout << "Is 35 in tree?: ";
+		if (tree.count(_pair(35, 4))) { 
+			std::cout << std::boolalpha << true << std::endl;
+		} else { std::cout << std::boolalpha << false << std::endl; }
 
-		checkInsert(tree);
+		std::cout << "Is 2 in tree?: ";
+		if (tree.count(_pair(2, 4))) { 
+			std::cout << std::boolalpha << true << std::endl;
+		} else { std::cout << std::boolalpha << false << std::endl; }
+		std::cout << std::endl;
 
+		std::cout << "<<<<< LOWER_BOUND CHECK >>>>>>" << std::endl;
+		_tree_iter	lower = tree.lower_bound(_pair(16, 4));
+		std::cout << "Lower_bound for 16 (mast be 16): \n\t";
+		tree.print_node(lower.base());
+		
+		lower = tree.lower_bound(_pair(33, 4));
+		std::cout << "Lower_bound for 33 (mast be 35): \n\t";
+		tree.print_node(lower.base());
 
-		checkErase(tree);
+		lower = tree.lower_bound(_pair(40, 4));
+		std::cout << "Lower_bound for 40 (mast be end()): \n\t";
+		tree.print_node(lower.base());
+		std::cout << std::endl;
 
+		std::cout << "<<<<< UPPER_BOUND CHECK >>>>>>" << std::endl;
+		_tree_iter	upper = tree.upper_bound(_pair(32, 4));
+		std::cout << "Upper_bound for 32 (mast be 35): \n\t";
+		tree.print_node(upper.base());
+		
+		upper = tree.upper_bound(_pair(17, 4));
+		std::cout << "Upper_bound for 17 (mast be 32): \n\t";
+		tree.print_node(upper.base());
 
+		upper = tree.upper_bound(_pair(50, 4));
+		std::cout << "Upper_bound for 50 (mast be end()): \n\t";
+		tree.print_node(upper.base());
+		std::cout << std::endl;
 
-		tree.print_tree(tree.root());
-		std::cout << "TREE_SIZE: " << tree.size() << std::endl;
+		std::cout << "<<<<< EQUAL_RANGE CHECK >>>>>>" << std::endl;
+		_pair_iter	equal = tree.equal_range(_pair(16, 4));
+		std::cout << "Equal_bound for 16 (mast be [16, 32]):   ";
+		std::cout << equal.first.base()->value.first << "   ->   ";
+		std::cout << equal.second.base()->value.first << std::endl;
+		
+		equal = tree.equal_range(_pair(33, 4));
+		std::cout << "Equal_bound for 33 (mast be [35, 35]):   ";
+		std::cout << equal.first.base()->value.first << "   ->   ";
+		std::cout << equal.second.base()->value.first << std::endl;
+
+		equal = tree.equal_range(_pair(90, 4));
+		std::cout << "Equal_bound for 90 (mast be [38, 38]):   ";
+		std::cout << equal.first.base()->value.first << "   ->   ";
+		std::cout << equal.second.base()->value.first << std::endl;
+		std::cout << std::endl;
+
 	}
-	{
-		// std::map<int, int>		map;
 
-		// map.insert(std::pair<int, int>(1, 1));
-		// map.insert(std::pair<int, int>(2, 1));
-		// map.insert(std::pair<int, int>(3, 1));
-		// map.insert(std::pair<int, int>(4, 1));
-		// map.insert(std::pair<int, int>(5, 1));
-		// map.insert(std::pair<int, int>(6, 1));
-		// map.insert(std::pair<int, int>(7, 1));
-		// map.insert(std::pair<int, int>(8, 1));
+	void	treeChecks(void){
+		{
+			_tree_int	tree;
 
-		// std::map<int, int>::iterator	it(map.end());
+			checkInsert(tree);
 
-		// // it--;	
-		// std::cout << (*(--it)).first << std::endl;
 
-		// for(std::map<int, int>::iterator it(map.begin());
-		// 			it != map.end();
-		// 			it++){
-		// 		std::cout << (*it).first << std::endl;
-		// 	}
-		// std::cout << map.begin()->first << std::endl;
-		// // std::cout << set.begin()->first << std::endl;
+			checkErase(tree);
 
+
+
+			tree.print_tree(tree.root());
+			std::cout << "TREE_SIZE: " << tree.size() << std::endl;
+
+			checkOperationsFuncs(tree);
+		}
+		{
+			// std::map<int, int>		map;
+
+			// map.insert(std::pair<int, int>(1, 1));
+			// map.insert(std::pair<int, int>(2, 1));
+			// map.insert(std::pair<int, int>(3, 1));
+			// map.insert(std::pair<int, int>(4, 1));
+			// map.insert(std::pair<int, int>(5, 1));
+			// map.insert(std::pair<int, int>(6, 1));
+			// map.insert(std::pair<int, int>(7, 1));
+			// map.insert(std::pair<int, int>(8, 1));
+
+			// std::map<int, int>::iterator	it(map.end());
+
+			// // it--;	
+			// std::cout << (*(--it)).first << std::endl;
+
+			// for(std::map<int, int>::iterator it(map.begin());
+			// 			it != map.end();
+			// 			it++){
+			// 		std::cout << (*it).first << std::endl;
+			// 	}
+			// std::cout << map.begin()->first << std::endl;
+			// // std::cout << set.begin()->first << std::endl;
+
+		}
 	}
-}
