@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/24 20:57:49 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/21 20:50:47 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,11 +161,22 @@ namespace ft{
 
 				return *this;
 			}
+			
+			_tree_node&	operator=(const pointre_node& comingTree){
+				value = comingTree->value;
+				color = comingTree->color;
+				previous = comingTree->previous;
+				nextRight = comingTree->nextRight;
+				nextLeft = comingTree->nextLeft;
+
+				return *this;
+			}
 		} ;
 
 	template < class value_type >
 		class _rb_tree_iter{
 		public:
+			// typedef value_type											val;
 			typedef ptrdiff_t											difference_type;
 			typedef value_type*											pointer;
 			typedef value_type&											reference;
@@ -222,7 +233,7 @@ namespace ft{
 			~_rb_tree_iter(void) { }
 
 			reference		operator* (void) const { return (*node).value; }
-			pointer			operator->(void) const { return node->value; }
+			pointer			operator->(void) const { return &node->value; }
 			_rb_tree_iter&	operator=(const _rb_tree_iter& other) { node = other.node; return *this; }
 			_rb_tree_iter&	operator++(void) { node = _findNextNode(node); return *this; }
 			_rb_tree_iter	operator++(int) { _rb_tree_iter _new = *this; node = _findNextNode(node); return _new; }
@@ -238,7 +249,6 @@ namespace ft{
 			rbIter	iterTree;
 		public:
 			typedef typename rbIter::difference_type	difference_type;
-			typedef typename rbIter::value_type			value_type;
 			typedef typename rbIter::pointer			pointer;
 			typedef typename rbIter::reference			reference;
 			typedef typename rbIter::iterator_category	iterator_category;
@@ -249,7 +259,7 @@ namespace ft{
 			_rb_tree_rev_iter(const rbIter revIter) : iterTree(revIter) { }
 			~_rb_tree_rev_iter(void) { }
 
-			reference	operator* (void) const { rbIter t = iterTree; return *(--t)->value; }
+			reference	operator* (void) const { rbIter t = iterTree; return (--t).base()->value; }
 			pointer		operator->(void) const { return &(operator*()); }
 			/*???*/rbRevIter&	operator=(const rbRevIter& other) { iterTree = other.iterTree; return *this; }
 			rbRevIter&	operator++(void) { --iterTree; return *this; }
@@ -275,8 +285,7 @@ namespace ft{
 			bool		operator!=(const _rb_tree_rev_iter<Iter1>& a, const _rb_tree_rev_iter<Iter2>& b) 
 				{ return a.base() != b.base(); }
 
-	template <class _T, class _Compare,
-					class _Allocator>
+	template <class _T, class _Compare, class _Allocator>
 		class	_rb_tree {
 		public:
 			typedef _T															value_type;
@@ -391,9 +400,10 @@ namespace ft{
 					return newNode;
 				}
 
-
-			void	_freeNode(pointer_node destroiedNode)
-				{ nodeAlloc.deallocate(destroiedNode, 1); }
+			void	_freeNode(pointer_node destroiedNode){ 
+				if (!destroiedNode) { return; }
+				nodeAlloc.deallocate(destroiedNode, 1); 
+			}
 
 			void	_freeTree(pointer_node node){
 				if (!node || node->isItNil) { return ; }
@@ -543,15 +553,18 @@ namespace ft{
 			}
 
 		public:
-			_rb_tree(void) : node (NULL), countElems(0), compare() {}
-			_rb_tree(const _rb_tree& other) { operator=(other); }
+			_rb_tree(const compare_class& comp, 
+						const allocator_type& a = allocator_type()) 
+			: node (NULL), compare(comp), countElems(0), nodeAlloc(a) {}
+			_rb_tree(const _rb_tree& other) : node(NULL), compare(other.compare) { operator=(other); }
 			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
 
 			_rb_tree& operator= (const _rb_tree& x){
 				_freeTree(node);
-				node = x.node;
+				insert(x.begin(), x.end());
 				countElems = x.countElems;
-				allocator_node(x.nodeAlloc);
+				nodeAlloc = x.nodeAlloc;
+				return *this;
 			}
 
 			/*Iterators: begin, end, rbegin, rend*/
@@ -649,7 +662,7 @@ namespace ft{
 				}
 			}
 
-			void clear(void) { _freeTree(node); node == NULL; }
+			void clear(void) { _freeTree(node); node = NULL; }
 
 			/* ~~~~~~~~~~~~ OPERATIONS ~~~~~~~~~~
 				at			|	Returns a pointer to the node with key 'n' or NULL
@@ -757,6 +770,60 @@ namespace ft{
 
 			}
 		} ;
+	template <class T, class Compare, class Alloc>
+		bool operator== (const _rb_tree<T, Compare, Alloc>& lhs, 
+					const _rb_tree<T, Compare, Alloc>& rhs){
+						std::cout << "AAAAAA" << std::endl;
+						exit (0);
+			if (lhs.empty() && rhs.empty()) return true;
+			else if (lhs.empty() || rhs.empty()) return false;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+		}
+
+	template <class T, class Compare, class Alloc>
+		bool operator!=(const _rb_tree<T, Compare, Alloc>& lhs, 
+					const _rb_tree<T, Compare, Alloc>& rhs){
+			if (lhs.empty() && rhs.empty()) return false;
+			else if (lhs.empty() || rhs.empty()) return true;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
+		}
+
+	template <class T, class Compare, class Alloc>
+		bool operator< (const _rb_tree<T, Compare, Alloc>& lhs, 
+					const _rb_tree<T, Compare, Alloc>& rhs){
+			if (lhs.empty() && rhs.empty()) return false;
+			else if (lhs.empty() && !rhs.empty()) return true;
+			else if (!lhs.empty() && rhs.empty()) return false;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_lessCheck<_rb_tree, _rb_tree>);
+		}
+
+	template <class T, class Compare, class Alloc>
+		bool operator<=(const _rb_tree<T, Compare, Alloc>& lhs, 
+					const _rb_tree<T, Compare, Alloc>& rhs){
+			if (lhs.empty() && rhs.empty()) return true;
+			else if (lhs.empty() && !rhs.empty()) return true;
+			else if (!lhs.empty() && rhs.empty()) return false;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalLessCheck<_rb_tree, _rb_tree>);
+		}
+
+	template <class T, class Compare, class Alloc>
+		bool operator>(const _rb_tree<T, Compare, Alloc>& lhs, 
+					const _rb_tree<T, Compare, Alloc>& rhs){
+			if (lhs.empty() && rhs.empty()) return false;
+			else if (lhs.empty() && !rhs.empty()) return false;
+			else if (!lhs.empty() && rhs.empty()) return true;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_moreCheck<_rb_tree, _rb_tree>);
+		}
+
+	template <class T, class Compare, class Alloc>
+		bool operator>=(const _rb_tree<T, Compare, Alloc>& lhs, 
+					const _rb_tree<T, Compare, Alloc>& rhs){
+			if (lhs.empty() && rhs.empty()) return true;
+			else if (lhs.empty() && !rhs.empty()) return false;
+			else if (!lhs.empty() && rhs.empty()) return true;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalMoreCheck<_rb_tree, _rb_tree>);
+		}
+
 } ;
 
 #include "tpp_format/tree.tpp"

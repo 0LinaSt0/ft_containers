@@ -12,7 +12,7 @@ namespace ft{
 		public:
 			typedef _Key										key_type;
 			typedef	_T											mapped_type;
-			typedef ft::pair<const key_type, mapped_type>		value_type;
+			typedef ft::pair<key_type, mapped_type>				value_type; // ???need const key but how if i want to do operator=???
 			typedef _Compare									key_compare;
 			typedef _Alloc										allocator_type;
 			typedef typename allocator_type::reference			reference;
@@ -47,27 +47,27 @@ namespace ft{
 
 			explicit map (const key_compare& comp = key_compare(),
 							const allocator_type& alloc = allocator_type())
-				: mapCompare(comp), mapAlloc(alloc) {}
+				: tree(comp, alloc), mapAlloc(alloc), mapCompare(comp) {}
 			template <class InputIterator>
 				map (InputIterator first, InputIterator last,
 						const key_compare& comp = key_compare(),
 						const allocator_type& alloc = allocator_type())
-					: mapCompare(comp), mapAlloc(alloc) { 
+					: tree(comp, alloc), mapAlloc(alloc), mapCompare(comp) { 
 					insert(first, last); }
-			map (const map& x) { operator=(x); }
+			map (const map& x) : tree(x.tree) { operator=(x); }
 			~map() { }
 
 			map& operator= (const map& x){
-				tree = x.tree;
 				mapAlloc = x.mapAlloc;
 				mapCompare = x.mapCompare;
+				return *this;
 			}
 
 			mapped_type& operator[] (const key_type& k){
 				ptr_node	desiredNode = tree.at(value_type(k, mapped_type()));
 
-				return (!desiredNode) ? (*((insert(k)).first)).second
-										: (*desiredNode).second;
+				return (!desiredNode) ? (*((insert(value_type(k, mapped_type()))).first)).second
+										: desiredNode->value.second;
 			}
 
 			mapped_type& at (const key_type& k){
@@ -75,7 +75,7 @@ namespace ft{
 
 				if (!desiredNode)
 					throw std::invalid_argument("libc++abi: terminating with uncaught exception of type std::out_of_range: map::at:  key not found");
-				return (*desiredNode).second;
+				return desiredNode->value.second;
 			}
 			
 			const mapped_type& at (const key_type& k) const{

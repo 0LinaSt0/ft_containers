@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/22 21:11:10 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/21 16:21:40 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,13 +196,13 @@ namespace ft{
 						}
 					}
 		vector (const vector& x){
-			// countElem = x.countElem;
-			// capacitySize = x.capacitySize;
-			// if (!x.vec){
-			// 	vec = NULL;
-			// } else {
-			// 	vec = vecAlloc.allocate(capacitySize);
-			// }
+			countElem = x.countElem;
+			capacitySize = x.capacitySize;
+			if (!x.vec){
+				vec = NULL;
+			} else {
+				vec = vecAlloc.allocate(capacitySize);
+			}
 
 			operator=(x);
 		}

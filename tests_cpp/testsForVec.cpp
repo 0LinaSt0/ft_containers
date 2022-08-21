@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:36:43 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/22 17:21:31 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/21 18:37:52 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 
 
-void	checkVecConstructors(){
-		{/* <<<<<<<<<<<<<<< Tests for constructor_iterator >>>>>>>>>>>>>>>*/
+void	checkVecConstructors(void){
+		{/* <<<<<<<<<<<<<<< Tests for constructor_value >>>>>>>>>>>>>>>*/
 			ft::vector<std::string>	vec(3, "Hola");
 
 			std::cout << "example # 1 constructor_val" << std::endl;
 			/*status*/printVecParams(vec, false);
 							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
 
-			/* <<<<<<<<<<<<<<< Tests for constructor_iterator >>>>>>>>>>>>>>>*/
+			/* <<<<<<<<<<<<<<< Tests for constructor_count >>>>>>>>>>>>>>>*/
 			ft::vector<char>	vec1(0);
 			vec1.push_back('a');
 			vec1.push_back('b');
@@ -35,7 +35,7 @@ void	checkVecConstructors(){
 			/*status*/printVecParams(vec11, false);
 							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
 
-			/* <<<<<<<<<<<<<<< Tests for constructor_iterator >>>>>>>>>>>>>>>*/
+			/* <<<<<<<<<<<<<<< Tests for constructor_copy >>>>>>>>>>>>>>>*/
 				ft::vector<int>	vec2(3, 5);
 				ft::vector<int>	vec21(vec2);
 
@@ -46,14 +46,14 @@ void	checkVecConstructors(){
 		}
 			std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
 		{
-			/* <<<<<<<<<<<<<<< Tests for constructor_iterator >>>>>>>>>>>>>>>*/
+			/* <<<<<<<<<<<<<<< Tests for constructor_value >>>>>>>>>>>>>>>*/
 			std::vector<std::string>	vec(3, "Hola");
 
 			std::cout << "example # 1 constructor_val" << std::endl;
 			/*status*/printVecParams(vec, false);
 							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
 
-			/* <<<<<<<<<<<<<<< Tests for constructor_iterator >>>>>>>>>>>>>>>*/
+			/* <<<<<<<<<<<<<<< Tests for constructor_count >>>>>>>>>>>>>>>*/
 			std::vector<char>	vec1(0);
 			vec1.push_back('a');
 			vec1.push_back('b');
@@ -66,7 +66,7 @@ void	checkVecConstructors(){
 			/*status*/printVecParams(vec11, false);
 							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
 
-			/* <<<<<<<<<<<<<<< Tests for constructor_iterator >>>>>>>>>>>>>>>*/
+			/* <<<<<<<<<<<<<<< Tests for constructor_copy >>>>>>>>>>>>>>>*/
 				std::vector<int>	vec2(3, 5);
 				std::vector<int>	vec21(vec2);
 
@@ -119,7 +119,7 @@ void	checkerForVector(void){
 			std::cout << (result == result_2) << std::endl;
 	}
 	{
-		std::cout << "\n\n\t~~~~~~~~~~~~~~ORIG_VEC~~~~~~~~~~~~~~" << std::endl;
+		std::cout << "\n\n\t~~~~~~~~~~~~~~ORIG_VECTOR~~~~~~~~~~~~~~" << std::endl;
 		// std::vector<char>	foo(5, 'a');
 		// std::vector<std::string>	foo(5, "aboba");
 

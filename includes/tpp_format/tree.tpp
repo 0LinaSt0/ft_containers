@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.tpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:02:57 by marvin            #+#    #+#             */
-/*   Updated: 2022/07/27 17:02:57 by marvin           ###   ########.fr       */
+/*   Updated: 2022/08/21 16:37:32 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			___brotherParentChange(pointer_node doubleBlackNode,
-										pair<olderYangerBro,
+										ft::pair<olderYangerBro,
 										typename _rb_tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
 				if (bro.first == OLDER){
@@ -270,25 +270,25 @@ namespace ft {
 			}
 
 	template <class _T, class _Compare, class _Allocator>
-		pair<olderYangerBro, typename _rb_tree<_T, _Compare, _Allocator>::pointer_node>
+		ft::pair<olderYangerBro, typename _rb_tree<_T, _Compare, _Allocator>::pointer_node>
 			_rb_tree<_T, _Compare, _Allocator>::
 			___olderYangerBrother(pointer_node doubleBlackNode){
-				typedef pair<olderYangerBro,
+				typedef ft::pair<olderYangerBro,
 								typename _rb_tree<_T, _Compare, _Allocator>
-								::pointer_node>	_pair;
+								::pointer_node>	__pair;
 
 				if (doubleBlackNode->previous){
 					if (doubleBlackNode->previous->nextRight != doubleBlackNode)
-						{ return _pair(OLDER, doubleBlackNode->previous->nextRight); }
-					return _pair(YANGER, doubleBlackNode->previous->nextLeft);
+						{ return __pair(OLDER, doubleBlackNode->previous->nextRight); }
+					return __pair(YANGER, doubleBlackNode->previous->nextLeft);
 				}
-				return _pair(NONE, NULL);
+				return __pair(NONE, NULL);
 			}
 
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			___yangerBrotherBalancing(pointer_node doubleBlackNode,
-										pair<olderYangerBro,
+										ft::pair<olderYangerBro,
 										typename _rb_tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
 				doubleBlackNode->color = BLACK;
@@ -306,7 +306,7 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			___blackChildrenBalancing(pointer_node doubleBlackNode,
-										pair<olderYangerBro,
+										ft::pair<olderYangerBro,
 										typename _rb_tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
 				doubleBlackNode->color = BLACK;
@@ -323,7 +323,7 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			___redLeftChildBalancing(pointer_node doubleBlackNode,
-										pair<olderYangerBro,
+										ft::pair<olderYangerBro,
 										typename _rb_tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
 				// if (!doubleBlackNode->previous->previous
@@ -348,7 +348,7 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			___redRightChildBalancing(pointer_node doubleBlackNode,
-										pair<olderYangerBro,
+										ft::pair<olderYangerBro,
 										typename _rb_tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
 				// if (!doubleBlackNode->previous->previous
@@ -374,7 +374,7 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			___redBrotherBalancing(pointer_node doubleBlackNode,
-									pair<olderYangerBro,
+									ft::pair<olderYangerBro,
 									typename _rb_tree<_T, _Compare, _Allocator>
 									::pointer_node> bro){
 				___brotherParentChange(doubleBlackNode, bro);
@@ -386,7 +386,7 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			___blackBrotherBalancing(pointer_node doubleBlackNode,
-										pair<olderYangerBro,
+										ft::pair<olderYangerBro,
 										typename _rb_tree<_T, _Compare, _Allocator>
 										::pointer_node> bro){
 				if (bro.second->nextLeft->color == BLACK
@@ -402,11 +402,11 @@ namespace ft {
 	template <class _T, class _Compare, class _Allocator>
 		void	_rb_tree<_T, _Compare, _Allocator>::
 			__blackBalancing(pointer_node doubleBlackNode){
-				typedef pair<olderYangerBro,
+				typedef ft::pair<olderYangerBro,
 								typename _rb_tree<_T, _Compare, _Allocator>
-								::pointer_node>	_pair;
+								::pointer_node>	__pair;
 
-				_pair	bro(___olderYangerBrother(doubleBlackNode));
+				__pair	bro(___olderYangerBrother(doubleBlackNode));
 
 				if (!doubleBlackNode->previous){
 					doubleBlackNode->color = BLACK;

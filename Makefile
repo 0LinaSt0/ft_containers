@@ -6,7 +6,7 @@
 #    By: msalena <msalena@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 16:24:48 by msalena           #+#    #+#              #
-#    Updated: 2022/07/24 20:46:37 by msalena          ###   ########.fr        #
+#    Updated: 2022/08/21 18:06:44 by msalena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,15 +14,15 @@ HEADS_DIR		=	includes
 
 SRCS_DIR		=	tests_cpp
 
-HEAD_CONT		=	$(addprefix $(HEADS_DIR)/, containers.hpp vector.hpp vectorIterator.hpp stack.hpp)
+HEAD_CONT		=	$(addprefix $(HEADS_DIR)/, containers.hpp vector.hpp vectorIterator.hpp stack.hpp map.hpp)
 
-HEAD_TESTS		=	$(addprefix $(HEADS_DIR)/tests_hpp/, testsVec.hpp testsStack.hpp)
+HEAD_TESTS		=	$(addprefix $(HEADS_DIR)/tests_hpp/, testsVec.hpp testsStack.hpp testsMap.hpp)
 
 TPP_FILES		=	$(addprefix $(HEADS_DIR)/tpp_format/, tree.tpp)
 
 SRCS_MAIN		=	main.cpp
 
-SRCS_TESTS		=	$(addprefix $(SRCS_DIR)/,testsForVec.cpp testsForStack.cpp testsForTree.cpp)
+SRCS_TESTS		=	$(addprefix $(SRCS_DIR)/,testsForVec.cpp testsForStack.cpp testsForMap.cpp)
 
 OBJS_MAIN		=	$(SRCS_MAIN:.cpp=.o)
 
