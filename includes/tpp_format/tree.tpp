@@ -295,10 +295,10 @@ namespace ft {
 				bro.second->color = BLACK;
 				if (bro.second->previous->color == RED){
 					bro.second->nextLeft->color = RED;
-					bro.second->previous->color = RED;
+					// bro.second->previous->color = RED; !maybe return this string!
 				} else {
-					bro.second->nextLeft->color = BLACK;
 					bro.second->previous->color = BLACK;
+					bro.second->nextLeft->color = BLACK;
 				}
 				_rightTurn(bro.second->previous, bro.second);
 			}
