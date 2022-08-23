@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/21 20:50:47 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/23 21:55:14 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ template <class node>
 	void	printAllAboutNode(node& treeNode);
 
 namespace ft{
+	
 	/*Equal functions and helpfully functions for their*/
 	template <class InputIterator1, class InputIterator2>
-		bool equal (InputIterator1 first1, InputIterator1 last1,
+		bool	equal(InputIterator1 first1, InputIterator1 last1,
 				InputIterator2 first2){
 			if (!first1.base() || !first2.base()) return false;
 			while (first1 != last1){
@@ -46,7 +47,7 @@ namespace ft{
 		}
 
 	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
-		bool equal (InputIterator1 first1, InputIterator1 last1,
+		bool	equal(InputIterator1 first1, InputIterator1 last1,
 				InputIterator2 first2, BinaryPredicate pred){
 			if (!first1.base() || !first2.base()) return false;
 			while (first1 != last1){
@@ -58,16 +59,16 @@ namespace ft{
 		}
 
 	template <class T1, class T2>
-		bool _lessCheck(T1 a, T2 b){ return (a < b) ? true : false; }
+		bool	_lessCheck(T1 a, T2 b){ return (a < b) ? true : false; }
 
 	template <class T1, class T2>
-		bool _equalLessCheck(T1 a, T2 b){ return (a <= b) ? true : false; }
+		bool	_equalLessCheck(T1 a, T2 b){ return (a <= b) ? true : false; }
 
 	template <class T1, class T2>
-		bool _moreCheck(T1 a, T2 b){ return(a > b) ? true : false; }
+		bool	_moreCheck(T1 a, T2 b){ return(a > b) ? true : false; }
 
 	template <class T1, class T2>
-		bool _equalMoreCheck(T1 a, T2 b){ return (_equalLessCheck(a, b) && a != b) ? false : true; }
+		bool	_equalMoreCheck(T1 a, T2 b){ return (_equalLessCheck(a, b) && a != b) ? false : true; }
 
 
 	/*Pair class for constructing two type of elements to ine class objects*/
@@ -80,13 +81,17 @@ namespace ft{
 			first_type	first;
 			second_type	second;
 
-			pair () : first (0), second (0) {}
+			pair () : first (first_type()), second (second_type()) {}
 			template < class U, class V >
 				pair (const pair < U, V > &pr) : first (pr.first), second (pr.second) {}
 			pair (const first_type &a, const second_type &b) : first (a), second (b) {}
 			~pair () {}
 
-			pair& operator= (const pair& pr) { first = pr.first; second = pr.second; return *this; }
+			pair& operator= (const pair& pr) { 
+				first = pr.first; 
+				second = pr.second; 
+				return *this; 
+			}
 		} ;
 
 	template <class T1, class T2>
@@ -153,6 +158,8 @@ namespace ft{
 			pointer_node	previous;
 			pointer_node	nextRight;
 			pointer_node	nextLeft;
+
+			_tree_node(){}
 
 			// _tree_node&	operator=(const _tree_node& comingTree){
 			// 	value = comingTree.value;
@@ -390,9 +397,17 @@ namespace ft{
 			void	__deletedWithoutChildren(pointer_node deletedNode);
 
 		private:
+			pointer_node	_createNodeNull(void){
+				pointer_node	newNode = nodeAlloc.allocate(1);
+				nodeAlloc.construct(newNode, tree_node());
+				
+				newNode = NULL;
+				return newNode;
+			}
 			pointer_node	_createNode(const value_type& val){
 
 					pointer_node	newNode = nodeAlloc.allocate(1);
+					nodeAlloc.construct(newNode, tree_node());
 					// std::cout << val.first << std::endl;
 					// exit (0);
 					newNode->value = val;
@@ -410,6 +425,8 @@ namespace ft{
 
 
 				nilNode = nodeAlloc.allocate(1);
+				nodeAlloc.construct(nilNode, tree_node());
+				
 				nilNode->color = BLACK;
 				nilNode->isItNil = true;
 				nilNode->previous = parent;
@@ -452,7 +469,7 @@ namespace ft{
 
 			pointer_node	_findsInsertPlace(pointer_node comingNode,
 												pointer_node currentNode){
-				if (!currentNode || currentNode->isItNil){
+				if (!(currentNode) || currentNode->isItNil){
 					return currentNode;
 				} else if (compare(currentNode->value, comingNode->value)){
 					return _findsInsertPlace(comingNode, currentNode->nextRight);
@@ -563,13 +580,27 @@ namespace ft{
 			// _rb_tree(void) { }
 			_rb_tree(const compare_class& comp,
 						const allocator_type& a = allocator_type())
-			: node (NULL), compare(comp), countElems(0), nodeAlloc(a) {}
-			_rb_tree(const _rb_tree& other) : node(NULL), compare(other.compare) { operator=(other); }
+			: node (_createNodeNull()), compare(comp), countElems(0), nodeAlloc(a) {}
+			_rb_tree(const _rb_tree& other) : compare(other.compare) { 
+				print_node(other.node);
+				if (!other.node){
+					node = NULL;
+				} else {
+					insert(other.begin(), other.end());
+				}
+				countElems = other.countElems;
+				nodeAlloc = other.nodeAlloc;
+			}
 			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
 
 			_rb_tree& operator= (const _rb_tree& x){
 				_freeTree(node);
-				insert(x.begin(), x.end());
+				if (!x.node){
+					node = NULL;
+				} else {
+					insert(x.begin(), x.end());
+				}
+				compare(x.compare);
 				countElems = x.countElems;
 				nodeAlloc = x.nodeAlloc;
 				return *this;
@@ -614,6 +645,9 @@ namespace ft{
 				pointer_node	insertPlace = node;
 				pointer_node	added_node = _createNode(val);
 
+				// std::cout << &insertPlace <<std::endl;
+				// std::cout << &node <<std::endl;
+				// exit (0);
 				insertPlace = _findsInsertPlace(added_node, insertPlace);
 				if (insertPlace == added_node)
 					{ return pair<iterator, bool>
@@ -744,7 +778,8 @@ namespace ft{
 			void	print_node(pointer_node treeNode){
 				std::cout << "NODE_status" << std::endl;
 				std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
-				std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
+				if (!treeNode->isItNil)
+					std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
 				// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
 				std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
 				std::cout << "	color: " << (char)(treeNode->color) << "\n";

@@ -6,11 +6,12 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:01:12 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/21 20:27:34 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/23 20:50:31 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/tests_hpp/testsMap.hpp"
+#include "../includes/tests_hpp/testsVec.hpp"
 #include <set>
 
 
@@ -215,34 +216,40 @@
 		}
 	}
 
-// 	class MapBoolTest {
-// public:
-// 	std::map<int, int> m1, m2, m3, m4;
-// 	std::map<std::string, std::string> m5, m6, m7, m8, m9;
-// 	ft::map<int, int> mp1, mp2, mp3, mp4;
-// 	ft::map<std::string, std::string> mp5, mp6, mp7, mp8, mp9;
+	class MapBoolTest {
+public:
+	std::map<int, int> m1, m2, m3, m4;
+	std::map<std::string, std::string> m5, m6, m7, m8, m9;
+	ft::map<int, int> mp1, mp2, mp3, mp4;
+	ft::map<std::string, std::string> mp5, mp6, mp7, mp8, mp9;
 
-// 	MapBoolTest() {
-		// m1.insert(std::make_pair(2, 3)); mp1.insert(ft::make_pair(2, 3));
-		// m2.insert(std::make_pair(3, 3)); mp2.insert(ft::make_pair(3, 3));
-		// m3.insert(std::make_pair(3, 4)); mp3.insert(ft::make_pair(3, 4));
-		// m4.insert(std::make_pair(4, 4)); mp4.insert(ft::make_pair(4, 4));
-		// m4.insert(std::make_pair(4, 5)); mp4.insert(ft::make_pair(4, 5));
-		// m5.insert(std::make_pair("123", "123")); mp5.insert(ft::make_pair("123", "123"));
-	// 	m6.insert(std::make_pair("123", "124")); mp6.insert(ft::make_pair("123", "124"));
-	// 	m7.insert(std::make_pair("124", "123")); mp7.insert(ft::make_pair("124", "123"));
-	// 	m8.insert(std::make_pair("12", "123")); mp8.insert(ft::make_pair("12", "123"));
-	// 	m9.insert(std::make_pair("123", "12")); mp9.insert(ft::make_pair("123", "12"));
-	// }
-// };
+	MapBoolTest() {
+		m1.insert(std::make_pair(2, 3)); mp1.insert(ft::make_pair(2, 3));
+		m2.insert(std::make_pair(3, 3)); mp2.insert(ft::make_pair(3, 3));
+		m3.insert(std::make_pair(3, 4)); mp3.insert(ft::make_pair(3, 4));
+		m4.insert(std::make_pair(4, 4)); mp4.insert(ft::make_pair(4, 4));
+		m4.insert(std::make_pair(4, 5)); mp4.insert(ft::make_pair(4, 5));
+		m5.insert(std::make_pair("123", "123")); mp5.insert(ft::make_pair("123", "123"));
+		m6.insert(std::make_pair("123", "124")); mp6.insert(ft::make_pair("123", "124"));
+		m7.insert(std::make_pair("124", "123")); mp7.insert(ft::make_pair("124", "123"));
+		m8.insert(std::make_pair("12", "123")); mp8.insert(ft::make_pair("12", "123"));
+		m9.insert(std::make_pair("123", "12")); mp9.insert(ft::make_pair("123", "12"));
+	}
+};
 
 	void	checkForMap(void){
 		// checkMapConstructors();
 		{
-			std::cout << "\t~~~~~~~~~~~~~~MY_MAP~~~~~~~~~~~~~~" << std::endl;
-			ft::map<std::string, std::string>	mp;
-				mp.insert(myPair("a", "3"));
-				mp.insert(myPair("asd", "gg"));
+			// std::cout << "\t~~~~~~~~~~~~~~MY_MAP~~~~~~~~~~~~~~" << std::endl;
+			// ft::map<std::string, std::string>	mp;
+			// 	mp.insert(myPair("a", "3"));
+			// 	mp.insert(myPair("asd", "gg"));
+			// 	mp.insert(myPair("d", "gg"));
+			// 	mp.insert(myPair("qrg", "gg"));
+			// 	mp.insert(myPair("45h24", "gg"));
+			// 	mp.insert(myPair("svd", "gg"));
+			// 	mp.insert(myPair("reg", "gg"));
+			// 	mp.insert(myPair("asaefd", "gg"));
 
 				// mp.insert(myPair("23", 3));
 				// mp.insert(myPair("7", 3));
@@ -252,38 +259,41 @@
 				// mp.insert(myPair("4", 3));
 				// mp.insert(myPair("11", 3));
 
-			printMap(mp);
+			// printMap(mp);
 
 			// std::cout << (map0.begin())->first << std::endl;
 
-			// std::vector<int> result, result2;
-			// MapBoolTest mt;
+			std::vector<int> result, result2;
+			MapBoolTest mt;
 			// return ;
 
-			// // result.push_back(mt.m1 == mt.m1); result.push_back(mt.m3 == mt.m3); result.push_back(mt.m5 == mt.m9);
-			// // result.push_back(mt.m1 == mt.m2); result.push_back(mt.m3 == mt.m4); result.push_back(mt.m6 == mt.m6);
-			// // result.push_back(mt.m1 == mt.m3); result.push_back(mt.m4 == mt.m4); result.push_back(mt.m6 == mt.m7);
-			// // result.push_back(mt.m1 == mt.m4); result.push_back(mt.m5 == mt.m5); result.push_back(mt.m6 == mt.m8);
-			// // result.push_back(mt.m2 == mt.m2); result.push_back(mt.m5 == mt.m6); result.push_back(mt.m6 == mt.m9);
-			// // result.push_back(mt.m2 == mt.m3); result.push_back(mt.m5 == mt.m7); result.push_back(mt.m7 == mt.m7);
-			// // result.push_back(mt.m2 == mt.m4); result.push_back(mt.m5 == mt.m8); result.push_back(mt.m7 == mt.m8);
-			// // result.push_back(mt.m7 == mt.m9); result.push_back(mt.m8 == mt.m8); result.push_back(mt.m8 == mt.m9);
-			// // result.push_back(mt.m9 == mt.m9);
+			result.push_back(mt.m1 == mt.m1); result.push_back(mt.m3 == mt.m3); result.push_back(mt.m5 == mt.m9);
+			result.push_back(mt.m1 == mt.m2); result.push_back(mt.m3 == mt.m4); result.push_back(mt.m6 == mt.m6);
+			result.push_back(mt.m1 == mt.m3); result.push_back(mt.m4 == mt.m4); result.push_back(mt.m6 == mt.m7);
+			result.push_back(mt.m1 == mt.m4); result.push_back(mt.m5 == mt.m5); result.push_back(mt.m6 == mt.m8);
+			result.push_back(mt.m2 == mt.m2); result.push_back(mt.m5 == mt.m6); result.push_back(mt.m6 == mt.m9);
+			result.push_back(mt.m2 == mt.m3); result.push_back(mt.m5 == mt.m7); result.push_back(mt.m7 == mt.m7);
+			result.push_back(mt.m2 == mt.m4); result.push_back(mt.m5 == mt.m8); result.push_back(mt.m7 == mt.m8);
+			result.push_back(mt.m7 == mt.m9); result.push_back(mt.m8 == mt.m8); result.push_back(mt.m8 == mt.m9);
+			result.push_back(mt.m9 == mt.m9);
 
 			// printMap(mt.m1);
 
-			// result2.push_back(mt.mp1 == mt.mp1);
+			result2.push_back(mt.mp1 == mt.mp1);
 
 
-			//result2.push_back(mt.mp3 == mt.mp3); result2.push_back(mt.mp5 == mt.mp9);
-			// result2.push_back(mt.mp1 == mt.mp2); result2.push_back(mt.mp3 == mt.mp4); result2.push_back(mt.mp6 == mt.mp6);
-			// result2.push_back(mt.mp1 == mt.mp3); result2.push_back(mt.mp4 == mt.mp4); result2.push_back(mt.mp6 == mt.mp7);
-			// result2.push_back(mt.mp1 == mt.mp4); result2.push_back(mt.mp5 == mt.mp5); result2.push_back(mt.mp6 == mt.mp8);
-			// result2.push_back(mt.mp2 == mt.mp2); result2.push_back(mt.mp5 == mt.mp6); result2.push_back(mt.mp6 == mt.mp9);
-			// result2.push_back(mt.mp2 == mt.mp3); result2.push_back(mt.mp5 == mt.mp7); result2.push_back(mt.mp7 == mt.mp7);
-			// result2.push_back(mt.mp2 == mt.mp4); result2.push_back(mt.mp5 == mt.mp8); result2.push_back(mt.mp7 == mt.mp8);
-			// result2.push_back(mt.mp7 == mt.mp9); result2.push_back(mt.mp8 == mt.mp8); result2.push_back(mt.mp8 == mt.mp9);
-			// result2.push_back(mt.mp9 == mt.mp9);
+			result2.push_back(mt.mp3 == mt.mp3); result2.push_back(mt.mp5 == mt.mp9);
+			result2.push_back(mt.mp1 == mt.mp2); result2.push_back(mt.mp3 == mt.mp4); result2.push_back(mt.mp6 == mt.mp6);
+			result2.push_back(mt.mp1 == mt.mp3); result2.push_back(mt.mp4 == mt.mp4); result2.push_back(mt.mp6 == mt.mp7);
+			result2.push_back(mt.mp1 == mt.mp4); result2.push_back(mt.mp5 == mt.mp5); result2.push_back(mt.mp6 == mt.mp8);
+			result2.push_back(mt.mp2 == mt.mp2); result2.push_back(mt.mp5 == mt.mp6); result2.push_back(mt.mp6 == mt.mp9);
+			result2.push_back(mt.mp2 == mt.mp3); result2.push_back(mt.mp5 == mt.mp7); result2.push_back(mt.mp7 == mt.mp7);
+			result2.push_back(mt.mp2 == mt.mp4); result2.push_back(mt.mp5 == mt.mp8); result2.push_back(mt.mp7 == mt.mp8);
+			result2.push_back(mt.mp7 == mt.mp9); result2.push_back(mt.mp8 == mt.mp8); result2.push_back(mt.mp8 == mt.mp9);
+			result2.push_back(mt.mp9 == mt.mp9);
+
+			printVecContent(result, true);
+			printVecContent(result2, true);
 		}
 		{
 			std::cout << "\n\n\t~~~~~~~~~~~~~~ORIG_MAP~~~~~~~~~~~~~~" << std::endl;

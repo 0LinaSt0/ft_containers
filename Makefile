@@ -6,7 +6,7 @@
 #    By: msalena <msalena@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 16:24:48 by msalena           #+#    #+#              #
-#    Updated: 2022/08/21 18:06:44 by msalena          ###   ########.fr        #
+#    Updated: 2022/08/23 21:10:20 by msalena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ OBJS_TESTS		=	$(SRCS_TESTS:.cpp=.o)
 
 PROG_NAME		=	./ft_containers
 
-C++				=	c++ -std=c++98 -Wall -Wextra -Werror #-g
+C++				=	c++ -std=c++98 -Wall -Wextra -Werror -g
 
 %.o:			%.cpp $(HEAD_CONT) $(HEAD_TESTS) $(SRCS_MAIN) $(SRCS_TESTS) $(TPP_FILES) Makefile
 				$(C++) -c $< -o $@

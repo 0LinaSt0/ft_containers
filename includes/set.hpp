@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 13:25:39 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/23 13:25:39 by marvin           ###   ########.fr       */
+/*   Updated: 2022/08/23 19:26:48 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ namespace ft{
 				}
 
 			set(const set& x) : tree(x.tree) {
-				ыetAlloc = x.setAlloc;
+				setAlloc = x.setAlloc;
 				setCompare =x.setCompare;
 			}
 			
@@ -100,16 +100,16 @@ namespace ft{
 			/* Modifiers: insert, erase, swap, clear */
 
 			ft::pair<iterator,bool> insert(const value_type& val){
-				tree.insert(val);
+				return tree.insert(val);
 			}
 
 			iterator insert(iterator position, const value_type& val){
-				tree.insert(position, val);
+				return tree.insert(position, val);
 			}
 
 			template <class InputIterator>
 				void insert(InputIterator first, InputIterator last){
-					tree.insert(fisrt, last);
+					tree.insert(first, last);
 				}
 
 			void erase(iterator position){
@@ -117,17 +117,17 @@ namespace ft{
 			}
 
 			size_type erase(const value_type& val){
-				tree.erase(val);
+				return tree.erase(val);
 			}
 
 			void erase(iterator first, iterator last){
-				tree.erase(fisrt, last);
+				tree.erase(first, last);
 			}
 
 			void swap(set& x) {
 				set	tmp = *this;
 
-				this = x;
+				*this = x;
 				x = tmp;
 			}
 
@@ -146,7 +146,7 @@ namespace ft{
 			}
 
 			size_type count(const value_type& val) const{
-				return tree.cout(val);
+				return tree.count(val);
 			}
 
 			iterator lower_bound(const value_type& val) const{
@@ -190,7 +190,7 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_lessCheck<set, set>);
+								ft::_lessCheck<T, T>);
 		}
 
 	template <class T, class Compare, class Alloc>
@@ -200,7 +200,7 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalLessCheck<set, set>);
+								ft::_equalLessCheck<T, T>);
 		}
 
 	template <class T, class Compare, class Alloc>
@@ -210,7 +210,7 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_moreCheck<set, set>);
+								ft::_moreCheck<T, T>);
 		}
 
 	template <class T, class Compare, class Alloc>
@@ -220,7 +220,7 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalMoreCheck<set, set>);
+								ft::_equalMoreCheck<T, T>);
 		}
 
 	template <class T, class Compare, class Alloc>

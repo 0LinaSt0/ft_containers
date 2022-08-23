@@ -227,7 +227,8 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_lessCheck<map, map>);
+								ft::_lessCheck<ft::pair<Key, T>, 
+												ft::pair<Key, T> > );
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -237,7 +238,8 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalLessCheck<map, map>);
+								ft::_equalLessCheck<ft::pair<Key, T>, 
+														ft::pair<Key, T> >);
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -247,7 +249,8 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_moreCheck<map, map>);
+								ft::_moreCheck<ft::pair<Key, T>, 
+												ft::pair<Key, T> >);
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -257,7 +260,8 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalMoreCheck<map, map>);
+								ft::_equalMoreCheck<ft::pair<Key, T>, 
+														ft::pair<Key, T> >);
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
