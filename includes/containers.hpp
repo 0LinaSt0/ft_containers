@@ -274,17 +274,17 @@ namespace ft{
 		} ;
 
 		template <class Iter1, class Iter2>
-			bool		operator==(const _rb_tree_iter<Iter1>& a, const _rb_tree_iter<Iter2>& b)
+			bool	operator==(const _rb_tree_iter<Iter1>& a, const _rb_tree_iter<Iter2>& b)
 				{ return a.base() == b.base(); }
 		template <class Iter1, class Iter2>
-			bool		operator!=(const _rb_tree_iter<Iter1>& a, const _rb_tree_iter<Iter2>& b)
+			bool	operator!=(const _rb_tree_iter<Iter1>& a, const _rb_tree_iter<Iter2>& b)
 				{ return a.base() != b.base(); }
 
 			template <class Iter1, class Iter2>
-			bool		operator==(const _rb_tree_rev_iter<Iter1>& a, const _rb_tree_rev_iter<Iter2>& b)
+			bool	operator==(const _rb_tree_rev_iter<Iter1>& a, const _rb_tree_rev_iter<Iter2>& b)
 				{ return a.base() == b.base(); }
 		template <class Iter1, class Iter2>
-			bool		operator!=(const _rb_tree_rev_iter<Iter1>& a, const _rb_tree_rev_iter<Iter2>& b)
+			bool	operator!=(const _rb_tree_rev_iter<Iter1>& a, const _rb_tree_rev_iter<Iter2>& b)
 				{ return a.base() != b.base(); }
 
 	template <class _T, class _Compare, class _Allocator>
@@ -560,6 +560,7 @@ namespace ft{
 			}
 
 		public:
+			// _rb_tree(void) { }
 			_rb_tree(const compare_class& comp,
 						const allocator_type& a = allocator_type())
 			: node (NULL), compare(comp), countElems(0), nodeAlloc(a) {}
@@ -776,61 +777,8 @@ namespace ft{
 				print_tree(currentNode->nextRight);
 
 			}
-		} ;
-	// template <class T, class Compare, class Alloc>
-	// 	bool operator== (const _rb_tree<T, Compare, Alloc>& lhs,
-	// 				const _rb_tree<T, Compare, Alloc>& rhs){
-
-	// 		if (lhs.empty() && rhs.empty()) return true;
-	// 		else if (lhs.empty() || rhs.empty()) return false;
-	// 		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
-	// 	}
-
-	// template <class T, class Compare, class Alloc>
-	// 	bool operator!=(const _rb_tree<T, Compare, Alloc>& lhs,
-	// 				const _rb_tree<T, Compare, Alloc>& rhs){
-	// 		if (lhs.empty() && rhs.empty()) return false;
-	// 		else if (lhs.empty() || rhs.empty()) return true;
-	// 		return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
-	// 	}
-
-	// template <class T, class Compare, class Alloc>
-	// 	bool operator< (const _rb_tree<T, Compare, Alloc>& lhs,
-	// 				const _rb_tree<T, Compare, Alloc>& rhs){
-	// 		if (lhs.empty() && rhs.empty()) return false;
-	// 		else if (lhs.empty() && !rhs.empty()) return true;
-	// 		else if (!lhs.empty() && rhs.empty()) return false;
-	// 		return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_lessCheck<_rb_tree, _rb_tree>);
-	// 	}
-
-	// template <class T, class Compare, class Alloc>
-	// 	bool operator<=(const _rb_tree<T, Compare, Alloc>& lhs,
-	// 				const _rb_tree<T, Compare, Alloc>& rhs){
-	// 		if (lhs.empty() && rhs.empty()) return true;
-	// 		else if (lhs.empty() && !rhs.empty()) return true;
-	// 		else if (!lhs.empty() && rhs.empty()) return false;
-	// 		return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalLessCheck<_rb_tree, _rb_tree>);
-	// 	}
-
-	// template <class T, class Compare, class Alloc>
-	// 	bool operator>(const _rb_tree<T, Compare, Alloc>& lhs,
-	// 				const _rb_tree<T, Compare, Alloc>& rhs){
-	// 		if (lhs.empty() && rhs.empty()) return false;
-	// 		else if (lhs.empty() && !rhs.empty()) return false;
-	// 		else if (!lhs.empty() && rhs.empty()) return true;
-	// 		return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_moreCheck<_rb_tree, _rb_tree>);
-	// 	}
-
-	// template <class T, class Compare, class Alloc>
-	// 	bool operator>=(const _rb_tree<T, Compare, Alloc>& lhs,
-	// 				const _rb_tree<T, Compare, Alloc>& rhs){
-	// 		if (lhs.empty() && rhs.empty()) return true;
-	// 		else if (lhs.empty() && !rhs.empty()) return false;
-	// 		else if (!lhs.empty() && rhs.empty()) return true;
-	// 		return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), ft::_equalMoreCheck<_rb_tree, _rb_tree>);
-	// 	}
-
-} ;
+	} ;
+}
 
 #include "tpp_format/tree.tpp"
 

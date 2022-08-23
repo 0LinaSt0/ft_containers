@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/tests_hpp/testsMap.hpp"
+#include <set>
 
 
 // typedef ft::pair<int, int>			_pair;
@@ -210,6 +211,7 @@
 
 			printMap(map2);
 			std::cout << std::endl << std::endl;
+			std::set<int>	aaa;
 		}
 	}
 

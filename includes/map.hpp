@@ -40,6 +40,7 @@ namespace ft{
 			key_compare		mapCompare;
 		public:
 			typedef typename map_tree::size_type					size_type;
+			typedef typename map_tree::difference_type				difference_type;
 			typedef typename map_tree::iterator						iterator;
 			typedef typename map_tree::const_iterator				const_iterator;
 			typedef typename map_tree::reverse_iterator				reverse_iterator;
@@ -48,16 +49,24 @@ namespace ft{
 			explicit map (const key_compare& comp = key_compare(),
 							const allocator_type& alloc = allocator_type())
 				: tree(comp, alloc), mapAlloc(alloc), mapCompare(comp) {}
+
 			template <class InputIterator>
 				map (InputIterator first, InputIterator last,
 						const key_compare& comp = key_compare(),
 						const allocator_type& alloc = allocator_type())
 					: tree(comp, alloc), mapAlloc(alloc), mapCompare(comp) {
-					insert(first, last); }
-			map (const map& x) : tree(x.tree) { operator=(x); }
+					insert(first, last);
+				}
+
+			map (const map& x) : tree(x.tree) {
+				mapAlloc = x.mapAlloc;
+				mapCompare = x.mapCompare;
+			}
+
 			~map() { }
 
 			map& operator= (const map& x){
+				tree = x.tree;
 				mapAlloc = x.mapAlloc;
 				mapCompare = x.mapCompare;
 				return *this;
@@ -195,24 +204,9 @@ namespace ft{
 
 		} ;
 
-template < class map >
-	void	printMapA(map& objct){
-		std::cout << "Map_size:" << objct.size()
-					<< "   ->   empty_fl:" << std::boolalpha << objct.empty()
-					<< "   ->   max_size:" << objct.max_size()
-					<< std::endl;
-		for (typename map::iterator it(objct.begin());
-					it != objct.end();
-					it++){
-			std::cout << ((*it).first) << "  ";
-		}
-		std::cout << std::endl;
-	}
-
-
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator== (const map<Key, T, Compare, Alloc>& lhs,
-					const map<Key, T, Compare, Alloc>& rhs){
+							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() || rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
@@ -220,7 +214,7 @@ template < class map >
 
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator!=(const map<Key, T, Compare, Alloc>& lhs,
-					const map<Key, T, Compare, Alloc>& rhs){
+							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() || rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
@@ -228,7 +222,7 @@ template < class map >
 
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator< (const map<Key, T, Compare, Alloc>& lhs,
-					const map<Key, T, Compare, Alloc>& rhs){
+							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
@@ -238,7 +232,7 @@ template < class map >
 
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator<=(const map<Key, T, Compare, Alloc>& lhs,
-					const map<Key, T, Compare, Alloc>& rhs){
+							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
@@ -248,7 +242,7 @@ template < class map >
 
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator>(const map<Key, T, Compare, Alloc>& lhs,
-					const map<Key, T, Compare, Alloc>& rhs){
+							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
@@ -258,7 +252,7 @@ template < class map >
 
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator>=(const map<Key, T, Compare, Alloc>& lhs,
-					const map<Key, T, Compare, Alloc>& rhs){
+							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
@@ -267,8 +261,8 @@ template < class map >
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
-		void swap( std::map<Key,T,Compare,Alloc>& lhs,
-				std::map<Key,T,Compare,Alloc>& rhs ){
+		void swap(map<Key,T,Compare,Alloc>& lhs,
+					map<Key,T,Compare,Alloc>& rhs ){
 			lhs.swap(rhs);
 		}
 }
