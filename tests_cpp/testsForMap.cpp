@@ -117,29 +117,29 @@
 	// 	std::cout << "<<<<< LOWER_BOUND CHECK >>>>>>" << std::endl;
 	// 	_tree_iter	lower = tree.lower_bound(_pair(16, 4));
 	// 	std::cout << "Lower_bound for 16 (mast be 16): \n\t";
-	// 	tree.print_node(lower.base());
+	// 	tree._print_node(lower.base());
 
 	// 	lower = tree.lower_bound(_pair(33, 4));
 	// 	std::cout << "Lower_bound for 33 (mast be 35): \n\t";
-	// 	tree.print_node(lower.base());
+	// 	tree._print_node(lower.base());
 
 	// 	lower = tree.lower_bound(_pair(40, 4));
 	// 	std::cout << "Lower_bound for 40 (mast be end()): \n\t";
-	// 	tree.print_node(lower.base());
+	// 	tree._print_node(lower.base());
 	// 	std::cout << std::endl;
 
 	// 	std::cout << "<<<<< UPPER_BOUND CHECK >>>>>>" << std::endl;
 	// 	_tree_iter	upper = tree.upper_bound(_pair(32, 4));
 	// 	std::cout << "Upper_bound for 32 (mast be 35): \n\t";
-	// 	tree.print_node(upper.base());
+	// 	tree._print_node(upper.base());
 
 	// 	upper = tree.upper_bound(_pair(17, 4));
 	// 	std::cout << "Upper_bound for 17 (mast be 32): \n\t";
-	// 	tree.print_node(upper.base());
+	// 	tree._print_node(upper.base());
 
 	// 	upper = tree.upper_bound(_pair(50, 4));
 	// 	std::cout << "Upper_bound for 50 (mast be end()): \n\t";
-	// 	tree.print_node(upper.base());
+	// 	tree._print_node(upper.base());
 	// 	std::cout << std::endl;
 
 	// 	std::cout << "<<<<< EQUAL_RANGE CHECK >>>>>>" << std::endl;

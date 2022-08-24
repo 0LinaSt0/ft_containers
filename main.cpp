@@ -18,9 +18,23 @@
 // #include <set>
 // #include <iostream>
 
+
 int main (void){
 	// checkerForVector();
 	// checkerForStack();
 	// checkForMap();
 	MAP_TESTS::RUN_MAP_TESTS();
+	// std::map<int, int>	a;
+
+	// printf("%p", &(a.beging))
+	// std::cout << &(*(a.begin())) << std::endl;
+
+	// size_t i = 1;
+	// size_t f = 16;
+
+	// for (size_t d = 8; i || d != f; d++){
+	// 	std::cout << d << std::endl;
+	// 	if (d == f) { break; }
+	// 	else { --i; }
+	// }
 }

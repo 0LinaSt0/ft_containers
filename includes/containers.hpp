@@ -31,7 +31,7 @@ template <class node>
 	void	printAllAboutNode(node& treeNode);
 
 namespace ft{
-	
+
 	/*Equal functions and helpfully functions for their*/
 	template <class InputIterator1, class InputIterator2>
 		bool	equal(InputIterator1 first1, InputIterator1 last1,
@@ -87,10 +87,10 @@ namespace ft{
 			pair (const first_type &a, const second_type &b) : first (a), second (b) {}
 			~pair () {}
 
-			pair& operator= (const pair& pr) { 
-				first = pr.first; 
-				second = pr.second; 
-				return *this; 
+			pair& operator= (const pair& pr) {
+				first = pr.first;
+				second = pr.second;
+				return *this;
 			}
 		} ;
 
@@ -161,15 +161,15 @@ namespace ft{
 
 			_tree_node(){}
 
-			// _tree_node&	operator=(const _tree_node& comingTree){
-			// 	value = comingTree.value;
-			// 	color = comingTree.color;
-			// 	previous = comingTree.previous;
-			// 	nextRight = comingTree.nextRight;
-			// 	nextLeft = comingTree.nextLeft;
+			_tree_node&	operator=(const _tree_node& comingTree){
+				value = comingTree.value;
+				color = comingTree.color;
+				previous = comingTree.previous;
+				nextRight = comingTree.nextRight;
+				nextLeft = comingTree.nextLeft;
 
-			// 	return *this;
-			// }
+				return *this;
+			}
 
 			// _tree_node&	operator=(const pointer_node& comingTree){
 			// 	value = comingTree->value;
@@ -199,7 +199,7 @@ namespace ft{
 				pointer_node	returned = elem;
 				if (returned->nextRight->isItNil){
 					pointer_node parent = returned->previous;
-					while(parent && returned == parent->nextRight){
+					while(parent && (returned == parent->nextRight)){
 						returned = parent;
 						parent = parent->previous;
 					}
@@ -211,6 +211,7 @@ namespace ft{
 						returned = returned->nextLeft;
 					}
 				}
+				// std::cout <<
 				return returned;
 			}
 
@@ -264,7 +265,8 @@ namespace ft{
 			typedef _rb_tree_rev_iter					rbRevIter;
 
 			_rb_tree_rev_iter(void) : iterTree (NULL) { }
-			_rb_tree_rev_iter(const rbRevIter& revIter) { iterTree = revIter.iterTree; }
+			template < class Type >
+				_rb_tree_rev_iter (const _rb_tree_rev_iter<Type>& revIter) { *this = revIter; }
 			_rb_tree_rev_iter(const rbIter revIter) : iterTree(revIter) { }
 			~_rb_tree_rev_iter(void) { }
 
@@ -287,7 +289,7 @@ namespace ft{
 			bool	operator!=(const _rb_tree_iter<Iter1>& a, const _rb_tree_iter<Iter2>& b)
 				{ return a.base() != b.base(); }
 
-			template <class Iter1, class Iter2>
+		template <class Iter1, class Iter2>
 			bool	operator==(const _rb_tree_rev_iter<Iter1>& a, const _rb_tree_rev_iter<Iter2>& b)
 				{ return a.base() == b.base(); }
 		template <class Iter1, class Iter2>
@@ -397,19 +399,56 @@ namespace ft{
 			void	__deletedWithoutChildren(pointer_node deletedNode);
 
 		private:
-			pointer_node	_createNodeNull(void){
-				pointer_node	newNode = nodeAlloc.allocate(1);
-				nodeAlloc.construct(newNode, tree_node());
-				
-				newNode = NULL;
-				return newNode;
+			void	_printChildren(pointer_node child) const{
+				if (child){
+					std::cout << "		isitNil - " << std::boolalpha
+													<< child->isItNil << "\n";
+					if (!(child->isItNil))
+						{ std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
+						// { std::cout << "		key - " << child->value << "\n"; }/*for set*/
+				}
 			}
+
+			void	_print_node(pointer_node treeNode) const{
+				std::cout << "NODE_status" << std::endl;
+				std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
+				if (!treeNode->isItNil)
+					std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
+				// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
+				std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
+				std::cout << "	color: " << (char)(treeNode->color) << "\n";
+
+				std::cout << "	parent: " << "\n"
+								<< "		adress - " << treeNode->previous << "\n";
+				if (treeNode->previous){
+					std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
+					// std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
+					<< "		color - " << (char)(treeNode->previous->color) << "\n";
+				}
+
+				std::cout << "	rightChild: " << "\n"
+							<< "		adress - " << treeNode->nextRight << "\n";
+				_printChildren(treeNode->nextRight);
+
+				std::cout << "	leftChild: " << "\n"
+							<< "		adress - " << treeNode->nextLeft << "\n";
+				_printChildren(treeNode->nextLeft);
+				std::cout<< std::endl << std::endl;
+			}
+
+			void	_print_tree(pointer_node currentNode) const{
+				if (!currentNode || currentNode->isItNil) { return ; }
+
+				_print_tree(currentNode->nextLeft);
+				_print_node(currentNode);
+				_print_tree(currentNode->nextRight);
+
+			}
+
 			pointer_node	_createNode(const value_type& val){
 
 					pointer_node	newNode = nodeAlloc.allocate(1);
 					nodeAlloc.construct(newNode, tree_node());
-					// std::cout << val.first << std::endl;
-					// exit (0);
 					newNode->value = val;
 					newNode->color = RED;
 					newNode->isItNil = false;
@@ -426,7 +465,7 @@ namespace ft{
 
 				nilNode = nodeAlloc.allocate(1);
 				nodeAlloc.construct(nilNode, tree_node());
-				
+
 				nilNode->color = BLACK;
 				nilNode->isItNil = true;
 				nilNode->previous = parent;
@@ -451,10 +490,11 @@ namespace ft{
 			}
 
 			pointer_node	_findNode(const value_type& finding) const{
-				if (!node){ return NULL; }
+				if (!node || node->isItNil){ return NULL; }
 
 				pointer_node	lookedNode = node;
 
+				// _print_node(lookedNode);
 				while(1){
 					if (!compare(lookedNode->value, finding)
 							&& !compare(finding, lookedNode->value)) {
@@ -469,7 +509,7 @@ namespace ft{
 
 			pointer_node	_findsInsertPlace(pointer_node comingNode,
 												pointer_node currentNode){
-				if (!(currentNode) || currentNode->isItNil){
+				if (!currentNode || currentNode->isItNil){
 					return currentNode;
 				} else if (compare(currentNode->value, comingNode->value)){
 					return _findsInsertPlace(comingNode, currentNode->nextRight);
@@ -502,8 +542,8 @@ namespace ft{
 
 				addedNode->nextRight = nilRight;
 				addedNode->nextLeft = nilLeft;
-
 				if (!countElems){
+					_freeNode(node);
 					node = addedNode;
 					node->color = BLACK;
 					node->previous = NULL;
@@ -550,7 +590,8 @@ namespace ft{
 			}
 
 			pointer_node	_theLargestNode(pointer_node current) const{
-				if (current->nextRight->isItNil)
+				if (!current || current->isItNil
+						|| current->nextRight->isItNil)
 					{ return current; }
 				return _theLargestNode(current->nextRight);
 			}
@@ -577,29 +618,20 @@ namespace ft{
 			}
 
 		public:
-			// _rb_tree(void) { }
 			_rb_tree(const compare_class& comp,
 						const allocator_type& a = allocator_type())
-			: node (_createNodeNull()), compare(comp), countElems(0), nodeAlloc(a) {}
-			_rb_tree(const _rb_tree& other) : compare(other.compare) { 
-				print_node(other.node);
-				if (!other.node){
-					node = NULL;
-				} else {
-					insert(other.begin(), other.end());
-				}
+			: compare(comp), countElems(0), nodeAlloc(a) { node = _createdNilNode(NULL); }
+			_rb_tree(const _rb_tree& other) : compare(other.compare) {
+				node = _createdNilNode(NULL);
+				countElems = 0;
+				insert(other.begin(), other.end());
 				countElems = other.countElems;
 				nodeAlloc = other.nodeAlloc;
 			}
 			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
 
 			_rb_tree& operator= (const _rb_tree& x){
-				_freeTree(node);
-				if (!x.node){
-					node = NULL;
-				} else {
-					insert(x.begin(), x.end());
-				}
+				insert(x.begin(), x.end());
 				compare(x.compare);
 				countElems = x.countElems;
 				nodeAlloc = x.nodeAlloc;
@@ -608,23 +640,31 @@ namespace ft{
 
 			/*Iterators: begin, end, rbegin, rend*/
 
-			iterator begin() { return countElems ? iterator(_theLeastNode(node)) : end(); }
+			iterator begin(void) {
+				return countElems ? iterator(_theLeastNode(node)) : end();
+			}
 
-			const_iterator begin() const {
-				return countElems ? const_iterator(_theLeastNode(node)) : end(); }
+			const_iterator begin(void) const {
+				return countElems ? const_iterator(_theLeastNode(node)) : end();
+			}
 
-			iterator end() { return iterator((_theLargestNode(node))->nextRight); }
+			iterator end(void) {
+				return countElems ? iterator((_theLargestNode(node))->nextRight)
+									: iterator(node);
+			}
 
-			const_iterator end() const {
-				return const_iterator((_theLargestNode(node))->nextRight); }
+			const_iterator end(void) const {
+				return countElems ? const_iterator((_theLargestNode(node))->nextRight)
+									: iterator(node);
+			}
 
-			reverse_iterator rbegin() { return reverse_iterator(end()); }
+			reverse_iterator rbegin(void) { return reverse_iterator(end()); }
 
-			const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+			const_reverse_iterator rbegin(void) const { return const_reverse_iterator(end()); }
 
-			reverse_iterator rend() { return reverse_iterator(begin()); }
+			reverse_iterator rend(void) { return reverse_iterator(begin()); }
 
-			const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+			const_reverse_iterator rend(void) const { return const_reverse_iterator(begin()); }
 
 			/*Capacity: empty, size, max_size*/
 
@@ -632,7 +672,7 @@ namespace ft{
 
 			size_type	size(void) const { return countElems; }
 
-			size_type	max_size() const { return nodeAlloc.max_size(); }
+			size_type	max_size(void) const { return nodeAlloc.max_size(); }
 
 
 			/* ~~~~~~~~~~~~ MODIFIERS ~~~~~~~~~~
@@ -645,9 +685,7 @@ namespace ft{
 				pointer_node	insertPlace = node;
 				pointer_node	added_node = _createNode(val);
 
-				// std::cout << &insertPlace <<std::endl;
-				// std::cout << &node <<std::endl;
-				// exit (0);
+
 				insertPlace = _findsInsertPlace(added_node, insertPlace);
 				if (insertPlace == added_node)
 					{ return pair<iterator, bool>
@@ -673,8 +711,12 @@ namespace ft{
 
 			template <class InputIterator>
 				void insert (InputIterator first, InputIterator last){
-					for (iterator it(first); it != last; it++){
-						insert(*it);
+					if (first.base()->isItNil) {
+						insert(*first);
+					} else {
+						for (iterator it(first); it != last; it++){
+							insert(*it);
+						}
 					}
 				}
 
@@ -696,6 +738,7 @@ namespace ft{
 			void erase (iterator position){	erase(*position); }
 
 			void erase (iterator first, iterator last){
+				if (first.base()->isItNil) { return ; }
 				iterator	tmp = first;
 				for (iterator it(first); it != last; ){
 					++it;
@@ -718,10 +761,11 @@ namespace ft{
 			*/
 
 			pointer_node	at(const value_type& n) const
-				{ return (empty()) ? NULL : _findNode(n); }
+				{	return (empty()) ? NULL : _findNode(n); }
 
 			iterator	find(const value_type& n) const{
 				pointer_node	finding = _findNode(n);
+				// _print_node(finding);
 				return (empty() || !finding) ? end() : iterator(finding);
 			}
 
@@ -761,56 +805,13 @@ namespace ft{
 
 
 			/* ~~~~~~~~~~~~ PRINTING_FUNCTIONS ~~~~~~~~~~
-				print_node	|	print coming node
-				print_tree	|	print tree, taking root node
+				_print_node	|	print coming node
+				_print_tree	|	print tree, taking root node
 			*/
 
-			void	printChildren(pointer_node child){
-				if (child){
-					std::cout << "		isitNil - " << std::boolalpha
-													<< child->isItNil << "\n";
-					if (!(child->isItNil))
-						{ std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
-						// { std::cout << "		key - " << child->value << "\n"; }/*for set*/
-				}
-			}
 
-			void	print_node(pointer_node treeNode){
-				std::cout << "NODE_status" << std::endl;
-				std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
-				if (!treeNode->isItNil)
-					std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
-				// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
-				std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
-				std::cout << "	color: " << (char)(treeNode->color) << "\n";
-
-				std::cout << "	parent: " << "\n"
-								<< "		adress - " << treeNode->previous << "\n";
-				if (treeNode->previous){
-					std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
-					// std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
-					<< "		color - " << (char)(treeNode->previous->color) << "\n";
-				}
-
-				std::cout << "	rightChild: " << "\n"
-							<< "		adress - " << treeNode->nextRight << "\n";
-				printChildren(treeNode->nextRight);
-
-				std::cout << "	leftChild: " << "\n"
-							<< "		adress - " << treeNode->nextLeft << "\n";
-				printChildren(treeNode->nextLeft);
-				std::cout<< std::endl << std::endl;
-			}
-
-			void	print_tree(pointer_node currentNode){
-				if (!currentNode) { std::cout << "Oopss... Tree doesn't have nodes" << std::endl; return ; }
-
-				if (currentNode->isItNil) { return ; }
-
-				print_tree(currentNode->nextLeft);
-				print_node(currentNode);
-				print_tree(currentNode->nextRight);
-
+			void	printTree(void){
+				_print_tree(node);
 			}
 	} ;
 }

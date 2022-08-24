@@ -339,7 +339,7 @@ namespace ft {
 
 					_rightTurn(bro.second, bro.second->nextLeft);
 					// ___olderYangerBrother(doubleBlackNode);
-					// if(bro.second->value.first == 38) { print_node(bro.second); }
+					// if(bro.second->value.first == 38) { _print_node(bro.second); }
 					___redRightChildBalancing(doubleBlackNode,
 										___olderYangerBrother(doubleBlackNode));
 				}

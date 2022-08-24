@@ -1,10 +1,62 @@
 #include "map_tests.hpp"
 #include <utility>
 
+template <class p_n>
+    void	printCh(p_n child){
+        if (child){
+            std::cout << "		isitNil - " << std::boolalpha
+                                            << child->isItNil << "\n";
+            if (!(child->isItNil))
+                { std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
+                // { std::cout << "		key - " << child->value << "\n"; }/*for set*/
+        }
+    }
+
+template <class p_n>
+void	print_nd(p_n treeNode){
+				std::cout << "NODE_status" << std::endl;
+				std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
+				if (!treeNode->isItNil)
+					std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
+				// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
+				std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
+				std::cout << "	color: " << (char)(treeNode->color) << "\n";
+
+				std::cout << "	parent: " << "\n"
+								<< "		adress - " << treeNode->previous << "\n";
+				if (treeNode->previous){
+					std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
+					// std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
+					<< "		color - " << (char)(treeNode->previous->color) << "\n";
+				}
+
+				std::cout << "	rightChild: " << "\n"
+							<< "		adress - " << treeNode->nextRight << "\n";
+				printCh(treeNode->nextRight);
+
+				std::cout << "	leftChild: " << "\n"
+							<< "		adress - " << treeNode->nextLeft << "\n";
+				printCh(treeNode->nextLeft);
+				std::cout<< std::endl << std::endl;
+			}
+
+template <class p_n>
+void	print_tr(p_n currentNode){
+				if (!currentNode) { std::cout << "Oopss... Tree doesn't have nodes" << std::endl; return ; }
+
+				if (currentNode->isItNil) { return ; }
+
+				print_tr(currentNode->nextLeft);
+				print_nd(currentNode);
+				print_tr(currentNode->nextRight);
+			}
+
+
 namespace MAP_TESTS{
 
 std_map STD_input;
 ft_map FT_input;
+
 
 void CONSTRUCTOR(){
     Timer timer;
@@ -63,7 +115,7 @@ void ASSIGNMENT_OPERATOR(){
     timer.start();
     std_map STD = STD_input;
     total_std_time += timer.stop();
-    
+
     timer.start();
     ft_map FT = FT_input;
     total_ft_time += timer.stop();
@@ -144,7 +196,6 @@ void GETTER(){
 void ITERATORS(){
     Timer timer;
     long long total_ft_time = 0, total_std_time = 0;
-
     {
         std_map::iterator std_iter = STD_input.begin();
         ft_map::iterator ft_iter = FT_input.begin();
@@ -152,7 +203,7 @@ void ITERATORS(){
         while (std_iter != STD_input.end()){
             my_assert(ft_iter->first == std_iter->first);
             my_assert(ft_iter->second == std_iter->second);
-            
+
             timer.start();
             std_iter++;
             total_std_time += timer.stop();
@@ -168,11 +219,11 @@ void ITERATORS(){
         while (std_iter != STD_input.begin()){
             my_assert(ft_iter->first == std_iter->first);
             my_assert(ft_iter->second == std_iter->second);
-            
+
             timer.start();
             std_iter--;
             total_std_time += timer.stop();
-            
+
             timer.start();
             ft_iter--;
             total_ft_time += timer.stop();
@@ -211,6 +262,8 @@ void ITERATORS(){
             ft_iter--;
             total_ft_time += timer.stop();
         }
+   /*i have problem right there with iterators*/
+    exit (0);
     }
 
     print_time(__FUNCTION__, total_ft_time, total_std_time);
@@ -451,7 +504,6 @@ void RUN_MAP_TESTS(){
         STD_input[i] = my_to_string(i);
         FT_input[i] = my_to_string(i);
     }
-
     CONSTRUCTOR();
     ASSIGNMENT_OPERATOR();
     GET_ALLOCATOR();

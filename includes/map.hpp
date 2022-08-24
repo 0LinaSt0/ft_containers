@@ -35,10 +35,12 @@ namespace ft{
 			typedef _rb_tree<value_type, value_compare, allocator_type>	map_tree;
 			typedef typename map_tree::pointer_node						ptr_node;
 
+		public:
+		/*RETURN_TO PRIVATE*/
 			map_tree		tree;
 			allocator_type	mapAlloc;
 			key_compare		mapCompare;
-		public:
+		/*RETURN_TO PRIVATE*/
 			typedef typename map_tree::size_type					size_type;
 			typedef typename map_tree::difference_type				difference_type;
 			typedef typename map_tree::iterator						iterator;
@@ -48,7 +50,7 @@ namespace ft{
 
 			explicit map (const key_compare& comp = key_compare(),
 							const allocator_type& alloc = allocator_type())
-				: tree(comp, alloc), mapAlloc(alloc), mapCompare(comp) {}
+				: tree(comp, alloc), mapAlloc(alloc), mapCompare(comp) { }
 
 			template <class InputIterator>
 				map (InputIterator first, InputIterator last,
@@ -75,6 +77,7 @@ namespace ft{
 			mapped_type& operator[] (const key_type& k){
 				ptr_node	desiredNode = tree.at(value_type(k, mapped_type()));
 
+				// std::cout << k << std::endl;
 				return (!desiredNode) ? (*((insert(value_type(k, mapped_type()))).first)).second
 										: desiredNode->value.second;
 			}
@@ -227,7 +230,7 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_lessCheck<ft::pair<Key, T>, 
+								ft::_lessCheck<ft::pair<Key, T>,
 												ft::pair<Key, T> > );
 		}
 
@@ -238,7 +241,7 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalLessCheck<ft::pair<Key, T>, 
+								ft::_equalLessCheck<ft::pair<Key, T>,
 														ft::pair<Key, T> >);
 		}
 
@@ -249,7 +252,7 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_moreCheck<ft::pair<Key, T>, 
+								ft::_moreCheck<ft::pair<Key, T>,
 												ft::pair<Key, T> >);
 		}
 
@@ -260,7 +263,7 @@ namespace ft{
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
 			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalMoreCheck<ft::pair<Key, T>, 
+								ft::_equalMoreCheck<ft::pair<Key, T>,
 														ft::pair<Key, T> >);
 		}
 
