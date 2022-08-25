@@ -212,7 +212,8 @@ namespace ft{
 							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() || rhs.empty()) return false;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(),
+												rhs.begin(), rhs.end());
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -220,7 +221,10 @@ namespace ft{
 							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() || rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
+			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
+								ft::_equalPairCheck<ft::pair<Key, T>,
+														ft::pair<Key, T> >);
+			return equal ? false : true;
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -229,9 +233,10 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_lessCheck<ft::pair<Key, T>,
-												ft::pair<Key, T> > );
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(),
+												rhs.begin(), rhs.end(),
+												ft::_lessPairCheck<ft::pair<Key, T>,
+																	ft::pair<Key, T> >);
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -240,9 +245,14 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalLessCheck<ft::pair<Key, T>,
-														ft::pair<Key, T> >);
+			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
+								ft::_equalPairCheck<ft::pair<Key, T>,
+												ft::pair<Key, T> >);
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+												rhs.begin(), rhs.end(),
+												ft::_lessPairCheck<ft::pair<Key, T>,
+																	ft::pair<Key, T> >);
+			return (equal || less) ? true : false;
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -251,9 +261,7 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_moreCheck<ft::pair<Key, T>,
-												ft::pair<Key, T> >);
+			return ;
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -262,9 +270,7 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalMoreCheck<ft::pair<Key, T>,
-														ft::pair<Key, T> >);
+			return ;
 		}
 
 	template <class Key, class T, class Compare, class Alloc>

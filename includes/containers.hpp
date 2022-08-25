@@ -49,7 +49,6 @@ namespace ft{
 	template <class InputIterator1, class InputIterator2, class BinaryPredicate>
 		bool	equal(InputIterator1 first1, InputIterator1 last1,
 				InputIterator2 first2, BinaryPredicate pred){
-			if (!first1.base() || !first2.base()) return false;
 			while (first1 != last1){
 				if (pred(*(first1), *(first2)) == false)
 					return false;
@@ -58,18 +57,41 @@ namespace ft{
 			return true;
 		}
 
-	template <class T1, class T2>
-		bool	_lessCheck(T1 a, T2 b){ return (a < b) ? true : false; }
+	template< class InputIt1, class InputIt2 >
+		bool	lexicographical_compare( InputIt1 first1, InputIt1 last1,
+											InputIt2 first2, InputIt2 last2){
+			while ((first1 != last1) && (first2 != last2)) {
+				if (*first1 < *first2) { return true; }
+				if (*first2 < *first1) { return false; }
+				first1++;
+				first2++;
+			}
+			return (first1 == last1) && (first2 != last2);
+		}
+
+	template<class InputIt1, class InputIt2, class Compare>
+		bool lexicographical_compare(InputIt1 first1, InputIt1 last1,
+										InputIt2 first2, InputIt2 last2,
+										Compare comp){
+			if (!first1.base() || !first2.base()) return false;
+			while ((first1 != last1) && (first2 != last2)) {
+				if (comp(*first1, *first2)) { return true; }
+				if (comp(*first2, *first1)) { return false; }
+				first1++;
+				first2++;
+			}
+			return (first1 == last1) && (first2 != last2);
+		}
 
 	template <class T1, class T2>
-		bool	_equalLessCheck(T1 a, T2 b){ return (a <= b) ? true : false; }
+		bool	_equalPairCheck(T1 a, T2 b){
+			return (a.first == b.first) ? true : false;
+		}
 
 	template <class T1, class T2>
-		bool	_moreCheck(T1 a, T2 b){ return(a > b) ? true : false; }
-
-	template <class T1, class T2>
-		bool	_equalMoreCheck(T1 a, T2 b){ return (_equalLessCheck(a, b) && a != b) ? false : true; }
-
+		bool	_lessPairCheck(T1 a, T2 b){
+			return(a.first < b.first) ? true : false;
+		}
 
 	/*Pair class for constructing two type of elements to ine class objects*/
 	template < class T1, class T2 >
@@ -276,7 +298,7 @@ namespace ft{
 			rbRevIter&	operator++(void) { --iterTree; return *this; }
 			rbRevIter	operator++(int) { rbRevIter _new(*this); --iterTree; return _new; }
 			rbRevIter&	operator--(void) { ++iterTree; return *this; }
-			rbRevIter	operator--(int) { rbRevIter _new(*this); --iterTree; return _new; }
+			rbRevIter	operator--(int) { rbRevIter _new(*this); ++iterTree; return _new; }
 
 			rbIter		base(void) const { return iterTree; }
 
@@ -466,6 +488,7 @@ namespace ft{
 				nilNode = nodeAlloc.allocate(1);
 				nodeAlloc.construct(nilNode, tree_node());
 
+				nilNode->value = value_type();
 				nilNode->color = BLACK;
 				nilNode->isItNil = true;
 				nilNode->previous = parent;

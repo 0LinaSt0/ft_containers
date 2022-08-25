@@ -507,7 +507,8 @@ namespace ft{
 							const vector<stackType,_Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() || rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin())
+														? false : true;
 		}
 
 	template <class stackType, class _Alloc>
@@ -516,8 +517,8 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_lessCheck<stackType, stackType>);
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(),
+												rhs.begin(), rhs.end());
 		}
 
 	template <class stackType, class _Alloc>
@@ -526,8 +527,10 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalLessCheck<stackType, stackType>);
+			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+														rhs.begin(), rhs.end());
+			return (equal || less) ? true : false;
 		}
 
 	template <class stackType, class _Alloc>
@@ -536,8 +539,7 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_moreCheck<stackType, stackType>);
+			return ;
 		}
 
 	template <class stackType, class _Alloc>
@@ -546,8 +548,7 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalMoreCheck<stackType, stackType>);
+			return ;
 		}
 
 	template <class stackType, class _Alloc>

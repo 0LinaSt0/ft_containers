@@ -23,10 +23,9 @@ void	checkForMap(void);
 template < class map >
 	void	printMap(map& objct){
 		std::cout << "Map_size:" << objct.size()
-					<< "   ->   empty_fl:" << std::boolalpha << objct.empty() 
-					<< "   ->   max_size:" << objct.max_size() 
+					<< "   ->   count_elems:" << objct.size()
 					<< std::endl;
-		for (typename map::iterator it(objct.begin()); 
+		for (typename map::iterator it(objct.begin());
 					it != objct.end();
 					it++){
 			std::cout << ((*it).first) << "  ";
