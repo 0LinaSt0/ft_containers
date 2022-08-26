@@ -392,10 +392,11 @@ namespace ft{
 						(*tmpIter) = (*i);
 						tmpIter++;
 					}
-				} catch (...){
+				} catch (std::exception& ex) {
 					vecAlloc.deallocate(t, 0);
 					capacitySize = oldCapacity;
-					throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
+					throw std::invalid_argument(ex);
+					// throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
 				}
 
 				_writeValue(tmpIter, position, 'e');

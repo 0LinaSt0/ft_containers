@@ -2,57 +2,6 @@
 #include <utility>
 #include "../includes/tests_hpp/testsMap.hpp"
 
-template <class p_n>
-    void	printCh(p_n child){
-        if (child){
-            std::cout << "		isitNil - " << std::boolalpha
-                                            << child->isItNil << "\n";
-            if (!(child->isItNil))
-                { std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
-                // { std::cout << "		key - " << child->value << "\n"; }/*for set*/
-        }
-    }
-
-template <class p_n>
-void	print_nd(p_n treeNode){
-				std::cout << "NODE_status" << std::endl;
-				std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
-				if (!treeNode->isItNil)
-					std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
-				// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
-				std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
-				std::cout << "	color: " << (char)(treeNode->color) << "\n";
-
-				std::cout << "	parent: " << "\n"
-								<< "		adress - " << treeNode->previous << "\n";
-				if (treeNode->previous){
-					std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
-					// std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
-					<< "		color - " << (char)(treeNode->previous->color) << "\n";
-				}
-
-				std::cout << "	rightChild: " << "\n"
-							<< "		adress - " << treeNode->nextRight << "\n";
-				printCh(treeNode->nextRight);
-
-				std::cout << "	leftChild: " << "\n"
-							<< "		adress - " << treeNode->nextLeft << "\n";
-				printCh(treeNode->nextLeft);
-				std::cout<< std::endl << std::endl;
-			}
-
-template <class p_n>
-void	print_tr(p_n currentNode){
-				if (!currentNode) { std::cout << "Oopss... Tree doesn't have nodes" << std::endl; return ; }
-
-				if (currentNode->isItNil) { return ; }
-
-				print_tr(currentNode->nextLeft);
-				print_nd(currentNode);
-				print_tr(currentNode->nextRight);
-			}
-
-
 namespace MAP_TESTS{
 
 std_map STD_input;

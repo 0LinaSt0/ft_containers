@@ -22,11 +22,11 @@
 
 
 int main (void){
-	// checkerForVector();
+	checkerForVector();
 	// checkerForStack();
 	// checkForMap();
 
-	MAP_TESTS::RUN_MAP_TESTS();
+	// MAP_TESTS::RUN_MAP_TESTS();
 	// std::map<int, int>	a;
 
 	// printf("%p", &(a.beging))

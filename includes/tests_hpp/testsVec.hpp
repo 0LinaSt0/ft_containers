@@ -43,11 +43,10 @@ template <class stackType>
 		// (void)isItOrigVector;
 		std::cout << "VECTOR_status" << std::endl;
 		printVecContent(vec, isItOrigVector);
-		std::cout << "	vecAddress: " << &vec << "\n"
-				<< "	count elem: " << vec.size() << "\n"
-				<< "	capaxity size: " << vec.capacity() << "\n"
-				<< "	emptyFlag: " << vec.empty()
-				<< std::endl << std::endl;
+		std::cout << "	count elem: " << vec.size() << "\n"
+					<< "	capaxity size: " << vec.capacity() << "\n"
+					<< "	emptyFlag: " << vec.empty()
+					<< std::endl << std::endl;
 	}
 
 
