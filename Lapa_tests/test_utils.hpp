@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <sys/time.h>
 
-const size_t max_val = 10;
+const size_t max_val = 1000;
 
 class Printer{
 public:

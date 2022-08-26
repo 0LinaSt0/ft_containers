@@ -12,7 +12,7 @@ namespace ft{
 		public:
 			typedef _Key										key_type;
 			typedef	_T											mapped_type;
-			typedef ft::pair<key_type, mapped_type>				value_type; // ???need const key but how if i want to do operator=???
+			typedef ft::pair<const key_type, mapped_type>		value_type; // ???need const key but how if i want to do operator=???
 			typedef _Compare									key_compare;
 			typedef _Alloc										allocator_type;
 			typedef typename allocator_type::reference			reference;
@@ -37,7 +37,6 @@ namespace ft{
 
 			map_tree		tree;
 			allocator_type	mapAlloc;
-			key_compare		mapCompare;
 		public:
 			typedef typename map_tree::size_type					size_type;
 			typedef typename map_tree::difference_type				difference_type;
@@ -48,27 +47,23 @@ namespace ft{
 
 			explicit map (const key_compare& comp = key_compare(),
 							const allocator_type& alloc = allocator_type())
-				: tree(comp, alloc), mapAlloc(alloc), mapCompare(comp) { }
+				: tree(comp, alloc), mapAlloc(alloc) { }
 
 			template <class InputIterator>
 				map (InputIterator first, InputIterator last,
 						const key_compare& comp = key_compare(),
 						const allocator_type& alloc = allocator_type())
-					: tree(comp, alloc), mapAlloc(alloc), mapCompare(comp) {
-					insert(first, last);
-				}
+					: tree(comp, alloc), mapAlloc(alloc) { insert(first, last); }
 
-			map (const map& x) : tree(x.tree) {
-				mapAlloc = x.mapAlloc;
-				mapCompare = x.mapCompare;
-			}
+			map (const map& x) : tree(x.tree), mapAlloc(x.mapAlloc) { }
+			// map (const map& x) = default;
 
 			~map() { }
 
+			// map& operator= (const map& x) = default;
 			map& operator= (const map& x){
 				tree = x.tree;
 				mapAlloc = x.mapAlloc;
-				mapCompare = x.mapCompare;
 				return *this;
 			}
 
@@ -157,9 +152,9 @@ namespace ft{
 
 			// Observers: key_comp, value_comp
 
-			key_compare	key_comp(void) const { return mapCompare; }
+			key_compare	key_comp(void) const { return tree.key_comp().comp; }
 
-			value_compare	value_comp(void) const { return value_comp(mapCompare); }
+			value_compare	value_comp(void) const { return tree.key_comp(); }
 
 			// Operators: find, count, lower_bound, upper_bound, equal_range
 

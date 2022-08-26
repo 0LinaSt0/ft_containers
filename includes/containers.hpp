@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/23 21:55:14 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/26 21:05:03 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ namespace ft{
 			pointer_node	nextRight;
 			pointer_node	nextLeft;
 
-			_tree_node(){}
+			_tree_node(const value_type& other) : value(other) {}
 
 			_tree_node&	operator=(const _tree_node& comingTree){
 				value = comingTree.value;
@@ -193,7 +193,7 @@ namespace ft{
 				return *this;
 			}
 
-			// _tree_node&	operator=(const pointer_node& comingTree){
+			// pointer_node&	operator=(const pointer_node& comingTree){
 			// 	value = comingTree->value;
 			// 	color = comingTree->color;
 			// 	previous = comingTree->previous;
@@ -470,8 +470,9 @@ namespace ft{
 			pointer_node	_createNode(const value_type& val){
 
 					pointer_node	newNode = nodeAlloc.allocate(1);
-					nodeAlloc.construct(newNode, tree_node());
-					newNode->value = val;
+					nodeAlloc.construct(newNode, tree_node(val));
+					// newNode->value(v
+					al);
 					newNode->color = RED;
 					newNode->isItNil = false;
 					newNode->previous = NULL;
@@ -486,9 +487,9 @@ namespace ft{
 
 
 				nilNode = nodeAlloc.allocate(1);
-				nodeAlloc.construct(nilNode, tree_node());
+				nodeAlloc.construct(nilNode, tree_node(value_type()));
 
-				nilNode->value = value_type();
+				// nilNode->value(value_type());
 				nilNode->color = BLACK;
 				nilNode->isItNil = true;
 				nilNode->previous = parent;
@@ -644,21 +645,21 @@ namespace ft{
 			_rb_tree(const compare_class& comp,
 						const allocator_type& a = allocator_type())
 			: compare(comp), countElems(0), nodeAlloc(a) { node = _createdNilNode(NULL); }
-			_rb_tree(const _rb_tree& other) : compare(other.compare), countElems(0) {
-				node = _createdNilNode(NULL);
-				insert(other.begin(), other.end());
-				countElems = other.countElems;
-				nodeAlloc = other.nodeAlloc;
-			}
+			// _rb_tree(const _rb_tree& other) : compare(other.compare), countElems(0) {
+			// 	node = _createdNilNode(NULL);
+			// 	insert(other.begin(), other.end());
+			// 	countElems = other.countElems;
+			// 	nodeAlloc = other.nodeAlloc;
+			// }
 			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
 
-			_rb_tree& operator= (const _rb_tree& x){
-				insert(x.begin(), x.end());
-				compare(x.compare);
-				countElems = x.countElems;
-				nodeAlloc = x.nodeAlloc;
-				return *this;
-			}
+			// _rb_tree& operator= (const _rb_tree& x){
+			// 	insert(x.begin(), x.end());
+			// 	compare(x.compare);
+			// 	countElems = x.countElems;
+			// 	nodeAlloc = x.nodeAlloc;
+			// 	return *this;
+			// }
 
 			/*Iterators: begin, end, rbegin, rend*/
 
@@ -826,6 +827,7 @@ namespace ft{
 			allocator_type	get_allocator(void) const { return allocator_type(); }
 
 
+			compare_class	key_comp(void) const { return compare; }
 			/* ~~~~~~~~~~~~ PRINTING_FUNCTIONS ~~~~~~~~~~
 				_print_node	|	print coming node
 				_print_tree	|	print tree, taking root node

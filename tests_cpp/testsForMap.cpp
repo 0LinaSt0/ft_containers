@@ -6,12 +6,13 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:01:12 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/23 20:50:31 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/26 20:50:45 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/tests_hpp/testsMap.hpp"
 #include "../includes/tests_hpp/testsVec.hpp"
+#include <utility>
 #include <set>
 
 
@@ -237,91 +238,24 @@ public:
 	}
 };
 
+			int _ratio	= 100000;
 	void	checkForMap(void){
 		// checkMapConstructors();
 		{
 			// std::cout << "\t~~~~~~~~~~~~~~MY_MAP~~~~~~~~~~~~~~" << std::endl;
-			// ft::map<std::string, std::string>	mp;
-			// 	mp.insert(myPair("a", "3"));
-			// 	mp.insert(myPair("asd", "gg"));
-			// 	mp.insert(myPair("d", "gg"));
-			// 	mp.insert(myPair("qrg", "gg"));
-			// 	mp.insert(myPair("45h24", "gg"));
-			// 	mp.insert(myPair("svd", "gg"));
-			// 	mp.insert(myPair("reg", "gg"));
-			// 	mp.insert(myPair("asaefd", "gg"));
+			std::map<int, int>::iterator it;
 
-				// mp.insert(myPair("23", 3));
-				// mp.insert(myPair("7", 3));
-				// mp.insert(myPair("19", 3));
-				// mp.insert(myPair("29", 3));
-				// mp.insert(myPair("41", 3));
-				// mp.insert(myPair("4", 3));
-				// mp.insert(myPair("11", 3));
+    		it->first = 1;
 
-			// printMap(mp);
+			
+			ft::map<int, int>::iterator it;
 
-			// std::cout << (map0.begin())->first << std::endl;
-
-			std::vector<int> result, result2;
-			MapBoolTest mt;
-			// return ;
-
-			result.push_back(mt.m1 == mt.m1); result.push_back(mt.m3 == mt.m3); result.push_back(mt.m5 == mt.m9);
-			result.push_back(mt.m1 == mt.m2); result.push_back(mt.m3 == mt.m4); result.push_back(mt.m6 == mt.m6);
-			result.push_back(mt.m1 == mt.m3); result.push_back(mt.m4 == mt.m4); result.push_back(mt.m6 == mt.m7);
-			result.push_back(mt.m1 == mt.m4); result.push_back(mt.m5 == mt.m5); result.push_back(mt.m6 == mt.m8);
-			result.push_back(mt.m2 == mt.m2); result.push_back(mt.m5 == mt.m6); result.push_back(mt.m6 == mt.m9);
-			result.push_back(mt.m2 == mt.m3); result.push_back(mt.m5 == mt.m7); result.push_back(mt.m7 == mt.m7);
-			result.push_back(mt.m2 == mt.m4); result.push_back(mt.m5 == mt.m8); result.push_back(mt.m7 == mt.m8);
-			result.push_back(mt.m7 == mt.m9); result.push_back(mt.m8 == mt.m8); result.push_back(mt.m8 == mt.m9);
-			result.push_back(mt.m9 == mt.m9);
-
-			// printMap(mt.m1);
-
-			result2.push_back(mt.mp1 == mt.mp1);
-
-
-			result2.push_back(mt.mp3 == mt.mp3); result2.push_back(mt.mp5 == mt.mp9);
-			result2.push_back(mt.mp1 == mt.mp2); result2.push_back(mt.mp3 == mt.mp4); result2.push_back(mt.mp6 == mt.mp6);
-			result2.push_back(mt.mp1 == mt.mp3); result2.push_back(mt.mp4 == mt.mp4); result2.push_back(mt.mp6 == mt.mp7);
-			result2.push_back(mt.mp1 == mt.mp4); result2.push_back(mt.mp5 == mt.mp5); result2.push_back(mt.mp6 == mt.mp8);
-			result2.push_back(mt.mp2 == mt.mp2); result2.push_back(mt.mp5 == mt.mp6); result2.push_back(mt.mp6 == mt.mp9);
-			result2.push_back(mt.mp2 == mt.mp3); result2.push_back(mt.mp5 == mt.mp7); result2.push_back(mt.mp7 == mt.mp7);
-			result2.push_back(mt.mp2 == mt.mp4); result2.push_back(mt.mp5 == mt.mp8); result2.push_back(mt.mp7 == mt.mp8);
-			result2.push_back(mt.mp7 == mt.mp9); result2.push_back(mt.mp8 == mt.mp8); result2.push_back(mt.mp8 == mt.mp9);
-			result2.push_back(mt.mp9 == mt.mp9);
-
-			printVecContent(result, true);
-			printVecContent(result2, true);
+    		it->first = 1;
+			
 		}
 		{
 			std::cout << "\n\n\t~~~~~~~~~~~~~~ORIG_MAP~~~~~~~~~~~~~~" << std::endl;
-			// std::map<int, int>		map;
-
-			// map.at(3);
-
-			// map.insert(std::pair<int, int>(1, 1));
-			// map.insert(std::pair<int, int>(2, 1));
-			// map.insert(std::pair<int, int>(3, 1));
-			// map.insert(std::pair<int, int>(4, 1));
-			// map.insert(std::pair<int, int>(5, 1));
-			// map.insert(std::pair<int, int>(6, 1));
-			// map.insert(std::pair<int, int>(7, 1));
-			// map.insert(std::pair<int, int>(8, 1));
-
-			// std::map<int, int>::iterator	it(map.end());
-
-			// // it--;
-			// std::cout << (*(--it)).first << std::endl;
-
-			// for(std::map<int, int>::iterator it(map.begin());
-			// 			it != map.end();
-			// 			it++){
-			// 		std::cout << (*it).first << std::endl;
-			// 	}
-			// std::cout << map.begin()->first << std::endl;
-			// // std::cout << set.begin()->first << std::endl;
+			// printMap(mp2);
 
 		}
 	}

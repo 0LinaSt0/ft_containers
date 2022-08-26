@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/21 16:21:40 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/26 17:59:56 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,9 @@ namespace ft{
 			size_type	_sizeItersDistance(InputIterator first, InputIterator last){
 				size_type	distance = 0;
 
-				for (InputIterator countIter(first); countIter != last; countIter++){
+				while (first != last){
 						distance++;
+						first++;
 					}
 				return (distance);
 			}
@@ -115,8 +116,8 @@ namespace ft{
 			'whichPartFl' flag could be:
 				- 'b' if needs put first part of vector to containter
 				- 'e' if needs put last part of vector to containter */
-		template < class D, class InputIterator >
-			void	_writeValue(D &container, InputIterator position, char whichPartFl){
+		template < class InputIterator >
+			void	_writeValue(InputIterator &container, InputIterator position, char whichPartFl){
 				if (whichPartFl == 'b') {
 					for (InputIterator vecBeging(begin());
 							vecBeging != position;
@@ -140,6 +141,7 @@ namespace ft{
 				putIn.countElem = takeFrom.countElem;
 				putIn.capacitySize = takeFrom.capacitySize;
 				putIn.vec = vecAlloc.allocate(putIn.capacitySize);
+				vecAlloc.construct(putIn.vec, value_type());
 
 				if (!takeFrom.countElem){
 					vec = NULL;
@@ -171,6 +173,8 @@ namespace ft{
 						countElem (n), capacitySize (n){
 							vecAlloc = alloc;
 							vec = vecAlloc.allocate(n);
+							vecAlloc.construct(vec, value_type());
+
 
 							for (iterator iter(this->begin()); iter < this->end(); iter++){
 								(*iter) = val;
@@ -188,6 +192,7 @@ namespace ft{
 						capacitySize = countElem;
 						vecAlloc = alloc;
 						vec = vecAlloc.allocate(countElem);
+						vecAlloc.construct(vec, value_type());
 
 						iterator	iter(vec);
 
@@ -202,6 +207,7 @@ namespace ft{
 				vec = NULL;
 			} else {
 				vec = vecAlloc.allocate(capacitySize);
+				vecAlloc.construct(vec, value_type());
 			}
 
 			operator=(x);
@@ -214,6 +220,7 @@ namespace ft{
 			_freeMemory(true, capacitySize);
 			capacitySize = x.capacitySize;
 			vec = vecAlloc.allocate(capacitySize);
+			vecAlloc.construct(vec, value_type());
 
 			iterator	thisIter(vec);
 			size_type	i = 0;
@@ -276,6 +283,7 @@ namespace ft{
 				pointer	tmp;
 
 				tmp = vecAlloc.allocate(capacitySize);
+				vecAlloc.construct(tmp, value_type());
 
 				for (size_type iter = 0; iter < countElem; iter++){
 					tmp[iter] = vec[iter];
@@ -331,6 +339,7 @@ namespace ft{
 					if (countElem > capacitySize){
 						vecAlloc.deallocate(vec, capacitySize);
 						vec = vecAlloc.allocate(countElem);
+						vecAlloc.construct(vec, value_type());
 						capacitySize = countElem;
 					}
 					for (iterator iterVec(vec); first != last; first++){
@@ -347,6 +356,7 @@ namespace ft{
 				if (countElem > capacitySize){
 					vecAlloc.deallocate(vec, capacitySize);
 						vec = vecAlloc.allocate(countElem);
+						vecAlloc.construct(vec, value_type());
 						capacitySize = countElem;
 				}
 				for (size_type i = 0; i < n; i++){
@@ -384,6 +394,7 @@ namespace ft{
 
 				_capacityUpdate(countElem+distanceSize);
 				t = vecAlloc.allocate(capacitySize);
+				vecAlloc.construct(t, value_type());
 
 				iterator	tmpIter(t);
 				_writeValue(tmpIter, position, 'b');
@@ -392,12 +403,18 @@ namespace ft{
 						(*tmpIter) = (*i);
 						tmpIter++;
 					}
-				} catch (std::exception& ex) {
+				} catch (...) {
 					vecAlloc.deallocate(t, 0);
 					capacitySize = oldCapacity;
-					throw std::invalid_argument(ex);
-					// throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
+					// throw std::invalid_argument(ex);
+					throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
 				}
+				// } catch (std::exception& ex) {
+				// 	vecAlloc.deallocate(t, 0);
+				// 	capacitySize = oldCapacity;
+				// 	throw std::invalid_argument(ex);
+				// 	// throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
+				// }
 
 				_writeValue(tmpIter, position, 'e');
 				countElem += distanceSize;
@@ -410,6 +427,7 @@ namespace ft{
 
 			_capacityUpdate(countElem+1);
 			tmp = vecAlloc.allocate(capacitySize);
+			vecAlloc.construct(tmp, value_type());
 
 			iterator	tmpIter(tmp);
 			_writeValue(tmpIter, position, 'b');
@@ -430,6 +448,7 @@ namespace ft{
 
 			_capacityUpdate(countElem+n);
 			tmp = vecAlloc.allocate(capacitySize);
+			vecAlloc.construct(tmp, value_type());
 
 			iterator	tmpIter(tmp);
 			_writeValue(tmpIter, position, 'b');
@@ -450,6 +469,7 @@ namespace ft{
 			pointer	tmp;
 
 			tmp = vecAlloc.allocate(capacitySize);
+			vecAlloc.construct(tmp, value_type());
 			iterator	tmpIter(tmp);
 			size_type	distance = _sizeItersDistance((position+1), end());
 			size_type	deletePos = countElem - distance - 1;
@@ -469,14 +489,18 @@ namespace ft{
 			pointer	tmp;
 
 			tmp = vecAlloc.allocate(capacitySize);
+			vecAlloc.construct(tmp, value_type());
+			
 			iterator	tmpIter(tmp);
+			size_type	toLastDistance = _sizeItersDistance(begin(), last);
+			size_type	comingDistance = _sizeItersDistance(first, last);
 
 			_writeValue(tmpIter, first, 'b');
 			_writeValue(tmpIter, last, 'e');
+			countElem -= comingDistance;
 			_freeMemory(true, capacitySize);
-			countElem -= _sizeItersDistance(first, last);
 			vec = tmp;
-			return (last);
+			return (iterator(vec+(toLastDistance - comingDistance)));
 		}
 
 		void		swap (vector& x){
