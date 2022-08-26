@@ -61,7 +61,7 @@ namespace ft{
 				setAlloc = x.setAlloc;
 				setCompare =x.setCompare;
 			}
-			
+
 			~set(void) { }
 
 			set& operator= (const set& x){
@@ -167,6 +167,7 @@ namespace ft{
 			allocator_type get_allocator(void) const { return setAlloc; }
 		} ;
 
+	
 	template <class T, class Compare, class Alloc>
 		bool operator== (const set<T, Compare, Alloc>& lhs,
 							const set<T, Compare, Alloc>& rhs){
@@ -180,7 +181,8 @@ namespace ft{
 							const set<T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() || rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin()) ? 0 : 1;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin())
+														? false : true;
 		}
 
 	template <class T, class Compare, class Alloc>
@@ -189,8 +191,8 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_lessCheck<T, T>);
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(),
+												rhs.begin(), rhs.end());
 		}
 
 	template <class T, class Compare, class Alloc>
@@ -199,8 +201,10 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalLessCheck<T, T>);
+			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+														rhs.begin(), rhs.end());
+			return (equal || less) ? true : false;
 		}
 
 	template <class T, class Compare, class Alloc>
@@ -209,8 +213,10 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_moreCheck<T, T>);
+			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+														rhs.begin(), rhs.end());
+			return (!equal && !less) ? true : false;
 		}
 
 	template <class T, class Compare, class Alloc>
@@ -219,8 +225,9 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
-								ft::_equalMoreCheck<T, T>);
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+														rhs.begin(), rhs.end());
+			return (!less) ? true : false;
 		}
 
 	template <class T, class Compare, class Alloc>

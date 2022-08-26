@@ -263,8 +263,6 @@ void ITERATORS(){
             ft_iter--;
             total_ft_time += timer.stop();
         }
-//    /*i have problem right there with iterators*/
-//     exit (0);
     }
 
     print_time(__FUNCTION__, total_ft_time, total_std_time);
@@ -400,7 +398,6 @@ void ERASE(){
             ft_iter++;
         }
     }
-    // exit (0);
 
     print_time(__FUNCTION__, total_ft_time, total_std_time);
 }
@@ -472,23 +469,6 @@ void OPERATORS(){
     ft_map FT_1(FT_input.begin(), ft_mid);
     ft_map FT_2(ft_mid, FT_input.end());
 
-
-    std::cout << "~~~> STD_input" << std::endl;
-    printMap(STD_input);
-    std::cout << "~~~> FT_input" << std::endl;
-    printMap(FT_input);
-    std::cout << std::endl << std::endl;
-
-    std::cout << "~~~> STD_1" << std::endl;
-    printMap(STD_1);
-    std::cout << "~~~> FT_1" << std::endl;
-    printMap(FT_1);
-    std::cout << std::endl;
-    std::cout << "~~~> STD_2" << std::endl;
-    printMap(STD_2);
-    std::cout << "~~~> FT_2" << std::endl;
-    printMap(FT_2);
-
     my_assert((STD_input == STD_1) == (FT_input == FT_1));
     my_assert((STD_input == STD_2) == (FT_input == FT_2));
     my_assert((STD_2 == STD_1) == (FT_2 == FT_1));
@@ -498,10 +478,7 @@ void OPERATORS(){
     my_assert((STD_2 != STD_1) == (FT_2 != FT_1));
 
     my_assert((STD_input < STD_1) == (FT_input < FT_1));
-    std::cout << (STD_input < STD_2) << std::endl;
-    std::cout << (FT_input < FT_2) << std::endl;
     my_assert((STD_input < STD_2) == (FT_input < FT_2));
-    exit (0);
     my_assert((STD_2 < STD_1) == (FT_2 < FT_1));
 
     my_assert((STD_input <= STD_1) == (FT_input <= FT_1));
@@ -526,8 +503,6 @@ void RUN_MAP_TESTS(){
         STD_input[i] = my_to_string(i);
         FT_input[i] = my_to_string(i);
     }
-    std::cout <<((3 == 3) && (6 != 6) ) << std::endl;
-    exit (0);
     CONSTRUCTOR();
     ASSIGNMENT_OPERATOR();
     GET_ALLOCATOR();

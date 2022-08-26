@@ -15,6 +15,7 @@
 #include "includes/tests_hpp/testsMap.hpp"
 #include "includes/containers.hpp"
 #include "Lapa_tests/map_tests.hpp"
+#
 #include <algorithm>
 // #include <set>
 // #include <iostream>
@@ -24,6 +25,7 @@ int main (void){
 	// checkerForVector();
 	// checkerForStack();
 	// checkForMap();
+
 	MAP_TESTS::RUN_MAP_TESTS();
 	// std::map<int, int>	a;
 

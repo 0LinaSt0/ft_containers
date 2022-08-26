@@ -644,9 +644,8 @@ namespace ft{
 			_rb_tree(const compare_class& comp,
 						const allocator_type& a = allocator_type())
 			: compare(comp), countElems(0), nodeAlloc(a) { node = _createdNilNode(NULL); }
-			_rb_tree(const _rb_tree& other) : compare(other.compare) {
+			_rb_tree(const _rb_tree& other) : compare(other.compare), countElems(0) {
 				node = _createdNilNode(NULL);
-				countElems = 0;
 				insert(other.begin(), other.end());
 				countElems = other.countElems;
 				nodeAlloc = other.nodeAlloc;

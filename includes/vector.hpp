@@ -539,7 +539,10 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ;
+			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+														rhs.begin(), rhs.end());
+			return (!equal && !less) ? true : false;
 		}
 
 	template <class stackType, class _Alloc>
@@ -548,7 +551,9 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ;
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+														rhs.begin(), rhs.end());
+			return (!less) ? true : false;
 		}
 
 	template <class stackType, class _Alloc>

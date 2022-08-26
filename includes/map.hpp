@@ -35,12 +35,10 @@ namespace ft{
 			typedef _rb_tree<value_type, value_compare, allocator_type>	map_tree;
 			typedef typename map_tree::pointer_node						ptr_node;
 
-		public:
-		/*RETURN_TO PRIVATE*/
 			map_tree		tree;
 			allocator_type	mapAlloc;
 			key_compare		mapCompare;
-		/*RETURN_TO PRIVATE*/
+		public:
 			typedef typename map_tree::size_type					size_type;
 			typedef typename map_tree::difference_type				difference_type;
 			typedef typename map_tree::iterator						iterator;
@@ -212,8 +210,7 @@ namespace ft{
 							const map<Key, T, Compare, Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() || rhs.empty()) return false;
-			return ft::lexicographical_compare(lhs.begin(), lhs.end(),
-												rhs.begin(), rhs.end());
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -261,7 +258,14 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ;
+			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin(),
+								ft::_equalPairCheck<ft::pair<Key, T>,
+												ft::pair<Key, T> >);
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+												rhs.begin(), rhs.end(),
+												ft::_lessPairCheck<ft::pair<Key, T>,
+																	ft::pair<Key, T> >);
+			return (!equal && !less) ? true : false;
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -270,7 +274,11 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			return ;
+			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
+												rhs.begin(), rhs.end(),
+												ft::_lessPairCheck<ft::pair<Key, T>,
+																	ft::pair<Key, T> >);
+			return (!less) ? true : false;
 		}
 
 	template <class Key, class T, class Compare, class Alloc>
