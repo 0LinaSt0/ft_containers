@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:01:12 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/26 20:50:45 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/28 16:49:22 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,40 +218,152 @@
 	}
 
 	class MapBoolTest {
-public:
-	std::map<int, int> m1, m2, m3, m4;
-	std::map<std::string, std::string> m5, m6, m7, m8, m9;
-	ft::map<int, int> mp1, mp2, mp3, mp4;
-	ft::map<std::string, std::string> mp5, mp6, mp7, mp8, mp9;
+	public:
+		std::map<int, int> m1, m2, m3, m4;
+		std::map<std::string, std::string> m5, m6, m7, m8, m9;
+		ft::map<int, int> mp1, mp2, mp3, mp4;
+		ft::map<std::string, std::string> mp5, mp6, mp7, mp8, mp9;
 
-	MapBoolTest() {
-		m1.insert(std::make_pair(2, 3)); mp1.insert(ft::make_pair(2, 3));
-		m2.insert(std::make_pair(3, 3)); mp2.insert(ft::make_pair(3, 3));
-		m3.insert(std::make_pair(3, 4)); mp3.insert(ft::make_pair(3, 4));
-		m4.insert(std::make_pair(4, 4)); mp4.insert(ft::make_pair(4, 4));
-		m4.insert(std::make_pair(4, 5)); mp4.insert(ft::make_pair(4, 5));
-		m5.insert(std::make_pair("123", "123")); mp5.insert(ft::make_pair("123", "123"));
-		m6.insert(std::make_pair("123", "124")); mp6.insert(ft::make_pair("123", "124"));
-		m7.insert(std::make_pair("124", "123")); mp7.insert(ft::make_pair("124", "123"));
-		m8.insert(std::make_pair("12", "123")); mp8.insert(ft::make_pair("12", "123"));
-		m9.insert(std::make_pair("123", "12")); mp9.insert(ft::make_pair("123", "12"));
+		MapBoolTest() {
+			m1.insert(std::make_pair(2, 3)); mp1.insert(ft::make_pair(2, 3));
+			m2.insert(std::make_pair(3, 3)); mp2.insert(ft::make_pair(3, 3));
+			m3.insert(std::make_pair(3, 4)); mp3.insert(ft::make_pair(3, 4));
+			m4.insert(std::make_pair(4, 4)); mp4.insert(ft::make_pair(4, 4));
+			m4.insert(std::make_pair(4, 5)); mp4.insert(ft::make_pair(4, 5));
+			m5.insert(std::make_pair("123", "123")); mp5.insert(ft::make_pair("123", "123"));
+			m6.insert(std::make_pair("123", "124")); mp6.insert(ft::make_pair("123", "124"));
+			m7.insert(std::make_pair("124", "123")); mp7.insert(ft::make_pair("124", "123"));
+			m8.insert(std::make_pair("12", "123")); mp8.insert(ft::make_pair("12", "123"));
+			m9.insert(std::make_pair("123", "12")); mp9.insert(ft::make_pair("123", "12"));
+		}
+	};
+
+			int _ratio	= 1;
+
+	typedef	ft::map<int, int>				my_map; 
+	typedef	ft::map<int, int>::iterator		my_iter;
+	typedef	std::map<int, int>				orig_map;
+	typedef	std::map<int, int>::iterator	orig_iter;
+	// typedef ft::make_pair<int, int>			my_makePair;
+
+	// std::vector<int>	typoe_govno(my_map mp){
+	// 	std::vector<int> v;
+	// 	for (int i = 0, j = 10; i < 20 * _ratio; ++i, ++j)
+	// 		mp.insert(ft::make_pair<int, int>(i, j));
+	// 	my_map mp2;
+	// 	for (int i = 20 * _ratio, j = 200010; i < 40 * _ratio; ++i, ++j)
+	// 		mp2.insert(ft::make_pair<int, int>(i, j));
+	// 	// mp2 = mp;
+	// 	my_iter it = mp2.begin();
+	// 	for (; it != mp2.end(); it++) {
+	// 		v.push_back(it->first);
+	// 		v.push_back(it->second);
+	// 	}
+	// 	v.push_back(mp2.size());
+	// 	// mp.tree.printTree();
+	// 	return v;
+	// }
+
+// template < class K, class T, class F >
+// 	void fillMap(ft::map<K, T, F> &mp) {
+// 		mp.insert(ft::make_pair<int, int>(16, 3));
+// 		mp.insert(ft::make_pair<int, int>(8, 3));
+// 		mp.insert(ft::make_pair<int, int>(23, 3));
+// 		mp.insert(ft::make_pair<int, int>(7, 3));
+// 		mp.insert(ft::make_pair<int, int>(19, 3));
+// 		mp.insert(ft::make_pair<int, int>(29, 3));
+// 		mp.insert(ft::make_pair<int, int>(41, 3));
+// 		mp.insert(ft::make_pair<int, int>(4, 3));
+// 		mp.insert(ft::make_pair<int, int>(11, 3));
+// 	}
+
+// template < class K, class T, class F >
+// 	void fillMap(std::map<K, T, F> &mp) {
+// 		mp.insert(std::make_pair<int, int>(16, 3));
+// 		mp.insert(std::make_pair<int, int>(8, 3));
+// 		mp.insert(std::make_pair<int, int>(23, 3));
+// 		mp.insert(std::make_pair<int, int>(7, 3));
+// 		mp.insert(std::make_pair<int, int>(19, 3));
+// 		mp.insert(std::make_pair<int, int>(29, 3));
+// 		mp.insert(std::make_pair<int, int>(41, 3));
+// 		mp.insert(std::make_pair<int, int>(4, 3));
+// 		mp.insert(std::make_pair<int, int>(11, 3));
+// 	}
+	
+	// std::vector<int>	typoe_govno(my_map mp){
+	// 	std::vector<int> v;
+	// 	fillMap(mp);
+	// 	for (my_iter it = mp.begin(); it != mp.end(); it++) { v.push_back(it->first); }
+	// 	for (my_iter it = --mp.end(); it != mp.begin(); it--) { v.push_back(it->first); }
+	// 	ft::map<int, int, std::greater<int> > mp1;
+	// 	fillMap(mp1);
+	// 	v.push_back(mp1.begin()->first);
+	// 	mp1.erase(41);
+	// 	v.push_back(mp1.begin()->first);
+	// 	mp1.erase(29);
+	// 	v.push_back(mp1.begin()->first);
+	// 	ft::map<int, int, std::greater<int> > mp2;
+	// 	mp2.insert(ft::make_pair<int, int>(3, 3));
+	// 	v.push_back(mp2.begin()->first);
+	// 	mp2.erase(3);
+	// 	if (mp2.begin() == mp2.end())
+	// 		v.push_back(1);
+	// 	ft::map<int, int, std::plus<int> > mp3;
+	// 	fillMap(mp3);
+	// 	exit (0);
+	// 	for (my_iter it = mp3.begin(); it != mp3.end(); it++) { v.push_back(it->first); }
+	// 	for (my_iter it = --mp3.end(); it != mp3.begin(); it--) { v.push_back(it->first); }
+	// 	ft::map<int, int, std::minus<int> > mp4;
+	// 	fillMap(mp4);
+	// 	for (my_iter it = mp4.begin(); it != mp4.end(); it++) { v.push_back(it->first); }
+	// 	for (my_iter it = --mp4.end(); it != mp4.begin(); it--) { v.push_back(it->first); }
+	// 	ft::map<int, int, std::greater_equal<int> > mp5;
+	// 	fillMap(mp5);
+	// 	for (my_iter it = mp5.begin(); it != mp5.end(); it++) { v.push_back(it->first); }
+	// 	for (my_iter it = --mp5.end(); it != mp5.begin(); it--) { v.push_back(it->first); }
+	// 	ft::map<int, int, std::multiplies<int> > mp6;
+	// 	fillMap(mp6);
+	// 	exit (0);
+	// 	for (my_iter it = mp6.begin(); it != mp6.end(); it++) { v.push_back(it->first); }
+	// 	for (my_iter it = --mp6.end(); it != mp6.begin(); it--) { v.push_back(it->first); }
+	// 	ft::map<int, int, std::bit_xor<int> > mp7;
+	// 	fillMap(mp7);
+	// 	for (my_iter it = mp7.begin(); it != mp7.end(); it++) { v.push_back(it->first); }
+	// 	for (my_iter it = --mp7.end(); it != mp7.begin(); it--) { v.push_back(it->first); }
+	// 	std::map<int, int, std::logical_and<int> > mp8;
+	// 	fillMap(mp8);
+	// 	for (orig_iter it = mp8.begin(); it != mp8.end(); it++) { v.push_back(it->first); }
+	// 	for (orig_iter it = --mp8.end(); it != mp8.begin(); it--) { v.push_back(it->first); }
+	// 	v.push_back(mp1.size());
+	// 	return v;
+	// }
+	
+	std::vector<int>	typoe_govno(my_map mp){
+		std::vector<int> v;
+		my_iter it = mp.end();
+		for (int i = 0, j = 0; i < 5; ++i, ++j) {
+			mp.insert(it, ft::make_pair<int, int>(i, j));
+		}
+		my_iter it2 = mp.begin();
+		for (; it2 != mp.end(); ++it2) {
+			v.push_back(it2->first);
+			v.push_back(it2->second);
+		}
+		return v;
 	}
-};
 
-			int _ratio	= 100000;
 	void	checkForMap(void){
 		// checkMapConstructors();
 		{
-			// std::cout << "\t~~~~~~~~~~~~~~MY_MAP~~~~~~~~~~~~~~" << std::endl;
-			std::map<int, int>::iterator it;
-
-    		it->first = 1;
-
+			std::cout << "\t~~~~~~~~~~~~~~MY_MAP~~~~~~~~~~~~~~" << std::endl;
+			std::vector<int>	v;
+			my_map				mp;
 			
-			ft::map<int, int>::iterator it;
-
-    		it->first = 1;
+			v = typoe_govno(mp);
 			
+			printVecParams(v, true);
+			
+			return ;
 		}
 		{
 			std::cout << "\n\n\t~~~~~~~~~~~~~~ORIG_MAP~~~~~~~~~~~~~~" << std::endl;

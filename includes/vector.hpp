@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/26 17:59:56 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/28 12:58:48 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -532,8 +532,7 @@ namespace ft{
 							const vector<stackType,_Alloc>& rhs){
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() || rhs.empty()) return true;
-			return ft::equal(lhs.begin(), lhs.end(), rhs.begin())
-														? false : true;
+			return (lhs == rhs) ? false : true;
 		}
 
 	template <class stackType, class _Alloc>
@@ -552,10 +551,7 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return true;
 			else if (!lhs.empty() && rhs.empty()) return false;
-			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin());
-			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
-														rhs.begin(), rhs.end());
-			return (equal || less) ? true : false;
+			return (lhs < rhs || lhs == rhs) ? true : false;
 		}
 
 	template <class stackType, class _Alloc>
@@ -564,10 +560,7 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return false;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			bool	equal = ft::equal(lhs.begin(), lhs.end(), rhs.begin());
-			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
-														rhs.begin(), rhs.end());
-			return (!equal && !less) ? true : false;
+			return (!(lhs <= rhs)) ? true : false;
 		}
 
 	template <class stackType, class _Alloc>
@@ -576,9 +569,7 @@ namespace ft{
 			if (lhs.empty() && rhs.empty()) return true;
 			else if (lhs.empty() && !rhs.empty()) return false;
 			else if (!lhs.empty() && rhs.empty()) return true;
-			bool	less = ft::lexicographical_compare(lhs.begin(), lhs.end(),
-														rhs.begin(), rhs.end());
-			return (!less) ? true : false;
+			return (!(lhs < rhs)) ? true : false;
 		}
 
 	template <class stackType, class _Alloc>

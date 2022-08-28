@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/26 21:05:03 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/28 16:42:03 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,6 @@ namespace ft{
 				first2++;
 			}
 			return (first1 == last1) && (first2 != last2);
-		}
-
-	template <class T1, class T2>
-		bool	_equalPairCheck(T1 a, T2 b){
-			return (a.first == b.first) ? true : false;
-		}
-
-	template <class T1, class T2>
-		bool	_lessPairCheck(T1 a, T2 b){
-			return(a.first < b.first) ? true : false;
 		}
 
 	/*Pair class for constructing two type of elements to ine class objects*/
@@ -183,15 +173,15 @@ namespace ft{
 
 			_tree_node(const value_type& other) : value(other) {}
 
-			_tree_node&	operator=(const _tree_node& comingTree){
-				value = comingTree.value;
-				color = comingTree.color;
-				previous = comingTree.previous;
-				nextRight = comingTree.nextRight;
-				nextLeft = comingTree.nextLeft;
+			// _tree_node&	operator=(const _tree_node& comingTree){
+			// 	value = comingTree.value;
+			// 	color = comingTree.color;
+			// 	previous = comingTree.previous;
+			// 	nextRight = comingTree.nextRight;
+			// 	nextLeft = comingTree.nextLeft;
 
-				return *this;
-			}
+			// 	return *this;
+			// }
 
 			// pointer_node&	operator=(const pointer_node& comingTree){
 			// 	value = comingTree->value;
@@ -471,8 +461,7 @@ namespace ft{
 
 					pointer_node	newNode = nodeAlloc.allocate(1);
 					nodeAlloc.construct(newNode, tree_node(val));
-					// newNode->value(v
-					al);
+
 					newNode->color = RED;
 					newNode->isItNil = false;
 					newNode->previous = NULL;
@@ -489,7 +478,6 @@ namespace ft{
 				nilNode = nodeAlloc.allocate(1);
 				nodeAlloc.construct(nilNode, tree_node(value_type()));
 
-				// nilNode->value(value_type());
 				nilNode->color = BLACK;
 				nilNode->isItNil = true;
 				nilNode->previous = parent;
@@ -505,12 +493,13 @@ namespace ft{
 			}
 
 			void	_freeTree(pointer_node node){
-				if (!node || node->isItNil) { return ; }
+				if (node->isItNil) { if (!node->previous) { _freeNode(node); } return ; }
 
 				_freeTree(node->nextLeft);
-				_freeNode(node->nextLeft);
-				_freeTree(node->nextRight);
-				_freeNode(node->nextRight);
+				pointer_node	tmp = node->nextRight;
+				_print_node(node);
+				_freeNode(node);
+				_freeTree(tmp);
 			}
 
 			pointer_node	_findNode(const value_type& finding) const{
@@ -570,7 +559,7 @@ namespace ft{
 					_freeNode(node);
 					node = addedNode;
 					node->color = BLACK;
-					node->previous = NULL;
+					// node->previous = NULL;
 				} else {
 					addedNode->previous = inceptionPlace->previous;
 					if (compare(inceptionPlace->previous->value, addedNode->value)){
@@ -651,7 +640,7 @@ namespace ft{
 			// 	countElems = other.countElems;
 			// 	nodeAlloc = other.nodeAlloc;
 			// }
-			~_rb_tree(void) { _freeTree(node); _freeNode(node); }
+			~_rb_tree(void) { /*_freeTree(node);*/ }
 
 			// _rb_tree& operator= (const _rb_tree& x){
 			// 	insert(x.begin(), x.end());
@@ -708,7 +697,6 @@ namespace ft{
 				pointer_node	insertPlace = node;
 				pointer_node	added_node = _createNode(val);
 
-
 				insertPlace = _findsInsertPlace(added_node, insertPlace);
 				if (insertPlace == added_node)
 					{ return pair<iterator, bool>
@@ -718,6 +706,8 @@ namespace ft{
 
 			iterator insert (iterator position, const value_type& val){
 				pointer_node	pos1 = position.base();
+				if(pos1->isItNil) { return insert(val).first; }
+				
 				pointer_node	pos2 = (++position).base();
 
 				if (compare(pos1->value, val)
@@ -770,7 +760,7 @@ namespace ft{
 				}
 			}
 
-			void clear(void) { _freeTree(node); node = NULL; }
+			void clear(void) { /*_freeTree(node);*/ countElems = 0; node = _createdNilNode(NULL); }
 
 			/* ~~~~~~~~~~~~ OPERATIONS ~~~~~~~~~~
 				at			|	Returns a pointer to the node with key 'n' or NULL

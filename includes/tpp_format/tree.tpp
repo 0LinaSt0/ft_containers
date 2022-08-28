@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:02:57 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/21 16:37:32 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/28 11:29:00 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ namespace ft {
 			__deleteNode(pointer_node deletedNode){
 				_freeNode(deletedNode->nextRight);
 				_freeNode(deletedNode->nextLeft);
-				// deletedNode->previous = NULL;
 				deletedNode->nextRight = NULL;
 				deletedNode->nextLeft = NULL;
 				deletedNode->color = BLACK;
