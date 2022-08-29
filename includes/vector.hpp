@@ -490,7 +490,7 @@ namespace ft{
 
 			tmp = vecAlloc.allocate(capacitySize);
 			vecAlloc.construct(tmp, value_type());
-			
+
 			iterator	tmpIter(tmp);
 			size_type	toLastDistance = _sizeItersDistance(begin(), last);
 			size_type	comingDistance = _sizeItersDistance(first, last);

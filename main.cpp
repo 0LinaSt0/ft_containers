@@ -13,22 +13,18 @@
 #include "includes/tests_hpp/testsVec.hpp"
 #include "includes/tests_hpp/testsStack.hpp"
 #include "includes/tests_hpp/testsMap.hpp"
-#include "includes/containers.hpp"
-#include "Lapa_tests/map_tests.hpp"
-#include <algorithm>
+// #include "includes/containers.hpp"
+// #include "Lapa_tests/map_tests.hpp"
+// #include <algorithm>
 // #include <set>
 // #include <iostream>
 
-struct A{
-	std::string a;
-	A(std::string a){this->a = a;}
-};
 
 int main (void){
 
-	// checkerForVector();
+	ft::checkerForVector();
 	// checkerForStack();
-	checkForMap();
+	// checkForMap();
 
 	// MAP_TESTS::RUN_MAP_TESTS();
 

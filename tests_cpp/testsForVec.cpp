@@ -12,119 +12,105 @@
 
 #include "../includes/tests_hpp/testsVec.hpp"
 
-
-
-void	checkVecConstructors(void){
-		{/* <<<<<<<<<<<<<<< Tests for constructor_value >>>>>>>>>>>>>>>*/
-			ft::vector<std::string>	vec(3, "Hola");
-
-			std::cout << "example # 1 constructor_val" << std::endl;
-			/*status*/printVecParams(vec, false);
-							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
-
-			/* <<<<<<<<<<<<<<< Tests for constructor_count >>>>>>>>>>>>>>>*/
-			ft::vector<char>	vec1(0);
-			vec1.push_back('a');
-			vec1.push_back('b');
-			vec1.push_back('v');
-			vec1.push_back('g');
-
-			ft::vector<char>	vec11(vec1.begin(),( vec1.end() - 1));
-
-			std::cout << "example # 2 constructor_iterators" << std::endl;
-			/*status*/printVecParams(vec11, false);
-							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
-
-			/* <<<<<<<<<<<<<<< Tests for constructor_copy >>>>>>>>>>>>>>>*/
-				ft::vector<int>	vec2(3, 5);
-				ft::vector<int>	vec21(vec2);
-
-				std::cout << "example # 3 constructor_copy" << std::endl;
-				/*status*/printVecParams(vec21, false);
-							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
-
-		}
-			std::cout << "\n\n~~~~~~~~~~~~~~ORIGINAL~~~~~~~~~~~~~~" << std::endl;
+namespace ft{
+	void	checkVecConstructors(void){
+		ft::time	timer;
+		long	ft_time = 0, std_time = 0;
+		std::string	input;
 		{
-			/* <<<<<<<<<<<<<<< Tests for constructor_value >>>>>>>>>>>>>>>*/
-			std::vector<std::string>	vec(3, "Hola");
+			/* <<<<<<<<<<<<<<< Tests for fill_constructor >>>>>>>>>>>>>>>*/
+			timer.start();
+			ft::vector<std::string>		my_vec(3, "Hola");
+			ft_time = timer.stop();
 
-			std::cout << "example # 1 constructor_val" << std::endl;
-			/*status*/printVecParams(vec, false);
-							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
+			timer.start();
+			std::vector<std::string>	orig_vec(3, "Hola");
+			std_time = timer.stop();
 
-			/* <<<<<<<<<<<<<<< Tests for constructor_count >>>>>>>>>>>>>>>*/
-			std::vector<char>	vec1(0);
-			vec1.push_back('a');
-			vec1.push_back('b');
-			vec1.push_back('v');
-			vec1.push_back('g');
-
-			std::vector<char>	vec11(vec1.begin(), (vec1.end() - 1));
-
-			std::cout << "example # 2 constructor_iterators" << std::endl;
-			/*status*/printVecParams(vec11, false);
-							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
-
-			/* <<<<<<<<<<<<<<< Tests for constructor_copy >>>>>>>>>>>>>>>*/
-				std::vector<int>	vec2(3, 5);
-				std::vector<int>	vec21(vec2);
-
-				std::cout << "example # 3 constructor_copy" << std::endl;
-				/*status*/printVecParams(vec21, false);
-							/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
+			result("constructor(fill)", my_vec, orig_vec, ft_time, std_time);
 		}
-	}
 
-int c = 10000;
+		// {
+		// 	/* <<<<<<<<<<<<<<< Tests for range_constructor >>>>>>>>>>>>>>>*/
+		// 	ft::vector<char>	my_vec(12, 'a');
+		// 	timer.start();
+		// 	ft::vector<char>	my_vec1(my_vec.start(),(my_vec.stop() - 1));
+		// 	ft_time = timer.stop();
 
+		// 	std::vector<char>	orig_vec(12, 'a');
+		// 	timer.start();
+		// 	std::vector<char>	orig_vec1(orig_vec.start(),(orig_vec.stop() - 1));
+		// 	std_time = timer.stop();
 
-void	checkerForVector(void){
-	// checkConstructors();
-
-	{
-		std::cout << "\t~~~~~~~~~~~~~~MY_VECTOR~~~~~~~~~~~~~~" << std::endl;
-
-		// template <typename T>
-		// 	std::vector<int> erase_test_2(std::vector<T> vector) {
-		// 	std::vector<int> v;
-		// 	for (int i = 0; i < 9900 * _ratio; ++i)
-		// 		vector.push_back(i);
-		// 	g_start1 = timer();
-		// 	v.push_back(*(vector.erase(vector.begin() + 8 * _ratio, vector.end() - 1500 * _ratio)));
-		// 	g_end1 = timer();
-		// 	v.push_back(*(vector.begin() + 82 * _ratio));
-		// 	v.push_back(vector.size());
-		// 	v.push_back(vector.capacity());
-		// 	return v;
+		// 	result("constructor(range)", my_vec1, orig_vec1, ft_time, std_time);
 		// }
 
-		// template <typename T>
-			// std::vector<int> erase_test_2(_vector<T> vector) {
-			ft::vector<int> vector;
-			std::vector<int> v;
-			for (int i = 0; i < 9900 * c; ++i)
-				vector.push_back(i);
-			v.push_back(*(vector.erase(vector.begin() + 8*c, vector.end() - 1500*c)));
-			v.push_back(*(vector.begin() + 82*c));
-			v.push_back(vector.size());
-			v.push_back(vector.capacity());
-			printVecParams(v, false);
-	}
-	{
-		std::cout << "\n\n\t~~~~~~~~~~~~~~ORIG_VECTOR~~~~~~~~~~~~~~" << std::endl;
-			std::vector<int> vector;
-			std::vector<int> v;
-			for (int i = 0; i < 9900 * c; ++i)
-				vector.push_back(i);
-			v.push_back(*(vector.erase(vector.begin() + 8*c, vector.end() - 1500*c)));
-			v.push_back(*(vector.begin() + 82*c));
-			v.push_back(vector.size());
-			v.push_back(vector.capacity());
-			printVecParams(v, true);
-			// printVecParams(vector, false);
+		// {
+		// 	/* <<<<<<<<<<<<<<< Tests for copy_constructor >>>>>>>>>>>>>>>*/
+		// 	ft::vector<int>	my_vec(3, 5);
+		// 	timer.start();
+		// 	ft::vector<int>	my_vec1(my_vec);
+		// 	ft_time = timer.stop();
 
+		// 	std::vector<int>	orig_vec(3, 5);
+		// 	timer.start();
+		// 	std::vector<int>	orig_vec1(orig_vec);
+		// 	std_time = timer.stop();
+
+		// 	result("constructor(copy)", my_vec1, orig_vec1, ft_time, std_time);
+		// }
 	}
+
+
+	void	checkerForVector(void){
+		// (void)type;
+		checkVecConstructors();
+
+		{
+			// std::cout << "\t~~~~~~~~~~~~~~MY_VECTOR~~~~~~~~~~~~~~" << std::endl;
+
+			// template <typename T>
+			// 	std::vector<int> erase_test_2(std::vector<T> vector) {
+			// 	std::vector<int> v;
+			// 	for (int i = 0; i < 9900 * _ratio; ++i)
+			// 		vector.push_back(i);
+			// 	g_start1 = timer();
+			// 	v.push_back(*(vector.erase(vector.begin() + 8 * _ratio, vector.end() - 1500 * _ratio)));
+			// 	g_end1 = timer();
+			// 	v.push_back(*(vector.begin() + 82 * _ratio));
+			// 	v.push_back(vector.size());
+			// 	v.push_back(vector.capacity());
+			// 	return v;
+			// }
+
+			// template <typename T>
+				// std::vector<int> erase_test_2(_vector<T> vector) {
+				// ft::vector<int> vector;
+				// std::vector<int> v;
+				// for (int i = 0; i < 9900 * c; ++i)
+				// 	vector.push_back(i);
+				// v.push_back(*(vector.erase(vector.begin() + 8*c, vector.end() - 1500*c)));
+				// v.push_back(*(vector.begin() + 82*c));
+				// v.push_back(vector.size());
+				// v.push_back(vector.capacity());
+				// printVecParams(v, false);
+		}
+		{
+			// std::cout << "\n\n\t~~~~~~~~~~~~~~ORIG_VECTOR~~~~~~~~~~~~~~" << std::endl;
+			// 	std::vector<int> vector;
+			// 	std::vector<int> v;
+			// 	for (int i = 0; i < 9900 * c; ++i)
+			// 		vector.push_back(i);
+			// 	v.push_back(*(vector.erase(vector.begin() + 8*c, vector.end() - 1500*c)));
+			// 	v.push_back(*(vector.begin() + 82*c));
+			// 	v.push_back(vector.size());
+			// 	v.push_back(vector.capacity());
+			// 	printVecParams(v, true);
+				// printVecParams(vector, false);
+
+		}
+	}
+
 }
 
 

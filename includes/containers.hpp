@@ -707,7 +707,7 @@ namespace ft{
 			iterator insert (iterator position, const value_type& val){
 				pointer_node	pos1 = position.base();
 				if(pos1->isItNil) { return insert(val).first; }
-				
+
 				pointer_node	pos2 = (++position).base();
 
 				if (compare(pos1->value, val)
