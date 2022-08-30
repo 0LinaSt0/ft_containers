@@ -511,7 +511,7 @@ namespace ft{
 				while(1){
 					if (!compare(lookedNode->value, finding)
 							&& !compare(finding, lookedNode->value)) {
-					break;
+						break;
 					} else if (compare(lookedNode->value, finding)) {
 						lookedNode = lookedNode->nextRight;
 					} else { lookedNode = lookedNode->nextLeft; }

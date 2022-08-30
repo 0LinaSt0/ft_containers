@@ -18,9 +18,9 @@
 
 void	checkerForStack(void);
 
-template <class stackType, class Container>
+template <class ft_vec, class Container>
 	// Prints all information about stack
-	void	printStackParams (stackType &stack, Container& base_container){
+	void	printStackParams (ft_vec &stack, Container& base_container){
 		std::cout << "STACK_status" << std::endl;
 		std::cout << "	vecAddress: " << &stack << "\n"
 				<< "	count elem: " << stack.size() << "\n"
@@ -32,8 +32,8 @@ template <class stackType, class Container>
 				<< std::endl << std::endl;
 	}
 
-template <class stackType, class Container>
-	void	memberFunctionsCheck(stackType &stack, Container& base_container){
+template <class ft_vec, class Container>
+	void	memberFunctionsCheck(ft_vec &stack, Container& base_container){
 		/*status*/printStackParams(stack, base_container);
 		std::cout << "-> Remove last elems " << std::endl;
 		stack.pop();
@@ -46,8 +46,8 @@ template <class stackType, class Container>
 		/*status*/printStackParams(stack, base_container);
 	}
 
-template <class stackType>
-	void	operatorsCheck(stackType &stack1, stackType &stack2){
+template <class ft_vec>
+	void	operatorsCheck(ft_vec &stack1, ft_vec &stack2){
 		for (int _operator = 0; _operator < 6; _operator++){
 			switch (_operator){
 				case 0:

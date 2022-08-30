@@ -18,20 +18,20 @@
 #include "../containers.hpp"
 
 namespace ft{
-	void	checkerForVector(void);
+	void	checkerForVector(valueType type);
 
 	//~~~~~~~~~~~~~~~~~~ HELPFUL_UTILS ~~~~~~~~~~~~~~~~~~
-	template <class stackType>
+	template <class ft_vec>
 		// Prints value of vector
-		void	printVecContent(const stackType &vec, bool isItOrigVector){
+		void	printVecContent(ft_vec &vec, bool isItOrigVector){
 			std::cout << "	vector content: ";
 			if (isItOrigVector){
-				for (typename stackType::iterator orig = vec.begin();
+				for (typename ft_vec::iterator orig = vec.begin();
 				orig != vec.end(); orig++){
 					std::cout << *orig << "  ";
 				}
 			} else {
-				for (typename stackType::iterator my(vec.begin());
+				for (typename ft_vec::iterator my(vec.begin());
 				my != vec.end(); my++){
 					std::cout << *my << "  ";
 				}
@@ -39,41 +39,22 @@ namespace ft{
 			(void) isItOrigVector;
 			std::cout << std::endl;
 		}
-	template <class stackType>
+	template <class ft_vec>
 		// Prints all information about vector
-		void	printVecParams ( const stackType &vec, bool isItOrigVector){
+		void	printVecParams (ft_vec &vec, bool isItOrigVector){
 			// (void)isItOrigVector;
-			std::cout << "VECTOR_status" << std::endl;
+			std::cout << "\033[33m";
+			(isItOrigVector) ? (std::cout << "STD_") : (std::cout << "FT_");
+			std::cout << "VECTOR_status" << "\033[0m" << std::endl;
 			printVecContent(vec, isItOrigVector);
 			std::cout << "	count elem: " << vec.size() << "\n"
 						<< "	capaxity size: " << vec.capacity() << "\n"
 						<< "	emptyFlag: " << vec.empty()
 						<< std::endl << std::endl;
 		}
-	// template <class vec>
-	// 	// Prints value of vector
-	// 	void	printVecContent(vec &comingVec){
-	// 		std::cout << "	vector content: ";
-	// 		for (typename vec::iterator vecIter = comingVec.begin();
-	// 		vecIter != vec.end(); vecIter++){
-	// 			std::cout << *vecIter << "  ";
-	// 		}
-	// 		std::cout << std::endl;
-	// 	}
-	// template <class vec>
-	// 	// Prints all information about vector
-	// 	void	printVecParams (vec &comingVec){
-	// 		std::cout << "VECTOR_status" << std::endl;
-	// 		printVecContent(comingVec);
-	// 		std::cout << "	count elem: " << comingVec.size() << "\n"
-	// 					<< "	capaxity size: " << comingVec.capacity() << "\n"
-	// 					<< "	emptyFlag: " << comingVec.empty()
-	// 					<< std::endl;
-	// 	}
-
 
 	template <class ft_vec, class std_vec>
-		bool	compareVectors(const ft_vec myVec, const std_vec origVec){
+		bool	compareVectors(ft_vec& myVec, std_vec& origVec){
 			if (myVec.empty() != origVec.empty()) { return false; }
 			if (myVec.capacity() != origVec.capacity()) { return false; }
 			if (myVec.size() != origVec.size()) { return false; }
@@ -91,7 +72,7 @@ namespace ft{
 
 	template <class ft_vec, class std_vec>
 		void	result(const typename std::string& fieldName,
-						const ft_vec& my, const std_vec& orig,
+						ft_vec& my, std_vec& orig,
 						long ft_time, long std_time){
 			if (compareVectors(my, orig)){
 				print_results(fieldName, ft_time, std_time);
@@ -105,9 +86,9 @@ namespace ft{
 
 	//~~~~~~~~~~~ CHECKS_FOR_MEMBER_FUNCTIONS ~~~~~~~~~~~
 
-	template <class stackType>
+	template <class ft_vec>
 		// Tests for RESIZE and RESERVE (reserve is called int resize)
-		void	sizeNConstructor(stackType &vec, bool isItOrigVector){
+		void	sizeNConstructor(ft_vec &vec, bool isItOrigVector){
 			/*status*/printVecParams(vec, isItOrigVector);
 			vec.resize(4);
 			/*status*/printVecParams(vec,isItOrigVector);
@@ -117,123 +98,74 @@ namespace ft{
 			/*status*/printVecParams(vec, isItOrigVector);
 		}
 
-	template <class stackType>
+	template <class ft_vec, class std_vec>
 		// Tests for ASSIGN  (two overloads)
-		void	assignCheck(stackType &vec, bool isItOrigVector){
-				std::cout << "<<<<< ASSIGN CHECK" << std::endl << std::endl;
+		void	assignCheck(ft_vec &my_vec, std_vec &orig_vec, valueType type){
+			typedef typename ft_vec::iterator	myIter;
+			typedef typename std_vec::iterator	origIter;
 
-			/* <<<<<<<<<<<<<<< Tests for assign(iterator, iterator) >>>>>>>>>>>>>>>*/
-				/* ~~~~~~~~~~Example 1~~~~~~~~~~ */
-				// T	vec1(0);
-				// typename T::iterator	wrong1Vec1(vec1.begin());
-				// typename T::iterator	wrong2Vec1(vec1.end());
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
 
-				// std::cout << "example # 1 assign(iterator, iterator)" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
-				// vec.assign(wrong1Vec1, wrong2Vec1);
-				// std::cout << "example # 1 assign(iterator, iterator)" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
+			// <<<<<<<<<<<<<<< Tests for assign(iterator, iterator) >>>>>>>>>>>>>>>
+			myIter		myBegin(my_vec.begin());
+			myIter		myEnd(my_vec.end());
+			origIter	origBegin = orig_vec.begin();
+			origIter	origEnd = orig_vec.end();
 
-				// /* ~~~~~~~~~~Example 2~~~~~~~~~~ */
-				// T	vec2(12, 'd');
-				// typename T::iterator	wrong1Vec2(vec2.begin());
-				// typename T::iterator	wrong2Vec2(vec2.end());
+			timer.start();
+			my_vec.assign(origBegin, origEnd);
+			ft_time = timer.stop();
 
-				// std::cout << "example # 2 assign(iterator, iterator)" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
-				// vec.assign(wrong1Vec2, wrong2Vec2);
-				// std::cout << "example # 2 assign(iterator, iterator)" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
+			timer.start();
+			orig_vec.assign(myBegin, myEnd);
+			std_time = timer.stop();
 
-				// /* ~~~~~~~~~~Example 3~~~~~~~~~~ */
-				// T	vec3(3, 'd');
-				// typename T::iterator	wrong1Vec3(vec3.begin());
-				// typename T::iterator	wrong2Vec3(vec3.end());
+			result("assign(range)", my_vec, orig_vec, ft_time, std_time);
 
-				// std::cout << "example # 3 assign(iterator, iterator)" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
-				// vec.assign(wrong1Vec3, wrong2Vec3);
-				// std::cout << "example # 3 assign(iterator, iterator)" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
+			// <<<<<<<<<<<<<<< Tests for assign(size_type, value_type) >>>>>>>>>>>>
+			if (type == STRING){
+				for (size_t i = 1; i < 20; i *= i){
+					timer.start();
+					my_vec.assign(i, "Hola");
+					ft_time += timer.stop();
 
-								/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
+					timer.start();
+					orig_vec.assign(i, "Hola");
+					std_time += timer.stop();
+				}
+				result("assign(fill)", my_vec, orig_vec, ft_time, std_time);
+			} else if (type == CHAR) {
+				char	a = 'D';
+				for (size_t i = 1; i < 20; i *= i){
+					timer.start();
+					my_vec.assign(i, a);
+					ft_time += timer.stop();
 
-			/* <<<<<<<<<<<<<<< Tests for assign(size_type, value_type) >>>>>>>>>>>>>>>*/
-								// FOR STD::STRING
-				// /* ~~~~~~~~~~ Example 1 for std::string ~~~~~~~~~~ */
-				// typedef typename T::size_type	size_type;
-				// typedef typename T::value_type	value_type;
+					timer.start();
+					orig_vec.assign(i, a);
+					std_time += timer.stop();
+					a++;
+				}
+				result("assign(fill)", my_vec, orig_vec, ft_time, std_time);
+			} else if (type == INT) {
+				for (size_t i = 1; i < 20; i *= i){
+					timer.start();
+					my_vec.assign(i, i);
+					ft_time += timer.stop();
 
-				// size_type	countElems1 = 0;
-				// value_type	value1 = "hola";
+					timer.start();
+					orig_vec.assign(i, i);
+					std_time += timer.stop();
+				}
+				result("assign(fill)", my_vec, orig_vec, ft_time, std_time);
+			} else {  }
 
-				// std::cout << "example # 1 assign(size_type, value_type) for std::string" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
-				// vec.assign(countElems1, value1);
-				// std::cout << "example # 1 assign(size_type, value_type) for std::string" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
+		}
 
-				// /* ~~~~~~~~~~Example 2 for std::string ~~~~~~~~~~ */
-				// size_type	countElems2 = 10;
-				// value_type	value2 = "hola";
-
-				// std::cout << "example # 2 assign(size_type, value_type) std::string" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
-				// vec.assign(countElems2, value2);
-				// std::cout << "example # 2 assign(size_type, value_type) std::string" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
-
-				// /* ~~~~~~~~~~Example 3 for std::string ~~~~~~~~~~ */
-				// size_type	countElems3 = 5;
-				// value_type	value3 = "gracias";
-
-				// std::cout << "example # 3 assign(size_type, value_type) std::string" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
-				// vec.assign(countElems3, value3);
-				// std::cout << "example # 3 assign(size_type, value_type) std::string" << std::endl;
-				// /*status*/printVecParams(vec, isItOrigVector);
-									// FOR INT
-				/* ~~~~~~~~~~ Example 1 for int ~~~~~~~~~~ */
-				typedef typename stackType::size_type	size_type;
-				typedef typename stackType::value_type	value_type;
-
-				size_type	countElems1 = 0;
-				value_type	value1 = 3;
-
-				std::cout << "example # 1 assign(size_type, value_type) for int*" << std::endl;
-				/*status*/printVecParams(vec, isItOrigVector);
-				vec.assign(countElems1, value1);
-				std::cout << "example # 1 assign(size_type, value_type) for int*" << std::endl;
-				/*status*/printVecParams(vec, isItOrigVector);
-
-				/* ~~~~~~~~~~Example 2 for int* ~~~~~~~~~~ */
-				size_type	countElems2 = 10;
-				value_type	value2 = 1;
-
-				std::cout << "example # 2 assign(size_type, value_type) for int*" << std::endl;
-				/*status*/printVecParams(vec, isItOrigVector);
-				vec.assign(countElems2, value2);
-				std::cout << "example # 2 assign(size_type, value_type) for int*" << std::endl;
-				/*status*/printVecParams(vec, isItOrigVector);
-
-				/* ~~~~~~~~~~Example 3 for int* ~~~~~~~~~~ */
-				size_type	countElems3 = 5;
-				value_type	value3 = 156;
-
-				std::cout << "example # 3 assign(size_type, value_type) for int*" << std::endl;
-				/*status*/printVecParams(vec, isItOrigVector);
-				vec.assign(countElems3, value3);
-				std::cout << "example # 3 assign(size_type, value_type) for int*" << std::endl;
-				/*status*/printVecParams(vec, isItOrigVector);
-
-								/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
-
-				std::cout << "-----" << std::endl;
-			}
-
-	template <class stackType>
+	template <class ft_vec>
 		// Tests for PUSH_BACK
-		void	push_backCheck(stackType &vec, bool isItOrigVector){
+		void	push_backCheck(ft_vec &vec, bool isItOrigVector){
 			/* <<<<<<<<<<<<<<< Tests for std::string type >>>>>>>>>>>>>>>*/
 				// vec.push_back("156");
 				// printVecParams(vec, isItOrigVector);
@@ -257,18 +189,109 @@ namespace ft{
 					/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
 			}
 
-	template <class stackType>
+	template <class ft_vec>
 		// Tests for POP_BACK
-		void	pop_backCheck(stackType &vec, bool isItOrigVector){
+		void	pop_backCheck(ft_vec &vec, bool isItOrigVector){
 			vec.pop_back();
 			printVecParams(vec, isItOrigVector);
 		}
 
-	template <class stackType>
+	template <class ft_vec, class std_vec>
 		// Tests for INSERT (three overloads)
-		void	insertCheck(stackType &vec, bool isItOrigVector){
+		void	insertCheck(ft_vec &my_vec, std_vec &orig_vec, valueType type){
+			typedef typename ft_vec::iterator	myIter;
+			typedef typename std_vec::iterator	origIter;
+
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			// <<<<<<<<<<<<<<< Tests for insert(range) >>>>>>>>>>>>>>>
+			myIter	ftIter = my_vec.begin();
+			myIter	ftIterEnd = my_vec.end();
+			stdIter	stdIter = orig_vec.begin();
+			stdIter	stdIterEnd = orig_vec.end();
+
+			timer.start();
+			my_vec.insert(ftIterEnd, stdIter, stdIterEnd);
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_vec.insert(stdIter, ftIter, ftIterEnd);
+			std_time = timer.stop();
+
+			result("insert(range)", my_vec, orig_vec, ft_time, std_time);
+
+			{
+				if (type == STRING){
+				// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
+					timer.start();
+					ftIter = my_vec.insert(ftIter + 2, "aaa");
+					ft_time = timer.stop();
+
+					timer.start();
+					stdIter = orig_vec.insert(stdIter + 2, "aaa");
+					std_time = timer.stop();
+
+					result("insert(single)", my_vec, orig_vec, ft_time, std_time);
+
+				// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
+					timer.start();
+					ftIter = my_vec.insert(ftIter, 2, "bbb");;
+					ft_time = timer.stop();
+
+					timer.start();
+					stdIter = orig_vec.insert(stdIter, 2, "bbb");
+					std_time = timer.stop();
+
+					result("insert(fill)", my_vec, orig_vec, ft_time, std_time);
+				} else if (type == CHAR) {
+				// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
+					timer.start();
+					ftIter = my_vec.insert(ftIter + 2, 't');
+					ft_time = timer.stop();
+
+					timer.start();
+					stdIter = orig_vec.insert(stdIter + 2, 't');
+					std_time = timer.stop();
+
+					result("insert(single)", my_vec, orig_vec, ft_time, std_time);
+
+				// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
+					timer.start();
+					ftIter = my_vec.insert(ftIter, 2, 't');;
+					ft_time = timer.stop();
+
+					timer.start();
+					stdIter = orig_vec.insert(stdIter, 2, 't');
+					std_time = timer.stop();
+
+					result("insert(fill)", my_vec, orig_vec, ft_time, std_time);
+				} else if (type == INT) {
+				// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
+					timer.start();
+					ftIter = my_vec.insert(ftIter + 2, 5);
+					ft_time = timer.stop();
+
+					timer.start();
+					stdIter = orig_vec.insert(stdIter + 2, 5);
+					std_time = timer.stop();
+
+					result("insert(single)", my_vec, orig_vec, ft_time, std_time);
+
+				// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
+					timer.start();
+					ftIter = my_vec.insert(ftIter, 2, 5);;
+					ft_time = timer.stop();
+
+					timer.start();
+					stdIter = orig_vec.insert(stdIter, 2, 5);
+					std_time = timer.stop();
+
+					result("insert(fill)", my_vec, orig_vec, ft_time, std_time);
+				} else { }
+			}
 			std::cout << "<<<<< INSERT CHECK" << std::endl << std::endl;
-			typedef typename stackType::iterator	iterator;
+			typedef typename ft_vec::iterator	iterator;
 			iterator	iterVec = vec.begin();
 			/* <<<<<<<<<<<<<<< Tests for char type >>>>>>>>>>>>>>>*/
 			iterVec = vec.insert(iterVec+2, 'h');
@@ -279,7 +302,7 @@ namespace ft{
 			std::cout << "example # 2 insert: add chars " << std::endl;
 			/*status*/printVecParams(vec, isItOrigVector);
 
-			stackType	newVec(8, '+');
+			ft_vec	newVec(8, '+');
 			iterVec = vec.end();
 			vec.insert(iterVec, newVec.begin(), newVec.end());
 			std::cout << "example # 3 insert: add distance " << std::endl;
@@ -305,11 +328,11 @@ namespace ft{
 			std::cout << ">>>>>" << std::endl;
 		}
 
-	template <class stackType>
+	template <class ft_vec>
 		// Tests for ERASE (two overloads)
-		void	eraseCheck(stackType &vec, bool isItOrigVector){
+		void	eraseCheck(ft_vec &vec, bool isItOrigVector){
 			std::cout << "<<<<< ERASE CHECK" << std::endl << std::endl;
-			typedef typename stackType::iterator	iterator;
+			typedef typename ft_vec::iterator	iterator;
 			iterator	iterVecBegin = vec.begin();
 			iterator	returnIter;
 			/* <<<<<<<<<<<<<<< Tests for int type >>>>>>>>>>>>>>>*/
@@ -334,9 +357,9 @@ namespace ft{
 			std::cout << ">>>>>" << std::endl;
 		}
 
-	template <class stackType>
+	template <class ft_vec>
 		// Testd for RBEGIN and REND
-		void	reverseBeginEndCheck(stackType &vec){
+		void	reverseBeginEndCheck(ft_vec &vec){
 			std::cout << "<<<<< RBEGIN & REND CHECK" << std::endl << std::endl;
 			std::cout << "rbegin: " << *(vec.rbegin()) << std::endl;
 			std::cout << "rend: " << *(vec.rend()-1) << std::endl;
@@ -347,10 +370,10 @@ namespace ft{
 
 	//~~~~~~~~~~~~~~~~~~~ CHECKS_FOR ITERATOR ~~~~~~~~~~~~~~~~~~~
 
-	template <class stackType, class revIterType>
-		void	checkIterators(stackType& vec, revIterType& rev){
+	template <class ft_vec, class revIterType>
+		void	checkIterators(ft_vec& vec, revIterType& rev){
 
-		typedef typename stackType::iterator iter_type;
+		typedef typename ft_vec::iterator iter_type;
 
 		iter_type from (vec.begin());
 		std::cout << "_______________" << std::endl;

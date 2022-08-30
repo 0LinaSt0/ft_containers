@@ -13,21 +13,26 @@
 #include "includes/tests_hpp/testsVec.hpp"
 #include "includes/tests_hpp/testsStack.hpp"
 #include "includes/tests_hpp/testsMap.hpp"
+#include "includes/tests_hpp/testsUtils.hpp"
 // #include "includes/containers.hpp"
 // #include "Lapa_tests/map_tests.hpp"
 // #include <algorithm>
 // #include <set>
 // #include <iostream>
 
+namespace ft{
+	int main (void){
+		// valueType	type = STRING;
+		// valueType	type = CHAR;
+		valueType	type = INT;
+		checkerForVector(type);
+		// checkerForStack();
+		// checkForMap();
 
-int main (void){
+		// MAP_TESTS::RUN_MAP_TESTS();
 
-	ft::checkerForVector();
-	// checkerForStack();
-	// checkForMap();
-
-	// MAP_TESTS::RUN_MAP_TESTS();
-
+		return (0);
+	}
 }
 
 

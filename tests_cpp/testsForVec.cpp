@@ -16,101 +16,94 @@ namespace ft{
 	void	checkVecConstructors(void){
 		ft::time	timer;
 		long	ft_time = 0, std_time = 0;
-		std::string	input;
+		// {
+		// 	/* <<<<<<<<<<<<<<< Tests for fill_constructor >>>>>>>>>>>>>>>*/
+		// 	timer.start();
+		// 	vector<std::string>		my_vec(3, "Hola");
+		// 	exit (0);
+		// 	ft_time = timer.stop();
+
+		// 	timer.start();
+		// 	std::vector<std::string>	orig_vec(3, "Hola");
+		// 	std_time = timer.stop();
+
+		// 	result("constructor(fill)", my_vec, orig_vec, ft_time, std_time);
+		// }
+
 		{
-			/* <<<<<<<<<<<<<<< Tests for fill_constructor >>>>>>>>>>>>>>>*/
+			/* <<<<<<<<<<<<<<< Tests for range_constructor >>>>>>>>>>>>>>>*/
+			ft::vector<char>	my_vec(12, 'a');
 			timer.start();
-			ft::vector<std::string>		my_vec(3, "Hola");
+			ft::vector<char>	my_vec1(my_vec.begin(),(my_vec.end() - 1));
 			ft_time = timer.stop();
 
+			std::vector<char>	orig_vec(12, 'a');
 			timer.start();
-			std::vector<std::string>	orig_vec(3, "Hola");
+			std::vector<char>	orig_vec1(orig_vec.begin(),(orig_vec.end() - 1));
 			std_time = timer.stop();
 
-			result("constructor(fill)", my_vec, orig_vec, ft_time, std_time);
+			result("constructor(range)", my_vec1, orig_vec1, ft_time, std_time);
 		}
 
-		// {
-		// 	/* <<<<<<<<<<<<<<< Tests for range_constructor >>>>>>>>>>>>>>>*/
-		// 	ft::vector<char>	my_vec(12, 'a');
-		// 	timer.start();
-		// 	ft::vector<char>	my_vec1(my_vec.start(),(my_vec.stop() - 1));
-		// 	ft_time = timer.stop();
+		{
+			/* <<<<<<<<<<<<<<< Tests for copy_constructor >>>>>>>>>>>>>>>*/
+			ft::vector<int>	my_vec(3, 5);
+			timer.start();
+			ft::vector<int>	my_vec1(my_vec);
+			ft_time = timer.stop();
 
-		// 	std::vector<char>	orig_vec(12, 'a');
-		// 	timer.start();
-		// 	std::vector<char>	orig_vec1(orig_vec.start(),(orig_vec.stop() - 1));
-		// 	std_time = timer.stop();
+			std::vector<int>	orig_vec(3, 5);
+			timer.start();
+			std::vector<int>	orig_vec1(orig_vec);
+			std_time = timer.stop();
 
-		// 	result("constructor(range)", my_vec1, orig_vec1, ft_time, std_time);
-		// }
-
-		// {
-		// 	/* <<<<<<<<<<<<<<< Tests for copy_constructor >>>>>>>>>>>>>>>*/
-		// 	ft::vector<int>	my_vec(3, 5);
-		// 	timer.start();
-		// 	ft::vector<int>	my_vec1(my_vec);
-		// 	ft_time = timer.stop();
-
-		// 	std::vector<int>	orig_vec(3, 5);
-		// 	timer.start();
-		// 	std::vector<int>	orig_vec1(orig_vec);
-		// 	std_time = timer.stop();
-
-		// 	result("constructor(copy)", my_vec1, orig_vec1, ft_time, std_time);
-		// }
+			result("constructor(copy)", my_vec1, orig_vec1, ft_time, std_time);
+		}
 	}
 
-
-	void	checkerForVector(void){
+	void	checkerForVector(valueType type){
 		// (void)type;
 		checkVecConstructors();
-
 		{
-			// std::cout << "\t~~~~~~~~~~~~~~MY_VECTOR~~~~~~~~~~~~~~" << std::endl;
+			if (type == STRING){
+				ft::vector<std::string>		my_vec_str(10);
+				std::vector<std::string>	orig_vec_str(10);
 
-			// template <typename T>
-			// 	std::vector<int> erase_test_2(std::vector<T> vector) {
-			// 	std::vector<int> v;
-			// 	for (int i = 0; i < 9900 * _ratio; ++i)
-			// 		vector.push_back(i);
-			// 	g_start1 = timer();
-			// 	v.push_back(*(vector.erase(vector.begin() + 8 * _ratio, vector.end() - 1500 * _ratio)));
-			// 	g_end1 = timer();
-			// 	v.push_back(*(vector.begin() + 82 * _ratio));
-			// 	v.push_back(vector.size());
-			// 	v.push_back(vector.capacity());
-			// 	return v;
-			// }
+				for (size_t i = 0; i < 10; i++){
+					my_vec_str[i] = "siempre";
+					orig_vec_str[i] = "siempre";
+				}
 
-			// template <typename T>
-				// std::vector<int> erase_test_2(_vector<T> vector) {
-				// ft::vector<int> vector;
-				// std::vector<int> v;
-				// for (int i = 0; i < 9900 * c; ++i)
-				// 	vector.push_back(i);
-				// v.push_back(*(vector.erase(vector.begin() + 8*c, vector.end() - 1500*c)));
-				// v.push_back(*(vector.begin() + 82*c));
-				// v.push_back(vector.size());
-				// v.push_back(vector.capacity());
-				// printVecParams(v, false);
-		}
-		{
-			// std::cout << "\n\n\t~~~~~~~~~~~~~~ORIG_VECTOR~~~~~~~~~~~~~~" << std::endl;
-			// 	std::vector<int> vector;
-			// 	std::vector<int> v;
-			// 	for (int i = 0; i < 9900 * c; ++i)
-			// 		vector.push_back(i);
-			// 	v.push_back(*(vector.erase(vector.begin() + 8*c, vector.end() - 1500*c)));
-			// 	v.push_back(*(vector.begin() + 82*c));
-			// 	v.push_back(vector.size());
-			// 	v.push_back(vector.capacity());
-			// 	printVecParams(v, true);
-				// printVecParams(vector, false);
+				assignCheck(my_vec_str, orig_vec_str, type);
+				insertCheck(my_vec_str, orig_vec_str, type);
+			} else if (type == CHAR) {
+				ft::vector<char>	my_vec_char(10);
+				std::vector<char>	orig_vec_char(10);
 
+				for (size_t i = 0; i < 10; i++){
+					my_vec_char[i] = 'g';
+					orig_vec_char[i] = 'g';
+				}
+
+				assignCheck(my_vec_char, orig_vec_char, type);
+				insertCheck(my_vec_str, orig_vec_str, type);
+			} else if ((type == INT)) {
+				ft::vector<int>		my_vec_int(10);
+				std::vector<int>	orig_vec_int(10);
+
+				for (size_t i = 0; i < 10; i++){
+					my_vec_int[i] = i;
+					orig_vec_int[i] = i;
+				}
+
+				assignCheck(my_vec_int, orig_vec_int, type);
+				insertCheck(my_vec_str, orig_vec_str, type);
+			} else {
+				std::cout << "error: please, give me STRING, CHAR or INT type"
+							<< std::endl;
+			}
 		}
 	}
-
 }
 
 
