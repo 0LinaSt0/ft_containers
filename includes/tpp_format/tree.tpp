@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 17:02:57 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/28 11:29:00 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/31 22:19:16 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft {
 			__findUncle(pointer_node newNode){
 				if (newNode->previous){
 					if (newNode->previous->previous){
-						if (compare(newNode->previous->previous->value, newNode->value)){
+						if (newNode->previous->previous->nextLeft != newNode->previous){
 							return (newNode->previous->previous->nextLeft);
 						} else {
 							return (newNode->previous->previous->nextRight);
@@ -40,7 +40,7 @@ namespace ft {
 				___updateNodesPointers(pointer_node oldNode,
 										pointer_node newNode){
 			if (oldNode->previous) {
-				if (compare(oldNode->previous->value, newNode->value)) {
+				if (oldNode->previous->nextLeft != oldNode) {
 				oldNode->previous->nextRight = newNode;
 				} else {
 					oldNode->previous->nextLeft = newNode;
@@ -57,7 +57,7 @@ namespace ft {
 		void	_rb_tree<_T, _Compare, _Allocator>::
 				___nodeMoreGranddad(pointer_node uncle,
 										pointer_node errorNode){
-			if (compare(errorNode->value, errorNode->previous->value)){
+			if (errorNode != errorNode->previous->nextRight){
 				_rightTurn(errorNode->previous, errorNode);
 				_leftTurn(uncle->previous, errorNode);
 				errorNode->color = BLACK;
@@ -71,7 +71,7 @@ namespace ft {
 		void	_rb_tree<_T, _Compare, _Allocator>::
 				___nodeLessGranddad(pointer_node uncle,
 										pointer_node errorNode){
-			if (compare(errorNode->previous->value, errorNode->value)){
+			if (errorNode != errorNode->previous->nextLeft){
 				_leftTurn(errorNode->previous, errorNode);
 				_rightTurn(uncle->previous, errorNode);
 				errorNode->color = BLACK;
@@ -86,7 +86,7 @@ namespace ft {
 				__blackUncle(pointer_node uncle,
 								pointer_node addedNode){
 
-			if (compare(uncle->previous->value, addedNode->value)){
+			if (uncle->previous->nextLeft != addedNode->previous){
 				___nodeMoreGranddad(uncle, addedNode);
 			} else {
 				___nodeLessGranddad(uncle, addedNode);
@@ -194,12 +194,12 @@ namespace ft {
 										bool isNodeNeigbours){
 			/*parents children swap*/
 			if (deleted->previous){
-				if (compare(deleted->value, deleted->previous->value))
+				if (deleted != deleted->previous->nextRight)
 						deleted->previous->nextLeft = finded;
 				else { deleted->previous->nextRight = finded;}
 			}
 			if (!isNodeNeigbours){
-				(compare(finded->value, finded->previous->value))
+				(finded != finded->previous->nextRight)
 					? finded->previous->nextLeft = deleted
 					: finded->previous->nextRight = deleted;
 			}

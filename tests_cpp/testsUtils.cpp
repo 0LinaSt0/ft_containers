@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   testsUtils.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 10:45:53 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/30 10:45:53 by marvin           ###   ########.fr       */
+/*   Updated: 2022/08/31 19:12:46 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@
 */
 
 namespace ft{
-
-	void	print_results(const typename std::string& fieldName,
+	void	print_results(const std::string& fieldName,
 							long ft_time, long std_time){
-		typename std::string	cyan = "\033[36m";
-		typename std::string	green = "\033[32m";
-		typename std::string	red = "\033[31m";
+		std::string	cyan = "\033[36m";
+		std::string	green = "\033[32m";
+		std::string	red = "\033[31m";
 
 		stdout_result(fieldName + " -->", cyan);
 
@@ -54,12 +53,13 @@ namespace ft{
 	}
 
 
-	void	print_mismatch(const typename std::string& fieldName){
-		typename std::string	cyan = "\033[36m";
-		typename std::string	red = "\033[31m";
+	void	print_mismatch(const std::string& fieldName){
+		std::string	cyan = "\033[36m";
+		std::string	red = "\033[31m";
 
 		stdout_result(fieldName + " -->	", cyan);
 		stdout_result("error: std & ft not the same ", red);
 		std::cout << std::endl << std::endl;
 	}
 }
+

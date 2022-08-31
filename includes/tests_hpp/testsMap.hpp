@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 15:43:23 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/21 19:24:30 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/31 22:07:45 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,24 @@
 #include "../vector.hpp"
 #include "testsVec.hpp"
 
-void	checkForMap(void);
+
+namespace ft{
+	void	checkForMap(void);
 
 
-template < class map >
-	void	printMap(map& objct){
-		std::cout << "Map_size:" << objct.size()
-					<< "   ->   count_elems:" << objct.size()
-					<< std::endl;
-		for (typename map::iterator it(objct.begin());
-					it != objct.end();
-					it++){
-			std::cout << ((*it).first) << "  ";
+	template < class map >
+		void	printMap(map& objct){
+			std::cout << "Map_size:" << objct.size()
+						<< "   ->   count_elems:" << objct.size()
+						<< std::endl;
+			for (typename map::iterator it(objct.begin());
+						it != objct.end();
+						it++){
+				std::cout << ((*it).first) << "  ";
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
-	}
+}
 
 
 

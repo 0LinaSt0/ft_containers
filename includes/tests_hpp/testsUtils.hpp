@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   testUtils.hpp                                      :+:      :+:    :+:   */
+/*   testsUtils.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 15:38:56 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/29 15:38:56 by marvin           ###   ########.fr       */
+/*   Updated: 2022/08/31 19:32:09 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 
 
 namespace ft {
-	size_t	factor = 10;
+	static size_t	_factor_ = 10;
 	
 	enum	valueType{
-		STRING,
-		CHAR,
-		INT
+		STRING = 0,
+		CHAR = 1,
+		INT = 2
 	} ;
 
 	class	time{
@@ -44,16 +44,16 @@ namespace ft {
 
 	template <class field>
 		void	stdout_result(const field& fieldValue,
-								const typename std::string& color){
+								const std::string& color){
 			std::cout << color
 						<< fieldValue
 						<< "\033[0m";
 		}
 
-	void	print_results(const typename std::string& fieldName,
+	void	print_results(const std::string& fieldName,
 							long ft_time, long std_time);
 
-	void	print_mismatch(const typename std::string& fieldName);
+	void	print_mismatch(const std::string& fieldName);
 }
 
 #endif

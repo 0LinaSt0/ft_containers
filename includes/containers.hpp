@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/28 16:42:03 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/31 20:59:39 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -489,17 +489,19 @@ namespace ft{
 
 			void	_freeNode(pointer_node destroiedNode){
 				if (!destroiedNode) { return; }
+				nodeAlloc.destroy(destroiedNode);
 				nodeAlloc.deallocate(destroiedNode, 1);
 			}
 
 			void	_freeTree(pointer_node node){
-				if (node->isItNil) { if (!node->previous) { _freeNode(node); } return ; }
+				(void)node;
+				// if (node->isItNil) { if (!node->previous) { _freeNode(node); } return ; }
 
-				_freeTree(node->nextLeft);
-				pointer_node	tmp = node->nextRight;
-				_print_node(node);
-				_freeNode(node);
-				_freeTree(tmp);
+				// _freeTree(node->nextLeft);
+				// pointer_node	tmp = node->nextRight;
+				// _print_node(node);
+				// _freeTree(node->nextRight);
+				// _freeNode(node);
 			}
 
 			pointer_node	_findNode(const value_type& finding) const{
@@ -640,7 +642,7 @@ namespace ft{
 			// 	countElems = other.countElems;
 			// 	nodeAlloc = other.nodeAlloc;
 			// }
-			~_rb_tree(void) { /*_freeTree(node);*/ }
+			~_rb_tree(void) { _freeTree(node); }
 
 			// _rb_tree& operator= (const _rb_tree& x){
 			// 	insert(x.begin(), x.end());

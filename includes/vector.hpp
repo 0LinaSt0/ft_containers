@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/28 12:58:48 by msalena          ###   ########.fr       */
+/*   Updated: 2022/08/31 19:37:53 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,15 +175,7 @@ namespace ft{
 							vec = vecAlloc.allocate(n);
 							vecAlloc.construct(vec, value_type());
 
-							// iterator	iter(this->begin());
-							// iter+1;
-							// std::cout << &(*iter) << std::endl;
-							// *iter = val;
-							// exit (0);
-
-							// std::cout << *iter << std::endl;
 							for (iterator iter(this->begin()); iter < this->end(); iter++){
-								// std::cout << "AAAA" << std::endl;
 								(*iter) = val;
 							}
 						}
