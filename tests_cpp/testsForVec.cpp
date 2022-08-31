@@ -19,12 +19,12 @@ namespace ft{
 		// {
 		// 	/* <<<<<<<<<<<<<<< Tests for fill_constructor >>>>>>>>>>>>>>>*/
 		// 	timer.start();
-		// 	vector<std::string>		my_vec(3, "Hola");
+		// 	vector<std::string>		my_vec(factor, "Hola");
 		// 	exit (0);
 		// 	ft_time = timer.stop();
 
 		// 	timer.start();
-		// 	std::vector<std::string>	orig_vec(3, "Hola");
+		// 	std::vector<std::string>	orig_vec(factor, "Hola");
 		// 	std_time = timer.stop();
 
 		// 	result("constructor(fill)", my_vec, orig_vec, ft_time, std_time);
@@ -32,12 +32,12 @@ namespace ft{
 
 		{
 			/* <<<<<<<<<<<<<<< Tests for range_constructor >>>>>>>>>>>>>>>*/
-			ft::vector<char>	my_vec(12, 'a');
+			ft::vector<char>	my_vec(factor, 'a');
 			timer.start();
 			ft::vector<char>	my_vec1(my_vec.begin(),(my_vec.end() - 1));
 			ft_time = timer.stop();
 
-			std::vector<char>	orig_vec(12, 'a');
+			std::vector<char>	orig_vec(factor, 'a');
 			timer.start();
 			std::vector<char>	orig_vec1(orig_vec.begin(),(orig_vec.end() - 1));
 			std_time = timer.stop();
@@ -47,12 +47,12 @@ namespace ft{
 
 		{
 			/* <<<<<<<<<<<<<<< Tests for copy_constructor >>>>>>>>>>>>>>>*/
-			ft::vector<int>	my_vec(3, 5);
+			ft::vector<int>	my_vec(factor, 5);
 			timer.start();
 			ft::vector<int>	my_vec1(my_vec);
 			ft_time = timer.stop();
 
-			std::vector<int>	orig_vec(3, 5);
+			std::vector<int>	orig_vec(factor, 5);
 			timer.start();
 			std::vector<int>	orig_vec1(orig_vec);
 			std_time = timer.stop();
@@ -61,47 +61,56 @@ namespace ft{
 		}
 	}
 
-	void	checkerForVector(valueType type){
-		// (void)type;
-		checkVecConstructors();
-		{
-			if (type == STRING){
-				ft::vector<std::string>		my_vec_str(10);
-				std::vector<std::string>	orig_vec_str(10);
-
-				for (size_t i = 0; i < 10; i++){
-					my_vec_str[i] = "siempre";
-					orig_vec_str[i] = "siempre";
-				}
-
-				assignCheck(my_vec_str, orig_vec_str, type);
-				insertCheck(my_vec_str, orig_vec_str, type);
-			} else if (type == CHAR) {
-				ft::vector<char>	my_vec_char(10);
-				std::vector<char>	orig_vec_char(10);
-
-				for (size_t i = 0; i < 10; i++){
-					my_vec_char[i] = 'g';
-					orig_vec_char[i] = 'g';
-				}
-
-				assignCheck(my_vec_char, orig_vec_char, type);
-				insertCheck(my_vec_str, orig_vec_str, type);
-			} else if ((type == INT)) {
-				ft::vector<int>		my_vec_int(10);
-				std::vector<int>	orig_vec_int(10);
-
-				for (size_t i = 0; i < 10; i++){
-					my_vec_int[i] = i;
-					orig_vec_int[i] = i;
-				}
-
-				assignCheck(my_vec_int, orig_vec_int, type);
-				insertCheck(my_vec_str, orig_vec_str, type);
-			} else {
-				std::cout << "error: please, give me STRING, CHAR or INT type"
-							<< std::endl;
+	template <class ft_vec, class std_vec>
+		void	checkerForVector(ft_vec &my_vec, std_vec &orig_vec,
+									valueType type){
+			// (void)type;
+			checkVecConstructors();
+			{
+				assignCheck(my_vec, orig_vec, type);
+				push_backCheck(my_vec, orig_vec, type);
+				pop_backCheck(my_vec, orig_vec);
+				insertCheck(my_vec, orig_vec, type);
+				eraseCheck(my_vec, orig_vec);
+				swapCheck(my_vec, orig_vec, type);
+				clearChech(my_vec, orig_vec);
 			}
+		}
+
+	void	vectorChecker(valueType type){
+		if (type == STRING){
+			ft::vector<std::string>		my_vec_str(factor);
+			std::vector<std::string>	orig_vec_str(factor);
+
+			for (size_t i = 0; i < factor; i++){
+				my_vec_str[i] = "siempre";
+				orig_vec_str[i] = "siempre";
+			}
+
+			checkerForVector(my_vec_str, orig_vec_str, type);
+		} else if (type == CHAR) {
+			ft::vector<char>	my_vec_char(factor);
+			std::vector<char>	orig_vec_char(factor);
+
+			for (size_t i = 0; i < factor; i++){
+				my_vec_char[i] = 'g';
+				orig_vec_char[i] = 'g';
+			}
+
+			checkerForVector(my_vec_char, orig_vec_char, type);
+		} else if (type == INT) {
+			ft::vector<int>		my_vec_int(factor);
+			std::vector<int>	orig_vec_int(factor);
+
+			for (size_t i = 0; i < factor; i++){
+				my_vec_int[i] = i;
+				orig_vec_int[i] = i;
+			}
+
+			checkerForVector(my_vec_int, orig_vec_int, type);
+		} else {
+			std::cout << "error: please, give me STRING, CHAR or INT type"
+							<< std::endl;
 		}
 	}
 }

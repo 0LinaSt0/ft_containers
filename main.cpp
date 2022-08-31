@@ -25,7 +25,7 @@ namespace ft{
 		// valueType	type = STRING;
 		// valueType	type = CHAR;
 		valueType	type = INT;
-		checkerForVector(type);
+		vectorChecker(type);
 		// checkerForStack();
 		// checkForMap();
 

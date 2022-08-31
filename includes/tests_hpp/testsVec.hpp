@@ -18,7 +18,7 @@
 #include "../containers.hpp"
 
 namespace ft{
-	void	checkerForVector(valueType type);
+	void	vectorChecker(valueType type);
 
 	//~~~~~~~~~~~~~~~~~~ HELPFUL_UTILS ~~~~~~~~~~~~~~~~~~
 	template <class ft_vec>
@@ -54,10 +54,12 @@ namespace ft{
 		}
 
 	template <class ft_vec, class std_vec>
+		// Compare orig and my vectors
 		bool	compareVectors(ft_vec& myVec, std_vec& origVec){
-			if (myVec.empty() != origVec.empty()) { return false; }
 			if (myVec.capacity() != origVec.capacity()) { return false; }
 			if (myVec.size() != origVec.size()) { return false; }
+			if (myVec.empty() != origVec.empty()) { return false; }
+			if (myVec.empty() && origVec.emty()) { return true; }
 
 			typename ft_vec::iterator	myIter(myVec.begin());
 			typename std_vec::iterator	origIter = origVec.begin();
@@ -71,6 +73,7 @@ namespace ft{
 		}
 
 	template <class ft_vec, class std_vec>
+		// Print result of compare to STDOUT
 		void	result(const typename std::string& fieldName,
 						ft_vec& my, std_vec& orig,
 						long ft_time, long std_time){
@@ -86,21 +89,9 @@ namespace ft{
 
 	//~~~~~~~~~~~ CHECKS_FOR_MEMBER_FUNCTIONS ~~~~~~~~~~~
 
-	template <class ft_vec>
-		// Tests for RESIZE and RESERVE (reserve is called int resize)
-		void	sizeNConstructor(ft_vec &vec, bool isItOrigVector){
-			/*status*/printVecParams(vec, isItOrigVector);
-			vec.resize(4);
-			/*status*/printVecParams(vec,isItOrigVector);
-			vec.resize(10);
-			/*status*/printVecParams(vec, isItOrigVector);
-			vec.resize(0);
-			/*status*/printVecParams(vec, isItOrigVector);
-		}
-
 	template <class ft_vec, class std_vec>
-		// Tests for ASSIGN  (two overloads)
-		void	assignCheck(ft_vec &my_vec, std_vec &orig_vec, valueType type){
+		void	assignCheck(ft_vec &my_vec, std_vec &orig_vec,
+								valueType type){
 			typedef typename ft_vec::iterator	myIter;
 			typedef typename std_vec::iterator	origIter;
 
@@ -163,41 +154,78 @@ namespace ft{
 
 		}
 
-	template <class ft_vec>
-		// Tests for PUSH_BACK
-		void	push_backCheck(ft_vec &vec, bool isItOrigVector){
-			/* <<<<<<<<<<<<<<< Tests for std::string type >>>>>>>>>>>>>>>*/
-				// vec.push_back("156");
-				// printVecParams(vec, isItOrigVector);
-				// vec.push_back("157");
-				// printVecParams(vec, isItOrigVector);
-				// vec.push_back("158");
-				// printVecParams(vec, isItOrigVector);
-				// vec.push_back("159");
-				// printVecParams(vec, isItOrigVector);
-					/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
+	template <class ft_vec, class std_vec>
+		void	push_backCheck(ft_vec &my_vec, std_vec &orig_vec,
+								valueType type){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
 
-			/* <<<<<<<<<<<<<<< Tests for int type >>>>>>>>>>>>>>>*/
-				vec.push_back(156);
-				printVecParams(vec, isItOrigVector);
-				vec.push_back(157);
-				printVecParams(vec, isItOrigVector);
-				vec.push_back(158);
-				printVecParams(vec, isItOrigVector);
-				vec.push_back(159);
-				printVecParams(vec, isItOrigVector);
-					/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
-			}
+			if (type == STRING){
+				timer.start();
+				my_vec.push_back("156");
+				my_vec.push_back("1fdfd");
+				my_vec.push_back("100");
+				ft_time = timer.stop();
 
-	template <class ft_vec>
-		// Tests for POP_BACK
-		void	pop_backCheck(ft_vec &vec, bool isItOrigVector){
-			vec.pop_back();
-			printVecParams(vec, isItOrigVector);
+				timer.start();
+				orig_vec.push_back("156");
+				orig_vec.push_back("1fdfd");
+				orig_vec.push_back("100");
+				std_time = timer.stop();
+
+				result("push_back", my_vec, orig_vec, ft_time, std_time);
+			} else if (type == CHAR) {
+				timer.start();
+				my_vec.push_back('y');
+				my_vec.push_back('i');
+				my_vec.push_back('6');
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.push_back('y');
+				orig_vec.push_back('i');
+				orig_vec.push_back('6');
+				std_time = timer.stop();
+
+				result("push_back", my_vec, orig_vec, ft_time, std_time);
+			} else if (type == INT) {
+				timer.start();
+				my_vec.push_back(16);
+				my_vec.push_back(4545);
+				my_vec.push_back(3);
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.push_back(16);
+				orig_vec.push_back(4545);
+				orig_vec.push_back(3);
+				std_time = timer.stop();
+
+				result("push_back", my_vec, orig_vec, ft_time, std_time);
+			} else {  }
 		}
 
 	template <class ft_vec, class std_vec>
-		// Tests for INSERT (three overloads)
+		void	pop_backCheck(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			my_vec.pop_back();
+			my_vec.pop_back();
+			my_vec.pop_back();
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_vec.pop_back();
+			orig_vec.pop_back();
+			orig_vec.pop_back();
+			std_time = timer.stop();
+
+			result("pop_back", my_vec, orig_vec, ft_time, std_time);
+		}
+
+	template <class ft_vec, class std_vec>
 		void	insertCheck(ft_vec &my_vec, std_vec &orig_vec, valueType type){
 			typedef typename ft_vec::iterator	myIter;
 			typedef typename std_vec::iterator	origIter;
@@ -328,33 +356,114 @@ namespace ft{
 			std::cout << ">>>>>" << std::endl;
 		}
 
-	template <class ft_vec>
-		// Tests for ERASE (two overloads)
-		void	eraseCheck(ft_vec &vec, bool isItOrigVector){
-			std::cout << "<<<<< ERASE CHECK" << std::endl << std::endl;
-			typedef typename ft_vec::iterator	iterator;
-			iterator	iterVecBegin = vec.begin();
-			iterator	returnIter;
-			/* <<<<<<<<<<<<<<< Tests for int type >>>>>>>>>>>>>>>*/
-			returnIter = vec.erase(iterVecBegin+2);
-			std::cout << "example # 1 erase: remove elem " << std::endl;
-			/*status*/printVecParams(vec, isItOrigVector);
-			/*print_return*/std::cout << "	earse_return: "
-									<< (*returnIter)
-									<< std::endl << std::endl;
+	template <class ft_vec, class std_vec>
+		void	eraseCheck(ft_vec &my_vec, std_vec &orig_vec){
+			typedef typename ft_vec::iterator	myIter;
+			typedef typename std_vec::iterator	origIter;
 
-			// std::cout << *iterVecBegin << std::endl;
-			iterVecBegin = vec.begin();
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
 
-			returnIter = vec.erase(iterVecBegin, iterVecBegin+5);
-			std::cout << "example # 2 erase: remove elems " << std::endl;
-			/*status*/printVecParams(vec, isItOrigVector);
-			/*print_return*/std::cout << "	earse_return: "
-									<< (*returnIter)
-									<< std::endl << std::endl;
-					/* <<<<<<<<<<<<<<<>>>>>>>>>>>>>>> */
+			myIter		myTmp = my_vec.begin();
+			origIter	origTmp = orig_vec.begin();
 
-			std::cout << ">>>>>" << std::endl;
+			{
+				timer.start();
+				myTmp = my_vec.erase(myTmp);
+				my_vec.erase(myTmp + 3);
+				my_vec.erase(my_vec.begin() + my_vec.size() - 1);
+				ft_time = timer.stop();
+
+				timer.start();
+				origTmp = orig_vec.erase(origTmp);
+				orig_vec.erase(origTmp + 3);
+				orig_vec.erase(orig_vec.begin() + orig_vec.size() - 1);
+				std_time = timer.stop();
+
+				result("erase(position)", my_vec, orig_vec, ft_time, std_time);
+			}
+
+			{
+				timer.start();
+				my_vec.erase(my_vec.begin(), (my_vec.begin() + 3));
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.erase(orig_vec.begin(), (orig_vec.begin() + 3));
+				std_time = timer.stop();
+
+				result("erase(range)", my_vec, orig_vec, ft_time, std_time);
+			}
+		}
+
+	template <class ft_vec, class std_vec>
+		void	swapCheck(ft_vec &my_vec, std_vec &orig_vec,
+							valueType type){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			ft_vec	myTmp;
+			std_vec origTmp;
+
+			if (type == STRING){
+				for (size_t i = 0; i < factor; i++){
+					myTmp.push_back("Cumpleanios");
+					origTmp.push_back("Cumpleanios");
+				}
+				timer.start();
+				my_vec.swap(myTmp);
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.swap(origTmp);
+				std_time = timer.stop();
+
+				result("swap", my_vec, orig_vec, ft_time, std_time);
+			} else if (type == CHAR) {
+				for (size_t i = 0; i < factor; i++){
+					myTmp.push_back('r');
+					origTmp.push_back('r');
+				}
+				timer.start();
+				my_vec.swap(myTmp);
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.swap(origTmp);
+				std_time = timer.stop();
+
+				result("swap", my_vec, orig_vec, ft_time, std_time);
+			} else if (type == INT) {
+				for (size_t i = 0; i < factor; i++){
+					myTmp.push_back(i*2);
+					origTmp.push_back(i*2);
+				}
+				timer.start();
+				my_vec.swap(myTmp);
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.swap(origTmp);
+				std_time = timer.stop();
+
+				result("swap", my_vec, orig_vec, ft_time, std_time);
+			} else { }
+		}
+
+	template <class ft_vec, class std_vec>
+		void	clearChech(ft_vec& my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			my_vec.clear();
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_vec.clear();
+			std_time = timer.stop();
+
+			result("clear", my_vec, orig_vec, ft_time, std_time);
 		}
 
 	template <class ft_vec>

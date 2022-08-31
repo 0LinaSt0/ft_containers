@@ -18,6 +18,8 @@
 
 
 namespace ft {
+	size_t	factor = 10;
+	
 	enum	valueType{
 		STRING,
 		CHAR,
