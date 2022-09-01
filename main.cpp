@@ -20,43 +20,36 @@
 // #include <set>
 // #include <iostream>
 
-// namespace ft{
+namespace ft{
+	void	print_preview(const std::string& outString, valueType type){
+		std::cout << "\033[33m"
+				<< "\t ~~~~~~~~~~~~TESTS_FOR_"
+				<< outString;
+		if (type == STRING){
+			std::cout << "(STRING)~~~~~~~~~~~~";
+		} else if (type == CHAR) {
+			std::cout << "(CHAR)~~~~~~~~~~~~";
+		} else {
+			std::cout << "(INT)~~~~~~~~~~~~";
+		}
+		std::cout << "\033[0m \n" << std::endl;
+	}
+}
+
 	int main (void){
-		// valueType	type = STRING;
-		// valueType	type = CHAR;
 		using namespace ft;
+		// valueType	type = STRING;
+		valueType	type = CHAR;
 		// valueType	type = INT;
-		// vectorChecker(type);
+		print_preview("VECTOR", type);
+		vectorChecker(type);
 		// checkerForStack();
-		checkForMap();
+		// checkForMap();
 
 		// MAP_TESTS::RUN_MAP_TESTS();
 
-		// ft::map<int, int>	a1;
 
-		// for (int i=0; i<10; i++){
-		// 	a1[i] = i;
-		// }
-
-		// ft::map<int, int>	a2(a1);
-
-
-		// for (ft::map<int, int>::iterator it(a1.begin());
-		// 				it != a1.end();
-		// 				it++){
-		// 		std::cout << ((*it).first) << "  ";
-		// }
-		// std::cout << std::endl;
-
-		// for (ft::map<int, int>::iterator it(a2.begin());
-		// 				it != a2.end();
-		// 				it++){
-		// 		std::cout << ((*it).first) << "  ";
-		// }
-		// std::cout << std::endl;
-		// return (0);
 	}
-// }
 
 
 

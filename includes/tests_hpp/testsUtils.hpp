@@ -18,8 +18,9 @@
 
 
 namespace ft {
-	static size_t	_factor_ = 10;
-	
+	static size_t	factor = 10;
+	// size_t	factor = 10;
+
 	enum	valueType{
 		STRING = 0,
 		CHAR = 1,
@@ -48,6 +49,13 @@ namespace ft {
 			std::cout << color
 						<< fieldValue
 						<< "\033[0m";
+		}
+
+	template <class T>
+		// Compare two types which come as arguments
+		bool	compareComings(T first, T second){
+			if (first == second) { return true; }
+			return false;
 		}
 
 	void	print_results(const std::string& fieldName,

@@ -27,7 +27,7 @@ namespace ft{
 			std::cout << "	vector content: ";
 			if (isItOrigVector){
 				for (typename ft_vec::iterator orig = vec.begin();
-				orig != vec.end(); orig++){
+				orig != (vec.end()); orig++){
 					std::cout << *orig << "  ";
 				}
 			} else {
@@ -76,8 +76,9 @@ namespace ft{
 		// Print result of compare to STDOUT
 		void	result(const std::string& fieldName,
 						ft_vec& my, std_vec& orig,
-						long ft_time, long std_time){
-			if (compareVectors(my, orig)){
+						long ft_time, long std_time,
+						bool isItCompare){
+			if (isItCompare){
 				print_results(fieldName, ft_time, std_time);
 			} else {
 				print_mismatch(fieldName);
@@ -90,26 +91,100 @@ namespace ft{
 	//~~~~~~~~~~~ CHECKS_FOR_MEMBER_FUNCTIONS ~~~~~~~~~~~
 
 	template <class ft_vec, class std_vec>
-		void	assignCheck(ft_vec &my_vec, std_vec &orig_vec,
-								valueType type){
-
-			(void)type;
-			// typedef typename ft_vec::iterator	myIter;
-			// typedef typename std_vec::iterator	origIter;
-
+		void	assignCheckString(ft_vec &my_vec, std_vec &orig_vec){
 			ft::time	timer;
 			long	ft_time = 0, std_time = 0;
 
+			{
+			// <<<<<<<<<<<<<<< Tests for assign(size_type, value_type) >>>>>>>>>>>>
+				ft_vec	myTmp;
+				std_vec	origTmp;
+
+				for (size_t i = 0; i < factor; i++){
+					myTmp.push_back("hola");
+					origTmp.push_back("hola");
+				}
+
+				timer.start();
+				my_vec.assign(myTmp.begin(), myTmp.end());
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.assign(origTmp.begin(), origTmp.end());
+				std_time = timer.stop();
+
+				result("assign(range)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			}
+			{
+				// <<<<<<<<<<<<<<< Tests for assign(size_type, value_type) >>>>>>>>>>>>
+				for (size_t i = 1; i < 20; i *= i){
+					timer.start();
+					my_vec.assign(i, "hola");
+					ft_time += timer.stop();
+
+					timer.start();
+					orig_vec.assign(i, "hola");
+					std_time += timer.stop();
+				}
+
+				result("assign(fill)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			}
+
+		}
+
+	template <class ft_vec, class std_vec>
+		void	assignCheckChar(ft_vec &my_vec, std_vec &orig_vec){
+		ft::time	timer;
+		long	ft_time = 0, std_time = 0;
+
+		{
 			// <<<<<<<<<<<<<<< Tests for assign(iterator, iterator) >>>>>>>>>>>>>>>
-			// myIter		myBegin(my_vec.begin());
-			// myIter		myEnd(my_vec.end());
-			// origIter	origBegin = orig_vec.begin();
-			// origIter	origEnd = orig_vec.end();
 
 			ft_vec	myTmp;
 			std_vec	origTmp;
 
-			for (size_t i = 0; i < _factor_; i++){
+			for (size_t i = 0; i < factor; i++){
+				myTmp.push_back('s');
+				origTmp.push_back('s');
+			}
+
+			timer.start();
+			my_vec.assign(myTmp.begin(), myTmp.end());
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_vec.assign(origTmp.begin(), origTmp.end());
+			std_time = timer.stop();
+
+			result("assign(range)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+		}
+		{
+			// <<<<<<<<<<<<<<< Tests for assign(size_type, value_type) >>>>>>>>>>>>
+			for (size_t i = 2; i < 20; i *= i){
+				timer.start();
+				my_vec.assign(i, 's');
+				ft_time += timer.stop();
+
+				timer.start();
+				orig_vec.assign(i, 's');
+				std_time += timer.stop();
+			}
+
+			result("assign(fill)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+		}
+	}
+
+	template <class ft_vec, class std_vec>
+		void	assignCheckInt(ft_vec &my_vec, std_vec &orig_vec){
+		ft::time	timer;
+		long	ft_time = 0, std_time = 0;
+
+		{
+			// <<<<<<<<<<<<<<< Tests for assign(iterator, iterator) >>>>>>>>>>>>>>>
+			ft_vec	myTmp;
+			std_vec	origTmp;
+
+			for (size_t i = 0; i < factor; i++){
 				myTmp.push_back(i);
 				origTmp.push_back(i);
 			}
@@ -122,34 +197,10 @@ namespace ft{
 			orig_vec.assign(origTmp.begin(), origTmp.end());
 			std_time = timer.stop();
 
-			result("assign(range)", my_vec, orig_vec, ft_time, std_time);
-
+			result("assign(range)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+		}
+		{
 			// <<<<<<<<<<<<<<< Tests for assign(size_type, value_type) >>>>>>>>>>>>
-			// if (type == STRING){
-			// 	for (size_t i = 1; i < 20; i *= i){
-			// 		timer.start();
-			// 		my_vec.assign(i, "Hola");
-			// 		ft_time += timer.stop();
-
-			// 		timer.start();
-			// 		orig_vec.assign(i, "Hola");
-			// 		std_time += timer.stop();
-			// 	}
-			// 	result("assign(fill)", my_vec, orig_vec, ft_time, std_time);
-			// } else if (type == CHAR) {
-			// 	char	a = 'D';
-			// 	for (size_t i = 1; i < 20; i *= i){
-			// 		timer.start();
-			// 		my_vec.assign(i, a);
-			// 		ft_time += timer.stop();
-
-			// 		timer.start();
-			// 		orig_vec.assign(i, a);
-			// 		std_time += timer.stop();
-			// 		a++;
-			// 	}
-			// 	result("assign(fill)", my_vec, orig_vec, ft_time, std_time);
-			// } else if (type == INT) {
 				for (size_t i = 2; i < 20; i *= i){
 					timer.start();
 					my_vec.assign(i, i);
@@ -159,61 +210,72 @@ namespace ft{
 					orig_vec.assign(i, i);
 					std_time += timer.stop();
 				}
-				result("assign(fill)", my_vec, orig_vec, ft_time, std_time);
-			// } else {  }
 
+				result("assign(fill)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 		}
+	}
+
 
 	template <class ft_vec, class std_vec>
-		void	push_backCheck(ft_vec &my_vec, std_vec &orig_vec,
-								valueType type){
+		void	push_backCheckString(ft_vec &my_vec, std_vec &orig_vec){
 			ft::time	timer;
 			long	ft_time = 0, std_time = 0;
 
-			if (type == STRING){
-				timer.start();
-				my_vec.push_back("156");
-				my_vec.push_back("1fdfd");
-				my_vec.push_back("100");
-				ft_time = timer.stop();
+			timer.start();
+			my_vec.push_back("156");
+			my_vec.push_back("1fdfd");
+			my_vec.push_back("100");
+			ft_time = timer.stop();
 
-				timer.start();
-				orig_vec.push_back("156");
-				orig_vec.push_back("1fdfd");
-				orig_vec.push_back("100");
-				std_time = timer.stop();
+			timer.start();
+			orig_vec.push_back("156");
+			orig_vec.push_back("1fdfd");
+			orig_vec.push_back("100");
+			std_time = timer.stop();
 
-				result("push_back", my_vec, orig_vec, ft_time, std_time);
-			} else if (type == CHAR) {
-				timer.start();
-				my_vec.push_back('y');
-				my_vec.push_back('i');
-				my_vec.push_back('6');
-				ft_time = timer.stop();
-
-				timer.start();
-				orig_vec.push_back('y');
-				orig_vec.push_back('i');
-				orig_vec.push_back('6');
-				std_time = timer.stop();
-
-				result("push_back", my_vec, orig_vec, ft_time, std_time);
-			} else if (type == INT) {
-				timer.start();
-				my_vec.push_back(16);
-				my_vec.push_back(4545);
-				my_vec.push_back(3);
-				ft_time = timer.stop();
-
-				timer.start();
-				orig_vec.push_back(16);
-				orig_vec.push_back(4545);
-				orig_vec.push_back(3);
-				std_time = timer.stop();
-
-				result("push_back", my_vec, orig_vec, ft_time, std_time);
-			} else {  }
+			result("push_back   ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 		}
+
+	template <class ft_vec, class std_vec>
+		void	push_backCheckChar(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			my_vec.push_back('y');
+			my_vec.push_back('i');
+			my_vec.push_back('6');
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_vec.push_back('y');
+			orig_vec.push_back('i');
+			orig_vec.push_back('6');
+			std_time = timer.stop();
+
+			result("push_back   ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+		}
+
+	template <class ft_vec, class std_vec>
+		void	push_backCheckInt(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			my_vec.push_back(16);
+			my_vec.push_back(4545);
+			my_vec.push_back(3);
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_vec.push_back(16);
+			orig_vec.push_back(4545);
+			orig_vec.push_back(3);
+			std_time = timer.stop();
+
+			result("push_back   ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+		}
+
 
 	template <class ft_vec, class std_vec>
 		void	pop_backCheck(ft_vec &my_vec, std_vec &orig_vec){
@@ -232,103 +294,168 @@ namespace ft{
 			orig_vec.pop_back();
 			std_time = timer.stop();
 
-			result("pop_back", my_vec, orig_vec, ft_time, std_time);
+			result("pop_back    ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 		}
 
-	// template <class ft_vec, class std_vec>
-	// 	void	insertCheck(ft_vec &my_vec, std_vec &orig_vec, valueType type){
-	// 		typedef typename ft_vec::iterator	myIter;
-	// 		typedef typename std_vec::iterator	origIter;
 
-	// 		ft::time	timer;
-	// 		long	ft_time = 0, std_time = 0;
+	template <class ft_vec, class std_vec>
+		void	insertCheckString(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
 
-	// 		// <<<<<<<<<<<<<<< Tests for insert(range) >>>>>>>>>>>>>>>
-	// 		myIter	ftIter = my_vec.begin();
-	// 		myIter	ftIterEnd = my_vec.end();
-	// 		origIter	stdIter = orig_vec.begin();
-	// 		origIter	stdIterEnd = orig_vec.end();
+			{
+			// <<<<<<<<<<<<<<< Tests for insert(range) >>>>>>>>>>>>>>>
+				ft_vec	myTmp;
+				std_vec	origTmp;
 
-	// 		timer.start();
-	// 		my_vec.insert(ftIterEnd, stdIter, stdIterEnd);
-	// 		ft_time = timer.stop();
+				for (size_t i = 0; i < factor; i++){
+					myTmp.push_back("hola");
+					origTmp.push_back("hola");
+				}
 
-	// 		timer.start();
-	// 		orig_vec.insert(stdIter, ftIter, ftIterEnd);
-	// 		std_time = timer.stop();
+				timer.start();
+				my_vec.insert(my_vec.end(), myTmp.begin(), myTmp.end());
+				ft_time = timer.stop();
 
-	// 		result("insert(range)", my_vec, orig_vec, ft_time, std_time);
+				timer.start();
+				orig_vec.insert(orig_vec.end(), origTmp.begin(), origTmp.end());
+				std_time = timer.stop();
 
-	// 		{
-	// 			if (type == STRING){
-	// 			// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
-	// 				timer.start();
-	// 				ftIter = my_vec.insert(ftIter + 2, "aaa");
-	// 				ft_time = timer.stop();
+				result("insert(range)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			}
+			{
+			// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
 
-	// 				timer.start();
-	// 				stdIter = orig_vec.insert(stdIter + 2, "aaa");
-	// 				std_time = timer.stop();
+			typename ft_vec::iterator	ftIter = my_vec.begin();
+			typename std_vec::iterator	stdIter = orig_vec.begin();
+				timer.start();
+				ftIter = my_vec.insert(ftIter + 2, "hola");
+				ft_time = timer.stop();
 
-	// 				result("insert(single)", my_vec, orig_vec, ft_time, std_time);
+				timer.start();
+				stdIter = orig_vec.insert(stdIter + 2, "hola");
+				std_time = timer.stop();
 
-	// 			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
-	// 				timer.start();
-	// 				ftIter = my_vec.insert(ftIter, 2, "bbb");;
-	// 				ft_time = timer.stop();
+				result("insert(single)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 
-	// 				timer.start();
-	// 				stdIter = orig_vec.insert(stdIter, 2, "bbb");
-	// 				std_time = timer.stop();
+			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
+				timer.start();
+				my_vec.insert(ftIter, 2, "bbb");
+				ft_time = timer.stop();
 
-	// 				result("insert(fill)", my_vec, orig_vec, ft_time, std_time);
-	// 			} else if (type == CHAR) {
-	// 			// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
-	// 				timer.start();
-	// 				ftIter = my_vec.insert(ftIter + 2, 't');
-	// 				ft_time = timer.stop();
+				timer.start();
+				orig_vec.insert(stdIter, 2, "bbb");
+				std_time = timer.stop();
 
-	// 				timer.start();
-	// 				stdIter = orig_vec.insert(stdIter + 2, 't');
-	// 				std_time = timer.stop();
+				result("insert(fill)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			}
+		}
 
-	// 				result("insert(single)", my_vec, orig_vec, ft_time, std_time);
+	template <class ft_vec, class std_vec>
+		void	insertCheckChar(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+			{
+			// <<<<<<<<<<<<<<< Tests for insert(range) >>>>>>>>>>>>>>>
+				ft_vec	myTmp;
+				std_vec	origTmp;
 
-	// 			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
-	// 				timer.start();
-	// 				ftIter = my_vec.insert(ftIter, 2, 't');;
-	// 				ft_time = timer.stop();
+				for (size_t i = 0; i < factor; i++){
+					myTmp.push_back('t');
+					origTmp.push_back('t');
+				}
 
-	// 				timer.start();
-	// 				stdIter = orig_vec.insert(stdIter, 2, 't');
-	// 				std_time = timer.stop();
+				timer.start();
+				my_vec.insert(my_vec.end(), myTmp.begin(), myTmp.end());
+				ft_time = timer.stop();
 
-	// 				result("insert(fill)", my_vec, orig_vec, ft_time, std_time);
-	// 			} else if (type == INT) {
-	// 			// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
-	// 				timer.start();
-	// 				ftIter = my_vec.insert(ftIter + 2, 5);
-	// 				ft_time = timer.stop();
+				timer.start();
+				orig_vec.insert(orig_vec.end(), origTmp.begin(), origTmp.end());
+				std_time = timer.stop();
 
-	// 				timer.start();
-	// 				stdIter = orig_vec.insert(stdIter + 2, 5);
-	// 				std_time = timer.stop();
+				result("insert(range)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			}
+			{
+				typename ft_vec::iterator	ftIter = my_vec.begin();
+				typename std_vec::iterator	stdIter = orig_vec.begin();
+			// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
+				timer.start();
+				ftIter = my_vec.insert(ftIter + 2, 't');
+				ft_time = timer.stop();
 
-	// 				result("insert(single)", my_vec, orig_vec, ft_time, std_time);
+				timer.start();
+				stdIter = orig_vec.insert(stdIter + 2, 't');
+				std_time = timer.stop();
 
-	// 			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
-	// 				timer.start();
-	// 				ftIter = my_vec.insert(ftIter, 2, 5);;
-	// 				ft_time = timer.stop();
+				result("insert(single)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 
-	// 				timer.start();
-	// 				stdIter = orig_vec.insert(stdIter, 2, 5);
-	// 				std_time = timer.stop();
+			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
 
-	// 				result("insert(fill)", my_vec, orig_vec, ft_time, std_time);
-	// 			} else { }
-	// 		}
-	// 	}
+				timer.start();
+				my_vec.insert(ftIter, 2, 't');
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.insert(stdIter, 2, 't');
+				std_time = timer.stop();
+
+				result("insert(fill)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			}
+		}
+
+	template <class ft_vec, class std_vec>
+		void	insertCheckInt(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			{
+			// <<<<<<<<<<<<<<< Tests for insert(range) >>>>>>>>>>>>>>>
+				ft_vec	myTmp;
+				std_vec	origTmp;
+
+				for (size_t i = 0; i < factor; i++){
+					myTmp.push_back(i);
+					origTmp.push_back(i);
+				}
+
+				timer.start();
+				my_vec.insert(my_vec.end(), myTmp.begin(), myTmp.end());
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.insert(orig_vec.end(), origTmp.begin(), origTmp.end());
+				std_time = timer.stop();
+
+				result("insert(range)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			}
+			{
+				typename ft_vec::iterator	ftIter = my_vec.begin();
+				typename std_vec::iterator	stdIter = orig_vec.begin();
+
+			// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
+				timer.start();
+				ftIter = my_vec.insert((ftIter + 2), 6);
+				ft_time = timer.stop();
+
+				timer.start();
+				stdIter = orig_vec.insert((stdIter + 2), 6);
+				std_time = timer.stop();
+
+				result("insert(single)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
+
+				timer.start();
+				my_vec.insert(ftIter, 2, 5);
+				ft_time = timer.stop();
+
+				timer.start();
+				orig_vec.insert(stdIter, 2, 5);
+				std_time = timer.stop();
+
+				result("insert(fill)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			}
+		}
+
 
 	template <class ft_vec, class std_vec>
 		void	eraseCheck(ft_vec &my_vec, std_vec &orig_vec){
@@ -340,24 +467,24 @@ namespace ft{
 
 			myIter		myTmp = my_vec.begin();
 			origIter	origTmp = orig_vec.begin();
-
 			{
+			// <<<<<<<<<<<<<<< Tests for insert(position) >>>>>>>>>>>>>>>
 				timer.start();
-				myTmp = my_vec.erase(myTmp);
+				myTmp = my_vec.erase(myTmp+6);
 				my_vec.erase(myTmp + 3);
 				my_vec.erase(my_vec.begin() + my_vec.size() - 1);
 				ft_time = timer.stop();
 
 				timer.start();
-				origTmp = orig_vec.erase(origTmp);
+				origTmp = orig_vec.erase(origTmp+6);
 				orig_vec.erase(origTmp + 3);
 				orig_vec.erase(orig_vec.begin() + orig_vec.size() - 1);
 				std_time = timer.stop();
 
-				result("erase(position)", my_vec, orig_vec, ft_time, std_time);
+				result("erase(position)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 			}
-
 			{
+			// <<<<<<<<<<<<<<< Tests for insert(range) >>>>>>>>>>>>>>>
 				timer.start();
 				my_vec.erase(my_vec.begin(), (my_vec.begin() + 3));
 				ft_time = timer.stop();
@@ -366,63 +493,80 @@ namespace ft{
 				orig_vec.erase(orig_vec.begin(), (orig_vec.begin() + 3));
 				std_time = timer.stop();
 
-				result("erase(range)", my_vec, orig_vec, ft_time, std_time);
+				result("erase(range)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 			}
 		}
 
-	// template <class ft_vec, class std_vec>
-	// 	void	swapCheck(ft_vec &my_vec, std_vec &orig_vec,
-	// 						valueType type){
-	// 		ft::time	timer;
-	// 		long	ft_time = 0, std_time = 0;
 
-	// 		ft_vec	myTmp;
-	// 		std_vec origTmp;
+	template <class ft_vec, class std_vec>
+		void	swapCheckString(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
 
-	// 		if (type == STRING){
-	// 			for (size_t i = 0; i < factor; i++){
-	// 				myTmp.push_back("Cumpleanios");
-	// 				origTmp.push_back("Cumpleanios");
-	// 			}
-	// 			timer.start();
-	// 			my_vec.swap(myTmp);
-	// 			ft_time = timer.stop();
+			ft_vec	myTmp;
+			std_vec origTmp;
 
-	// 			timer.start();
-	// 			orig_vec.swap(origTmp);
-	// 			std_time = timer.stop();
+			for (size_t i = 0; i < factor; i++){
+				myTmp.push_back("Cumpleanios");
+				origTmp.push_back("Cumpleanios");
+			}
+			timer.start();
+			my_vec.swap(myTmp);
+			ft_time = timer.stop();
 
-	// 			result("swap", my_vec, orig_vec, ft_time, std_time);
-	// 		} else if (type == CHAR) {
-	// 			for (size_t i = 0; i < factor; i++){
-	// 				myTmp.push_back('r');
-	// 				origTmp.push_back('r');
-	// 			}
-	// 			timer.start();
-	// 			my_vec.swap(myTmp);
-	// 			ft_time = timer.stop();
+			timer.start();
+			orig_vec.swap(origTmp);
+			std_time = timer.stop();
 
-	// 			timer.start();
-	// 			orig_vec.swap(origTmp);
-	// 			std_time = timer.stop();
+			result("swap        ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+		}
 
-	// 			result("swap", my_vec, orig_vec, ft_time, std_time);
-	// 		} else if (type == INT) {
-	// 			for (size_t i = 0; i < factor; i++){
-	// 				myTmp.push_back(i*2);
-	// 				origTmp.push_back(i*2);
-	// 			}
-	// 			timer.start();
-	// 			my_vec.swap(myTmp);
-	// 			ft_time = timer.stop();
+	template <class ft_vec, class std_vec>
+		void	swapCheckChar(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
 
-	// 			timer.start();
-	// 			orig_vec.swap(origTmp);
-	// 			std_time = timer.stop();
+			ft_vec	myTmp;
+			std_vec origTmp;
 
-	// 			result("swap", my_vec, orig_vec, ft_time, std_time);
-	// 		} else { }
-	// 	}
+			for (size_t i = 0; i < factor; i++){
+				myTmp.push_back('r');
+				origTmp.push_back('r');
+			}
+			timer.start();
+			my_vec.swap(myTmp);
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_vec.swap(origTmp);
+			std_time = timer.stop();
+
+			result("swap        ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+		}
+
+	template <class ft_vec, class std_vec>
+		void	swapCheckInt(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			ft_vec	myTmp;
+			std_vec origTmp;
+
+			for (size_t i = 0; i < factor; i++){
+				myTmp.push_back(i*2);
+				origTmp.push_back(i*2);
+			}
+			timer.start();
+			my_vec.swap(myTmp);
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_vec.swap(origTmp);
+			std_time = timer.stop();
+
+			result("swap        ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+		}
+
 
 	template <class ft_vec, class std_vec>
 		void	clearChech(ft_vec& my_vec, std_vec &orig_vec){
@@ -437,16 +581,76 @@ namespace ft{
 			orig_vec.clear();
 			std_time = timer.stop();
 
-			result("clear", my_vec, orig_vec, ft_time, std_time);
+			result("clear        ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 		}
 
-	template <class ft_vec>
-		// Testd for RBEGIN and REND
-		void	reverseBeginEndCheck(ft_vec &vec){
-			std::cout << "<<<<< RBEGIN & REND CHECK" << std::endl << std::endl;
-			std::cout << "rbegin: " << *(vec.rbegin()) << std::endl;
-			std::cout << "rend: " << *(vec.rend()-1) << std::endl;
-			std::cout << ">>>>>" << std::endl << std::endl;
+
+	template <class ft_vec, class std_vec>
+		void	checkBegin(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			typename ft_vec::iterator myIter = my_vec.begin();
+			ft_time = timer.stop();
+
+			timer.start();
+			typename std_vec::iterator origIter = orig_vec.begin();
+			std_time = timer.stop();
+
+			result("begin        ", my_vec, orig_vec, ft_time, std_time,
+					((*myIter) == (*origIter)));
+		}
+
+	template <class ft_vec, class std_vec>
+		void	checkEnd(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			typename ft_vec::iterator myIter = my_vec.end();
+			ft_time = timer.stop();
+
+			timer.start();
+			typename std_vec::iterator origIter = orig_vec.end();
+			std_time = timer.stop();
+
+			result("end          ", my_vec, orig_vec, ft_time, std_time,
+					(*(myIter - 1) == *(origIter - 1)));
+		}
+
+	template <class ft_vec, class std_vec>
+		void	checkRbegin(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			typename ft_vec::reverse_iterator myIter = my_vec.rbegin();
+			ft_time = timer.stop();
+
+			timer.start();
+			typename std_vec::reverse_iterator origIter = orig_vec.rbegin();
+			std_time = timer.stop();
+
+			result("rbegin        ", my_vec, orig_vec, ft_time, std_time,
+					((*myIter) == (*origIter)));
+		}
+
+	template <class ft_vec, class std_vec>
+		void	checkRend(ft_vec &my_vec, std_vec &orig_vec){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			typename ft_vec::reverse_iterator myIter = my_vec.rend();
+			ft_time = timer.stop();
+
+			timer.start();
+			typename std_vec::reverse_iterator origIter = orig_vec.rend();
+			std_time = timer.stop();
+
+			result("rend          ", my_vec, orig_vec, ft_time, std_time,
+					((*myIter) == (*origIter)));
 		}
 
 

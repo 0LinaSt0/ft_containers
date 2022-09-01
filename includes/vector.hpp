@@ -117,7 +117,8 @@ namespace ft{
 				- 'b' if needs put first part of vector to containter
 				- 'e' if needs put last part of vector to containter */
 		template < class InputIterator >
-			void	_writeValue(InputIterator &container, InputIterator position, char whichPartFl){
+			void	_writeValue(InputIterator &container, InputIterator position,
+									char whichPartFl){
 				if (whichPartFl == 'b') {
 					for (InputIterator vecBeging(begin());
 							vecBeging != position;
@@ -429,6 +430,7 @@ namespace ft{
 			vecAlloc.construct(tmp, value_type());
 
 			iterator	tmpIter(tmp);
+
 			_writeValue(tmpIter, position, 'b');
 
 			(*tmpIter) = val;
@@ -441,7 +443,8 @@ namespace ft{
 			vec = tmp;
 			return(returnPosition);
 		}
-		void		insert (iterator position, size_type n, const value_type& val){
+		void		insert (iterator position, size_type n,
+								const value_type& val){
 			size_type	oldCapacity = capacitySize;
 			pointer	tmp;
 
@@ -463,12 +466,12 @@ namespace ft{
 			vec = tmp;
 		}
 
-		//MAYBE TAKE OTHER REALIZATION FROM LAST COMMIT
 		iterator	erase (iterator position){
 			pointer	tmp;
 
 			tmp = vecAlloc.allocate(capacitySize);
 			vecAlloc.construct(tmp, value_type());
+
 			iterator	tmpIter(tmp);
 			size_type	distance = _sizeItersDistance((position+1), end());
 			size_type	deletePos = countElem - distance - 1;
@@ -478,7 +481,7 @@ namespace ft{
 			countElem--;
 
 			for (size_type i = deletePos, y = 0;
-					i < distance;
+					i < countElem;
 					i++, y++){
 				vec[i] = tmp[y];
 			}

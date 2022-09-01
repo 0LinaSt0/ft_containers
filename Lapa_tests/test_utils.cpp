@@ -31,7 +31,7 @@ void print_time(const std::string& func, long long ft_time, long long std_time){
 
     Printer::print("ft_time: ", false, Printer::GREEN);
     Printer::print(ft_time, false, ft_color);
-    
+
     std::cout << "  ";
 
     Printer::print("std_time: ", false, Printer::GREEN);
@@ -40,7 +40,7 @@ void print_time(const std::string& func, long long ft_time, long long std_time){
     std::cout << "  ";
 
     if (ft_time && std_time){
-        long long diff = std::max(ft_time, std_time) / std::min(ft_time, std_time);
+        long long diff = std::max(ft_time, std_time, compareVectors(my_vec, orig_vec), compareVectors<ft_vec, std_vec>) / std::min(ft_time, std_time, compareVectors(my_vec, orig_vec), compareVectors<ft_vec, std_vec>);
         Printer::print("diff: ", false, Printer::GREEN);
         Printer::print(diff, true, Printer::YELLOW);
     } else {
@@ -56,7 +56,7 @@ void my_assert(bool val){
 
 std::string my_to_string(size_t num){
     std::string result;
-    
+
     while (num != 0){
         result.push_back('0' + num % 10);
         num /= 10;

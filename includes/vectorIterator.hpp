@@ -68,7 +68,7 @@ namespace ft{
 
 			//Operator
 			reference	operator* (void) const { return *vectorElem; }
-			reference	operator[](difference_type distan) const { return vectorElem[distan]; }
+			reference	operator[](difference_type distan) const { return *(vectorElem+distan); }
 			pointer		operator->(void) const { return vectorElem; }
 			iterVec&	operator=(const iterVec& other) { vectorElem = other.vectorElem; return *this; }
 			iterVec&	operator++(void) { ++vectorElem; return *this; }

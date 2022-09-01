@@ -31,9 +31,9 @@ namespace ft{
 		std::string	green = "\033[32m";
 		std::string	red = "\033[31m";
 
-		stdout_result(fieldName + " -->", cyan);
+		stdout_result(fieldName + " -->	", cyan);
 
-		stdout_result("	ft_time: ", green);
+		stdout_result("ft_time: ", green);
 		if (ft_time && std_time){
 			if (ft_time > std_time){
 				stdout_result(ft_time, red);
