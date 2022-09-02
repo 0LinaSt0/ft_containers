@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 10:45:53 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/31 19:12:46 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/02 18:52:36 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ namespace ft{
 		stdout_result(fieldName + " -->	", colors::cyan);
 
 		stdout_result("ft_time: ", colors::green);
-		if (ft_time && std_time
-				&& (ft_time != std_time)){
+		if (ft_time != std_time){
 			if (ft_time > std_time){
 				stdout_result(ft_time, colors::red);
 				stdout_result("	std_time: ", colors::green);

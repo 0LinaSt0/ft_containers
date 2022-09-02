@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:38:01 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/31 19:46:16 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/03 00:08:00 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,28 @@ namespace ft{
 
 	class	tmpVectors{
 	private:
-		// ft::vector<std::string>		myStringVec;
+		ft::vector<std::string>		myStringVec;
 		ft::vector<char>			myCharVec;
 		ft::vector<int>				myIntVec;
 
-		// std::vector<std::string>	origStringVec;
+		std::vector<std::string>	origStringVec;
 		std::vector<char>			origCharVec;
 		std::vector<int>			origIntVec;
 	public:
 		tmpVectors(void) {
-			// setStringVecs();
+			setStringVecs();
 			setCharVecs();
 			setIntVecs();
 		}
 
 		~tmpVectors(void) { }
 
-		// void	setStringVecs(void){
-		// 	for (size_t i = 0; i < factor; i++){
-		// 			myStringVec.push_back("hola");
-		// 			origStringVec.push_back("hola");
-		// 		}
-		// }
+		void	setStringVecs(void){
+			for (size_t i = 0; i < factor; i++){
+				myStringVec.push_back("hola");
+				origStringVec.push_back("hola");
+			}
+		}
 
 		void	setCharVecs(void){
 			for (size_t i = 0; i < factor; i++){
@@ -59,10 +59,10 @@ namespace ft{
 			}
 		}
 
-		// ft::vector<std::string>		&getFtStringVec(void) { return myStringVec; }
+		ft::vector<std::string>		&getFtStringVec(void) { return myStringVec; }
 		ft::vector<char>			&getFtCharVec(void) { return myCharVec; }
 		ft::vector<int>				&getFtIntVec(void) { return myIntVec; }
-		// std::vector<std::string>	&getStdStringVec(void) { return origStringVec; }
+		std::vector<std::string>	&getStdStringVec(void) { return origStringVec; }
 		std::vector<char>			&getStdCharVec(void) { return origCharVec; }
 		std::vector<int>			&getStdIntVec(void) { return origIntVec; }
 	} ;
@@ -176,9 +176,8 @@ namespace ft{
 				ft_time = timer.stop();
 
 				timer.start();
-				std_vec	orig_vec(orig_vec);
+				std_vec	orig_vec = orig_tmp;
 				std_time = timer.stop();
-
 				result("construc(copy)  ", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec));
 			}
@@ -259,7 +258,7 @@ namespace ft{
 			orig_vec.pop_back();
 			std_time = timer.stop();
 
-			result("pop_back        ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+			result("pop_back       ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 		}
 
 	template <class ft_vec, class std_vec>
@@ -286,25 +285,26 @@ namespace ft{
 
 			// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
 				timer.start();
-				ftIter = my_vec.insert((ftIter + 2), 6);
+				ftIter = my_vec.insert((ftIter + 2), my_tmp[2]);
 				ft_time = timer.stop();
 
 				timer.start();
-				stdIter = orig_vec.insert((stdIter + 2), 6);
+				stdIter = orig_vec.insert((stdIter + 2), my_tmp[2]);
 				std_time = timer.stop();
 
 				result("insert(single)  ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
 			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
 
 				timer.start();
-				my_vec.insert(ftIter, 2, 5);
+				my_vec.insert(ftIter, 2, my_tmp[0]);
 				ft_time = timer.stop();
 
 				timer.start();
-				orig_vec.insert(stdIter, 2, 5);
+				orig_vec.insert(stdIter, 2, my_tmp[0]);
 				std_time = timer.stop();
 
-				result("insert(fill)    ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+				result("insert(fill)    ", my_vec, orig_vec, ft_time, std_time, 
+						compareVectors(my_vec, orig_vec));
 			}
 		}
 
@@ -332,11 +332,13 @@ namespace ft{
 				orig_vec.erase(orig_vec.begin() + orig_vec.size() - 1);
 				std_time = timer.stop();
 
-				result("erase(position)", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+				result("erase(position)", my_vec, orig_vec, ft_time, std_time, 
+						compareVectors(my_vec, orig_vec));
 			}
 			{
 			// <<<<<<<<<<<<<<< Tests for insert(range) >>>>>>>>>>>>>>>
 				timer.start();
+
 				my_vec.erase(my_vec.begin(), (my_vec.begin() + 3));
 				ft_time = timer.stop();
 
@@ -344,7 +346,8 @@ namespace ft{
 				orig_vec.erase(orig_vec.begin(), (orig_vec.begin() + 3));
 				std_time = timer.stop();
 
-				result("erase(range)   ", my_vec, orig_vec, ft_time, std_time, compareVectors(my_vec, orig_vec));
+				result("erase(range)   ", my_vec, orig_vec, ft_time, std_time, 
+						compareVectors(my_vec, orig_vec));
 			}
 		}
 
@@ -447,7 +450,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("rend           ", my_vec, orig_vec, ft_time, std_time,
-					(*(myIter + 1) == *(origIter + 1)));
+					(*(myIter - 1) == *(origIter - 1)));
 		}
 
 	template <class ft_vec, class std_vec>
@@ -941,7 +944,6 @@ namespace ft{
 						(myComp == origComp));
 			}
 	}
-
 
 }
 

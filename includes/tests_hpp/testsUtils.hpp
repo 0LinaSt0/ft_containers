@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 15:38:56 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/31 19:32:09 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/02 23:08:11 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 namespace ft {
 	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
-	static size_t	factor = 10;
+	static size_t	factor = 50;
 	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
 	static int	iter = 1;
 
@@ -48,8 +48,8 @@ namespace ft {
 		void	start(void) { gettimeofday(&_start, NULL); }
 		long	stop(void) {
 			gettimeofday(&_stop, NULL);
-			return (_stop.tv_sec * 1e+6 + _stop.tv_usec)
-					- (_start.tv_sec * 1e+6 + _start.tv_usec);
+			return (_stop.tv_sec * 1000000 + _stop.tv_usec)
+					- (_start.tv_sec * 1000000 + _start.tv_usec);
 		}
 	} ;
 
