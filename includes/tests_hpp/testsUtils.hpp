@@ -18,13 +18,23 @@
 
 
 namespace ft {
+	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
 	static size_t	factor = 10;
-	// size_t	factor = 10;
+	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
+	static int	iter = 1;
 
 	enum	valueType{
 		STRING = 0,
 		CHAR = 1,
 		INT = 2
+	} ;
+
+	struct	colors{
+		static const std::string	cyan;
+		static const std::string	green;
+		static const std::string	red;
+		static const  std::string	yellow;
+		static const  std::string	end;
 	} ;
 
 	class	time{
@@ -48,7 +58,7 @@ namespace ft {
 								const std::string& color){
 			std::cout << color
 						<< fieldValue
-						<< "\033[0m";
+						<< colors::end;
 		}
 
 	template <class T>

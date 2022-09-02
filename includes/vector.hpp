@@ -57,7 +57,7 @@ namespace ft{
 	template < class ft_vec, class _Alloc = std::allocator<ft_vec> >
 	class	vector{
 	public:
-		typedef ft_vec									value_type;
+		typedef ft_vec										value_type;
 		typedef _Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
@@ -141,19 +141,18 @@ namespace ft{
 				putIn.vecAlloc = takeFrom.vecAlloc;
 				putIn.countElem = takeFrom.countElem;
 				putIn.capacitySize = takeFrom.capacitySize;
-				putIn.vec = vecAlloc.allocate(putIn.capacitySize);
+				putIn.vec = vecAlloc.allocate(takeFrom.capacitySize);
 				vecAlloc.construct(putIn.vec, value_type());
 
 				if (!takeFrom.countElem){
-					vec = NULL;
+					putIn.vec = NULL;
 				} else {
 					iterator	putInIter(putIn.vec);
-					size_t i = 0;
 
 					for (iterator takeFromIter(takeFrom.begin());
 							takeFromIter != takeFrom.end();
-							takeFromIter++, i++){
-						putInIter[i] = *takeFromIter;
+							takeFromIter++, putInIter++){
+						*(putInIter.base()) = *(takeFromIter.base());
 					}
 				}
 			}
@@ -290,7 +289,6 @@ namespace ft{
 				}
 				_freeMemory(true, oldCapacity);
 				vec = tmp;
-
 			}
 		}
 

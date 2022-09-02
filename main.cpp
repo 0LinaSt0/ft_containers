@@ -22,7 +22,7 @@
 
 namespace ft{
 	void	print_preview(const std::string& outString, valueType type){
-		std::cout << "\033[33m"
+		std::cout << "\033[35m"
 				<< "\t ~~~~~~~~~~~~TESTS_FOR_"
 				<< outString;
 		if (type == STRING){
