@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 15:38:56 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/02 23:08:11 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/03 13:05:51 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 namespace ft {
 	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
-	static size_t	factor = 50;
+	static size_t	factor = 100;
 	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
 	static int	iter = 1;
 

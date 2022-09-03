@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/03 00:20:46 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/03 14:20:15 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,14 @@ namespace ft{
 				2) destruct and deallocate vec
 					(DoIDeallocate - true, freeElems - how much deallocate)*/
 			void	_freeMemory(bool DoIDeallocate, size_type freeElems){
-				if (freeElems){
+				// if (freeElems){
 					for (size_type i = 0; i < countElem; i++){
 							vecAlloc.destroy(vec + i);
 					}
 					if (DoIDeallocate){
 							vecAlloc.deallocate(vec, freeElems);
 					}
-				}
+				// }
 			}
 
 			/* Counts distance between two iterators and returns size of the distance */
@@ -184,20 +184,22 @@ namespace ft{
 
 			// ~~~~~~~~~~ Operators ~~~~~~~~~~
 			vector&			operator= (const vector& x){
-				if (capacitySize)
+				if (capacitySize){
 					_freeMemory(true, capacitySize);
+				}
+				capacitySize = 0;
 				countElem = x.countElem;
 				_capacityUpdate(countElem);
-				vec = vecAlloc.allocate(capacitySize);
-				vecAlloc.construct(vec, value_type());
+					vec = vecAlloc.allocate(capacitySize);
+					vecAlloc.construct(vec, value_type());
 
-				iterator	thisIter(vec);
+					iterator	thisIter(vec);
 
-				for (iterator	xIter(x.begin()); 
-						xIter != x.end(); 
-						xIter++, thisIter++){
-					(*thisIter) = (*xIter);
-				}
+					for (iterator	xIter(x.begin()); 
+							xIter != x.end(); 
+							xIter++, thisIter++){
+						(*thisIter) = (*xIter);
+					}
 				return *this;
 			}
 			reference		operator[] (size_type n)

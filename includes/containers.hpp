@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/31 20:59:39 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/03 14:36:07 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <deque>
 #include <stack>
 #include <map>
+
 
 void	treeChecks(void);
 template <class node>
@@ -551,7 +552,7 @@ namespace ft{
 
 
 			void	_addsNodeToFindedPlace(pointer_node addedNode,
-											pointer_node inceptionPlace){
+											pointer_node insertPlace){
 				pointer_node	nilRight = _createdNilNode(addedNode);
 				pointer_node	nilLeft = _createdNilNode(addedNode);
 
@@ -563,13 +564,13 @@ namespace ft{
 					node->color = BLACK;
 					// node->previous = NULL;
 				} else {
-					addedNode->previous = inceptionPlace->previous;
-					if (compare(inceptionPlace->previous->value, addedNode->value)){
-						inceptionPlace->previous->nextRight = addedNode;
+					addedNode->previous = insertPlace->previous;
+					if (compare(insertPlace->previous->value, addedNode->value)){
+						insertPlace->previous->nextRight = addedNode;
 					} else {
-						inceptionPlace->previous->nextLeft = addedNode;
+						insertPlace->previous->nextLeft = addedNode;
 					}
-					_freeNode(inceptionPlace);
+					_freeNode(insertPlace);
 				}
 				countElems++;
 			}

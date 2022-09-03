@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/02 23:22:39 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/03 14:20:42 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 // #include <algorithm>
 // #include <set>
 // #include <iostream>
+#include <unistd.h>
 
 namespace ft{
 	void	print_preview(const std::string& outString, valueType type){
@@ -35,12 +36,11 @@ namespace ft{
 		std::cout << "\033[0m \n" << std::endl;
 	}
 }
-
 	int main (void){
 		using namespace ft;
-		// valueType	type = STRING;
+		// // valueType	type = STRING;
 		valueType	type = CHAR;
-		// valueType	type = INT;
+		// // valueType	type = INT;
 		print_preview("VECTOR", type);
 		vectorChecker(type);
 		// checkerForStack();

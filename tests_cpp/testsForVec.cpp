@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:36:43 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/03 00:09:15 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/03 14:20:25 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace ft{
 			insertCheck(my_vec, orig_vec, my_tmp, orig_tmp);
 			pop_backCheck(my_vec, orig_vec);
 			eraseCheck(my_vec, orig_vec);
-			// checkResize(my_vec, orig_vec);
+			checkResize(my_vec, orig_vec);
 			checkReserve(my_vec, orig_vec);
 			checkBegin(my_vec, orig_vec);
 			checkEnd(my_vec, orig_vec);
