@@ -33,8 +33,8 @@ namespace ft {
 		static const std::string	cyan;
 		static const std::string	green;
 		static const std::string	red;
-		static const  std::string	yellow;
-		static const  std::string	end;
+		static const std::string	yellow;
+		static const std::string	end;
 	} ;
 
 	class	time{
@@ -52,6 +52,22 @@ namespace ft {
 					- (_start.tv_sec * 1000000 + _start.tv_usec);
 		}
 	} ;
+
+	template <class ft_cont, class std_cont, class print_func>
+		// Print result of compare to STDOUT
+		void	result(const std::string& fieldName,
+						ft_cont& my, std_cont& orig,
+						long ft_time, long std_time,
+						bool isItCompare,
+						print_func func){
+			if (isItCompare){
+				print_results(fieldName, ft_time, std_time);
+			} else {
+				print_mismatch(fieldName);
+				func(my, false);
+				func(orig, true);
+			}
+		}
 
 	template <class field>
 		void	stdout_result(const field& fieldValue,

@@ -54,10 +54,10 @@ namespace ft{
 	template < class D >
 		struct enable_if < true, D > { typedef D type; };
 
-	template < class ft_vec, class _Alloc = std::allocator<ft_vec> >
+	template < class ft_map, class _Alloc = std::allocator<ft_map> >
 		class	vector{
 		public:
-			typedef ft_vec										value_type;
+			typedef ft_map										value_type;
 			typedef _Alloc										allocator_type;
 			typedef typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
@@ -195,8 +195,8 @@ namespace ft{
 
 					iterator	thisIter(vec);
 
-					for (iterator	xIter(x.begin()); 
-							xIter != x.end(); 
+					for (iterator	xIter(x.begin());
+							xIter != x.end();
 							xIter++, thisIter++){
 						(*thisIter) = (*xIter);
 					}
@@ -478,17 +478,17 @@ namespace ft{
 
 			void		swap (vector& x){
 				pointer			tmpVec = vec;
-				allocator_type	tmpAlloc = vecAlloc;	
+				allocator_type	tmpAlloc = vecAlloc;
 				size_type		tmpCount = countElem;
-				size_type		tmpCapacity = capacitySize;	
+				size_type		tmpCapacity = capacitySize;
 
 				vec = x.vec;
 				vecAlloc = x.vecAlloc;
 				countElem = x.countElem;
 				capacitySize = x.capacitySize;
-				
+
 				x.vec = tmpVec;
-				x.vecAlloc = tmpAlloc; 
+				x.vecAlloc = tmpAlloc;
 				x.countElem = tmpCount;
 				x.capacitySize = tmpCapacity;
 			}
@@ -499,25 +499,25 @@ namespace ft{
 			allocator_type	get_allocator() const{ return (vecAlloc); }
 		};
 
-		template <class ft_vec, class _Alloc>
-			bool operator== (const vector<ft_vec,_Alloc>& lhs,
-								const vector<ft_vec,_Alloc>& rhs){
+		template <class ft_map, class _Alloc>
+			bool operator== (const vector<ft_map,_Alloc>& lhs,
+								const vector<ft_map,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return true;
 				else if (lhs.empty() || rhs.empty()) return false;
 				return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 			}
 
-		template <class ft_vec, class _Alloc>
-			bool operator!=(const vector<ft_vec,_Alloc>& lhs,
-								const vector<ft_vec,_Alloc>& rhs){
+		template <class ft_map, class _Alloc>
+			bool operator!=(const vector<ft_map,_Alloc>& lhs,
+								const vector<ft_map,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return false;
 				else if (lhs.empty() || rhs.empty()) return true;
 				return (lhs == rhs) ? false : true;
 			}
 
-		template <class ft_vec, class _Alloc>
-			bool operator< (const vector<ft_vec,_Alloc>& lhs,
-								const vector<ft_vec,_Alloc>& rhs){
+		template <class ft_map, class _Alloc>
+			bool operator< (const vector<ft_map,_Alloc>& lhs,
+								const vector<ft_map,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return false;
 				else if (lhs.empty() && !rhs.empty()) return true;
 				else if (!lhs.empty() && rhs.empty()) return false;
@@ -525,36 +525,36 @@ namespace ft{
 													rhs.begin(), rhs.end());
 			}
 
-		template <class ft_vec, class _Alloc>
-			bool operator<=(const vector<ft_vec,_Alloc>& lhs,
-								const vector<ft_vec,_Alloc>& rhs){
+		template <class ft_map, class _Alloc>
+			bool operator<=(const vector<ft_map,_Alloc>& lhs,
+								const vector<ft_map,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return true;
 				else if (lhs.empty() && !rhs.empty()) return true;
 				else if (!lhs.empty() && rhs.empty()) return false;
 				return (lhs < rhs || lhs == rhs) ? true : false;
 			}
 
-		template <class ft_vec, class _Alloc>
-			bool operator>(const vector<ft_vec,_Alloc>& lhs,
-								const vector<ft_vec,_Alloc>& rhs){
+		template <class ft_map, class _Alloc>
+			bool operator>(const vector<ft_map,_Alloc>& lhs,
+								const vector<ft_map,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return false;
 				else if (lhs.empty() && !rhs.empty()) return false;
 				else if (!lhs.empty() && rhs.empty()) return true;
 				return (!(lhs <= rhs)) ? true : false;
 			}
 
-		template <class ft_vec, class _Alloc>
-			bool operator>=(const vector<ft_vec,_Alloc>& lhs,
-								const vector<ft_vec,_Alloc>& rhs){
+		template <class ft_map, class _Alloc>
+			bool operator>=(const vector<ft_map,_Alloc>& lhs,
+								const vector<ft_map,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return true;
 				else if (lhs.empty() && !rhs.empty()) return false;
 				else if (!lhs.empty() && rhs.empty()) return true;
 				return (!(lhs < rhs)) ? true : false;
 			}
 
-		template <class ft_vec, class _Alloc>
-			void swap(vector<ft_vec,_Alloc>& x,
-						vector<ft_vec,_Alloc>& y) {
+		template <class ft_map, class _Alloc>
+			void swap(vector<ft_map,_Alloc>& x,
+						vector<ft_map,_Alloc>& y) {
 				x.swap(y);
 			}
 };

@@ -15,53 +15,49 @@
 namespace ft{
 
 	template <class ft_vec, class std_vec>
-		void	memberTests(ft_vec &my_vec, std_vec &orig_vec,
+		void	memberTestsVec(ft_vec &my_vec, std_vec &orig_vec,
 								ft_vec &my_tmp, std_vec &orig_tmp){
-			assignCheck(my_vec, orig_vec, my_tmp, orig_tmp);
-			push_backCheck(my_vec, orig_vec, my_tmp, orig_tmp);
-			insertCheck(my_vec, orig_vec, my_tmp, orig_tmp);
-			pop_backCheck(my_vec, orig_vec);
-			eraseCheck(my_vec, orig_vec);
-			checkResize(my_vec, orig_vec);
-			checkReserve(my_vec, orig_vec);
-			checkBegin(my_vec, orig_vec);
-			checkEnd(my_vec, orig_vec);
-			checkRbegin(my_vec, orig_vec);
-			checkRend(my_vec, orig_vec);
-			checkBegin(my_vec, orig_vec);
-			checkAt(my_vec, orig_vec);
-			checkFront(my_vec, orig_vec);
-			checkBack(my_vec, orig_vec);
-			clearChech(my_vec, orig_vec);
-			swapCheck(my_vec, orig_vec, my_tmp, orig_tmp);
+			checkConstructorsVec(my_tmp, orig_tmp);
+			assignCheckVec(my_vec, orig_vec, my_tmp, orig_tmp);
+			push_backCheckVec(my_vec, orig_vec, my_tmp, orig_tmp);
+			insertCheckVec(my_vec, orig_vec, my_tmp, orig_tmp);
+			pop_backCheckVec(my_vec, orig_vec);
+			eraseCheckVec(my_vec, orig_vec);
+			resizeCheckVec(my_vec, orig_vec);
+			reserveCheckVec(my_vec, orig_vec);
+			beginCheckVec(my_vec, orig_vec);
+			checkEndVec(my_vec, orig_vec);
+			rbeginCheckVec(my_vec, orig_vec);
+			rendCheckVec(my_vec, orig_vec);
+			// beginCheckVec(my_vec, orig_vec);
+			atCheckVec(my_vec, orig_vec);
+			frontCheckVec(my_vec, orig_vec);
+			backCheckVec(my_vec, orig_vec);
+			clearChechVec(my_vec, orig_vec);
+			swapCheckVec(my_vec, orig_vec, my_tmp, orig_tmp);
 		}
 
 	template <class ft_vec, class std_vec>
 		void	checkerForVector(ft_vec &my_vec, std_vec &orig_vec,
 									ft_vec &my_tmp, std_vec &orig_tmp){
-			(void)my_vec;
-			(void)orig_vec;
 			stdout_result("Member_functions: ", colors::yellow);
 			std::cout << std::endl;
-
-			checkVecConstructors(my_tmp, orig_tmp);
-
-			memberTests(my_vec, orig_vec, my_tmp, orig_tmp);
-			stdout_result("Compare_vector: ", colors::yellow);
+			memberTestsVec(my_vec, orig_vec, my_tmp, orig_tmp);
+			stdout_result("Compare_vectors: ", colors::yellow);
 			std::cout << std::endl;
-			checkCompareVectors(my_vec, orig_vec, my_tmp, orig_tmp);
-			stdout_result("Iterators_operators: ", colors::yellow);
+			checkCompareVecs(my_vec, orig_vec, my_tmp, orig_tmp);
+			stdout_result("Iterators'_operators: ", colors::yellow);
 			std::cout << std::endl;
-			checkIterators(my_vec, orig_vec);
+			checkIteratorsVecs(my_vec, orig_vec);
 			stdout_result("Compare_iterators: ", colors::yellow);
 			std::cout << std::endl;
-			checkCompareIters(my_vec, orig_vec);
-			stdout_result("RevIterators_operators: ", colors::yellow);
+			checkCompareItersVecs(my_vec, orig_vec);
+			stdout_result("RevIterators'_operators: ", colors::yellow);
 			std::cout << std::endl;
-			checkRevIterators(my_vec, orig_vec);
+			checkRevIteratorsVecs(my_vec, orig_vec);
 			stdout_result("Compare_revIterators: ", colors::yellow);
 			std::cout << std::endl;
-			checkCompareRevIters(my_vec, orig_vec);
+			checkCompareRevItersVecs(my_vec, orig_vec);
 		}
 
 

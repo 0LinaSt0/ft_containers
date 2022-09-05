@@ -12,7 +12,7 @@ namespace ft{
 		public:
 			typedef _Key										key_type;
 			typedef	_T											mapped_type;
-			typedef ft::pair<const key_type, mapped_type>		value_type; // ???need const key but how if i want to do operator=???
+			typedef ft::pair<const key_type, mapped_type>		value_type;
 			typedef _Compare									key_compare;
 			typedef _Alloc										allocator_type;
 			typedef typename allocator_type::reference			reference;
@@ -35,11 +35,11 @@ namespace ft{
 			typedef _rb_tree<value_type, value_compare, allocator_type>	map_tree;
 			typedef typename map_tree::pointer_node						ptr_node;
 
+			/*RETURN TO PRIVATE*/
+				map_tree		tree;
+				allocator_type	mapAlloc;
+			/*RETURN TO PRIVATE*/
 		public:
-		/*RETURN TO PRIVATE*/
-			map_tree		tree;
-			allocator_type	mapAlloc;
-		/*RETURN TO PRIVATE*/
 			typedef typename map_tree::size_type					size_type;
 			typedef typename map_tree::difference_type				difference_type;
 			typedef typename map_tree::iterator						iterator;
