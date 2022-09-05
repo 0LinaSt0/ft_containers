@@ -13,66 +13,19 @@
 #ifndef TESTS_VEC_HPP
 #define TESTS_VEC_HPP
 
-#include "testsUtils.hpp"
+#include "testsClasses.hpp"
 #include "../vector.hpp"
 #include "../containers.hpp"
 
 namespace ft{
 	void	vectorChecker(valueType type);
 
-	class	tmpVectors{
-	private:
-		ft::vector<std::string>		myStringVec;
-		ft::vector<char>			myCharVec;
-		ft::vector<int>				myIntVec;
-
-		std::vector<std::string>	origStringVec;
-		std::vector<char>			origCharVec;
-		std::vector<int>			origIntVec;
-	public:
-		tmpVectors(void) {
-			setStringVecs();
-			setCharVecs();
-			setIntVecs();
-		}
-
-		~tmpVectors(void) { }
-
-		void	setStringVecs(void){
-			for (size_t i = 0; i < factor; i++){
-				myStringVec.push_back("hola");
-				origStringVec.push_back("hola");
-			}
-		}
-
-		void	setCharVecs(void){
-			for (size_t i = 0; i < factor; i++){
-				myCharVec.push_back('s');
-				origCharVec.push_back('s');
-			}
-		}
-
-		void	setIntVecs(void){
-			for (size_t i = 0; i < factor; i++){
-				myIntVec.push_back(i*2);
-				origIntVec.push_back(i*2);
-			}
-		}
-
-		ft::vector<std::string>		&getFtStringVec(void) { return myStringVec; }
-		ft::vector<char>			&getFtCharVec(void) { return myCharVec; }
-		ft::vector<int>				&getFtIntVec(void) { return myIntVec; }
-		std::vector<std::string>	&getStdStringVec(void) { return origStringVec; }
-		std::vector<char>			&getStdCharVec(void) { return origCharVec; }
-		std::vector<int>			&getStdIntVec(void) { return origIntVec; }
-	} ;
-
 	//~~~~~~~~~~~~~~~~~~ HELPFUL_UTILS ~~~~~~~~~~~~~~~~~~
 
 	template <class vec>
 		// Prints value of vector
 		void	printVecContent(vec &vec_cont, bool isItOrigVector){
-			std::cout << "	vector content: ";
+			std::cout << "	content: ";
 			if (isItOrigVector){
 				for (typename vec::iterator orig = vec_cont.begin();
 				orig != (vec_cont.end()); orig++){
@@ -86,6 +39,7 @@ namespace ft{
 			}
 			std::cout << std::endl;
 		}
+
 	template <class vec>
 		// Prints all information about vector
 		void	printVecParams (vec &vec_cont, bool isItOrigVector){
@@ -100,29 +54,21 @@ namespace ft{
 		}
 
 	template <class ft_vec, class std_vec>
-		// Compare orig and my vectors
-		bool	compareVectors(ft_vec& myVec, std_vec& origVec){
-			if (myVec.capacity() != origVec.capacity()) { return false; }
-			if (myVec.size() != origVec.size()) { return false; }
-			if (myVec.empty() != origVec.empty()) { return false; }
-			if (myVec.empty() && origVec.empty()) { return true; }
-
-			typename ft_vec::iterator	myIter(myVec.begin());
-			typename std_vec::iterator	origIter = origVec.begin();
-
-			while (myIter != myVec.end() || origIter != origVec.end()){
-				if (*myIter != *origIter) { return false; }
-				myIter++;
-				origIter++;
-			}
-			return true;
+		void	printVectors(ft_vec &my, std_vec &orig){
+			printVecParams(my, false);
+			printVecParams(orig, true);
 		}
 
+	template <class ft_vec, class std_vec>
+		bool	compareVectors(ft_vec &my_vec, std_vec &orig_vec){
+			if (my_vec.capacity() != orig_vec.capacity()) { return false; }
+			return compareContainers(my_vec, orig_vec);
+		}
 
 	//~~~~~~~~~~~ CHECKS_FOR_MEMBER_FUNCTIONS ~~~~~~~~~~~
 
 	template <class ft_vec, class std_vec>
-		void	checkConstructorsVec(ft_vec &my_tmp, std_vec &orig_tmp){
+		void	constructorsCheckVec(ft_vec &my_tmp, std_vec &orig_tmp){
 			ft::time	timer;
 			long	ft_time = 0, std_time = 0;
 			{
@@ -136,7 +82,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("construc(fill)  ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -150,7 +96,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("construc(range) ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -163,7 +109,7 @@ namespace ft{
 				std_vec	orig_vec = orig_tmp;
 				std_time = timer.stop();
 				result("construc(copy)  ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 		}
 
@@ -184,7 +130,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("assign(range)   ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 			{
 				// <<<<<<<<<<<<<<< Tests for assign(size_type, value_type) >>>>>>>>>>>>
@@ -199,7 +145,7 @@ namespace ft{
 				}
 
 				result("assign(fill)    ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 
 		}
@@ -223,7 +169,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("push_back       ", my_vec, orig_vec, ft_time, std_time,
-					compareVectors(my_vec, orig_vec), printVecParams);
+					compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -243,8 +189,8 @@ namespace ft{
 			orig_vec.pop_back();
 			std_time = timer.stop();
 
-			result("pop_back       ", my_vec, orig_vec, ft_time, std_time,
-					compareVectors(my_vec, orig_vec), printVecParams);
+			result<ft_vec, std_vec>("pop_back       ", my_vec, orig_vec, ft_time, std_time,
+					compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -264,7 +210,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("insert(range)   ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 			{
 				typename ft_vec::iterator	ftIter = my_vec.begin();
@@ -280,7 +226,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("insert(single)  ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
 
 				timer.start();
@@ -292,7 +238,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("insert(fill)    ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 		}
 
@@ -321,7 +267,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("erase(position)", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 			{
 			// <<<<<<<<<<<<<<< Tests for insert(range) >>>>>>>>>>>>>>>
@@ -335,7 +281,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("erase(range)   ", my_vec, orig_vec, ft_time, std_time,
-						compareVectors(my_vec, orig_vec), printVecParams);
+						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 		}
 
@@ -354,7 +300,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("swap           ", my_vec, orig_vec, ft_time, std_time,
-					compareVectors(my_vec, orig_vec), printVecParams);
+					compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -371,7 +317,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("clear          ", my_vec, orig_vec, ft_time, std_time,
-					compareVectors(my_vec, orig_vec), printVecParams);
+					compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -388,7 +334,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("begin          ", my_vec, orig_vec, ft_time, std_time,
-					((*myIter) == (*origIter)), printVecParams);
+					((*myIter) == (*origIter)), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -405,7 +351,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("end            ", my_vec, orig_vec, ft_time, std_time,
-					(*(myIter - 1) == *(origIter - 1)), printVecParams);
+					(*(myIter - 1) == *(origIter - 1)), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -422,7 +368,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("rbegin         ", my_vec, orig_vec, ft_time, std_time,
-					((*myIter) == (*origIter)), printVecParams);
+					((*myIter) == (*origIter)), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -439,7 +385,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("rend           ", my_vec, orig_vec, ft_time, std_time,
-					(*(myIter - 1) == *(origIter - 1)), printVecParams);
+					(*(myIter - 1) == *(origIter - 1)), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -456,7 +402,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("resize         ", my_vec, orig_vec, ft_time, std_time,
-					compareVectors(my_vec, orig_vec), printVecParams);
+					compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -473,7 +419,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("reserve        ", my_vec, orig_vec, ft_time, std_time,
-					compareVectors(my_vec, orig_vec), printVecParams);
+					compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -490,7 +436,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("at             ", my_vec, orig_vec, ft_time, std_time,
-					(myIter == origIter), printVecParams);
+					(myIter == origIter), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -507,7 +453,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("front          ", my_vec, orig_vec, ft_time, std_time,
-					(myIter == origIter), printVecParams);
+					(myIter == origIter), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -524,7 +470,7 @@ namespace ft{
 			std_time = timer.stop();
 
 			result("back           ", my_vec, orig_vec, ft_time, std_time,
-					(myIter == origIter), printVecParams);
+					(myIter == origIter), printVectors<ft_vec, std_vec>);
 		}
 
 	template <class ft_vec, class std_vec>
@@ -543,7 +489,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("vec==vec       ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -556,7 +502,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("vec!=vec       ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -569,7 +515,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("vec<vec        ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -582,7 +528,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("vec>vec        ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -595,7 +541,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("vec<=vec       ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -608,7 +554,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter>=iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 	}
 
@@ -632,7 +578,7 @@ namespace ft{
 
 				result("orerator--     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -646,7 +592,7 @@ namespace ft{
 
 				result("--orerator     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -660,7 +606,7 @@ namespace ft{
 
 				result("++orerator     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -674,7 +620,7 @@ namespace ft{
 
 				result("orerator+=     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -688,7 +634,7 @@ namespace ft{
 
 				result("orerator-=     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 	}
 
@@ -710,7 +656,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter==iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -723,7 +669,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter!=iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -736,7 +682,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter<iter      ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -749,7 +695,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter>iter      ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -762,7 +708,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter<=iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -775,7 +721,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter>=iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 	}
 
@@ -797,7 +743,7 @@ namespace ft{
 
 				result("orerator--     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -811,7 +757,7 @@ namespace ft{
 
 				result("--orerator     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -825,7 +771,7 @@ namespace ft{
 
 				result("++orerator     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -839,7 +785,7 @@ namespace ft{
 
 				result("orerator+=     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -853,7 +799,7 @@ namespace ft{
 
 				result("orerator-=     ", my_vec, orig_vec, ft_time, std_time,
 						(*(myIterBegin.base()) == *(origIterBegin.base())),
-						printVecParams);
+						printVectors<ft_vec, std_vec>);
 			}
 	}
 
@@ -875,7 +821,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter==iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -888,7 +834,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter!=iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -901,7 +847,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter<iter      ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -914,7 +860,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter>iter      ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -927,7 +873,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter<=iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 
 			{
@@ -940,7 +886,7 @@ namespace ft{
 				std_time = timer.stop();
 
 				result("iter>=iter     ", my_vec, orig_vec, ft_time, std_time,
-						(myComp == origComp), printVecParams);
+						(myComp == origComp), printVectors<ft_vec, std_vec>);
 			}
 	}
 

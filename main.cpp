@@ -19,10 +19,11 @@
 // #include <algorithm>
 // #include <set>
 // #include <iostream>
-#include <unistd.h>
+// #include <unistd.h>
 
 namespace ft{
-	void	print_preview(const std::string& outString, valueType type){
+	void	print_preview(const std::string& outString,
+							valueType type){
 		std::cout << "\033[35m"
 				<< "\t ~~~~~~~~~~~~TESTS_FOR_"
 				<< outString;
@@ -38,13 +39,14 @@ namespace ft{
 }
 	int main (void){
 		using namespace ft;
-		// // valueType	type = STRING;
-		valueType	type = CHAR;
-		// // valueType	type = INT;
-		print_preview("VECTOR", type);
-		vectorChecker(type);
+		// valueType	type = STRING;
+		// valueType	type = CHAR;
+		valueType	type = INT;
+		// print_preview("VECTOR", type);
+		// vectorChecker(type);
 		// checkerForStack();
-		// checkForMap();
+		print_preview("MAP", type);
+		mapChecker(type);
 
 		// MAP_TESTS::RUN_MAP_TESTS();
 

@@ -17,7 +17,7 @@ namespace ft{
 	template <class ft_vec, class std_vec>
 		void	memberTestsVec(ft_vec &my_vec, std_vec &orig_vec,
 								ft_vec &my_tmp, std_vec &orig_tmp){
-			checkConstructorsVec(my_tmp, orig_tmp);
+			constructorsCheckVec(my_tmp, orig_tmp);
 			assignCheckVec(my_vec, orig_vec, my_tmp, orig_tmp);
 			push_backCheckVec(my_vec, orig_vec, my_tmp, orig_tmp);
 			insertCheckVec(my_vec, orig_vec, my_tmp, orig_tmp);
@@ -29,7 +29,6 @@ namespace ft{
 			checkEndVec(my_vec, orig_vec);
 			rbeginCheckVec(my_vec, orig_vec);
 			rendCheckVec(my_vec, orig_vec);
-			// beginCheckVec(my_vec, orig_vec);
 			atCheckVec(my_vec, orig_vec);
 			frontCheckVec(my_vec, orig_vec);
 			backCheckVec(my_vec, orig_vec);
@@ -66,22 +65,22 @@ namespace ft{
 		tmpVectors	tmp_vecs;
 
 		if (type == STRING){
-			ft::vector<std::string>		my_vec_str(factor);
-			std::vector<std::string>	orig_vec_str(factor);
+			// ft::vector<std::string>		my_vec_str(factor);
+			// std::vector<std::string>	orig_vec_str(factor);
 
-			for (size_t i = 0; i < factor; i++){
-				my_vec_str[i] = "siempre";
-				orig_vec_str[i] = "siempre";
-			}
+			// for (int i = 0; i < factor; i++){
+			// 	my_vec_str[i] = "siempre";
+			// 	orig_vec_str[i] = "siempre";
+			// }
 
-			checkerForVector(my_vec_str, orig_vec_str,
-								tmp_vecs.getFtStringVec(),
-								tmp_vecs.getStdStringVec());
+			// checkerForVector(my_vec_str, orig_vec_str,
+			// 					tmp_vecs.getFtStringVec(),
+			// 					tmp_vecs.getStdStringVec());
 		} else if (type == CHAR) {
 			ft::vector<char>	my_vec_char(factor);
 			std::vector<char>	orig_vec_char(factor);
 
-			for (size_t i = 0; i < factor; i++){
+			for (int i = 0; i < factor; i++){
 				my_vec_char[i] = 'g';
 				orig_vec_char[i] = 'g';
 			}
@@ -93,7 +92,7 @@ namespace ft{
 			ft::vector<int>		my_vec_int(factor);
 			std::vector<int>	orig_vec_int(factor);
 
-			for (size_t i = 0; i < factor; i++){
+			for (int i = 0; i < factor; i++){
 				my_vec_int[i] = i;
 				orig_vec_int[i] = i;
 			}

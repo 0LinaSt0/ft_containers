@@ -14,12 +14,13 @@
 #define TESTS_UTILS_HPP
 
 #include <sys/time.h>
+// #include "testsClasses.hpp"
 #include "../containers.hpp"
 
 
 namespace ft {
 	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
-	static size_t	factor = 100;
+	static int	factor = 10;
 	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
 	static int	iter = 1;
 
@@ -53,6 +54,48 @@ namespace ft {
 		}
 	} ;
 
+	void	print_results(const std::string& fieldName,
+							long ft_time, long std_time);
+
+	void	print_mismatch(const std::string& fieldName);
+
+	template <class ft_cont, class std_cont>
+		// Compare orig and my containers
+		bool	compareContainers(ft_cont& my, std_cont& orig){
+			if (my.size() != orig.size()) { return false; }
+			if (my.empty() != orig.empty()) { return false; }
+			if (my.empty() && orig.empty()) { return true; }
+
+			typename ft_cont::iterator	myIter(my.begin());
+			typename std_cont::iterator	origIter(orig.begin());
+
+			while (myIter != my.end() || origIter != orig.end()){
+				if (*myIter != *origIter) { return false; }
+				myIter++;
+				origIter++;
+			}
+			return true;
+		}
+
+	template <class ft_cont, class std_cont, class compareFunc>
+		// Compare orig and my containers using func
+		bool	compareContainers(ft_cont& my, std_cont& orig,
+									compareFunc func){
+			if (my.size() != orig.size()) { return false; }
+			if (my.empty() != orig.empty()) { return false; }
+			if (my.empty() && orig.empty()) { return true; }
+
+			typename ft_cont::iterator	myIter(my.begin());
+			typename std_cont::iterator	origIter(orig.begin());
+
+			while (myIter != my.end() || origIter != orig.end()){
+				if (!(func(myIter, origIter))) { return false; }
+				myIter++;
+				origIter++;
+			}
+			return true;
+		}
+
 	template <class ft_cont, class std_cont, class print_func>
 		// Print result of compare to STDOUT
 		void	result(const std::string& fieldName,
@@ -64,8 +107,7 @@ namespace ft {
 				print_results(fieldName, ft_time, std_time);
 			} else {
 				print_mismatch(fieldName);
-				func(my, false);
-				func(orig, true);
+				func(my, orig);
 			}
 		}
 
@@ -84,10 +126,6 @@ namespace ft {
 			return false;
 		}
 
-	void	print_results(const std::string& fieldName,
-							long ft_time, long std_time);
-
-	void	print_mismatch(const std::string& fieldName);
 }
 
 #endif
