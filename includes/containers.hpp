@@ -830,6 +830,10 @@ namespace ft{
 			void	printTree(void){
 				_print_tree(node);
 			}
+
+			void	printNode(pointer_node treeNode){
+				_print_node(treeNode);
+			}
 	} ;
 }
 

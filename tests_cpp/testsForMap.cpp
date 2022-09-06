@@ -19,11 +19,11 @@ namespace ft{
 								ft_map &my_tmp, std_map &orig_tmp){
 			constructorsCheckMap(my_tmp, orig_tmp);
 			insertCheckMap(my_map, orig_map, my_tmp, orig_tmp);
-			// eraseCheck(my_map, orig_map);
-			// beginCheckMap(my_map, orig_map);
-			// checkEndMap(my_map, orig_map);
-			// rbeginCheckMap(my_map, orig_map);
-			// rendCheckMap(my_map, orig_map);
+			eraseCheckMap(my_map, orig_map);
+			beginCheckMap(my_map, orig_map);
+			endCheckMap(my_map, orig_map);
+			rbeginCheckMap(my_map, orig_map);
+			rendCheckMap(my_map, orig_map);
 			// atCheckMap(my_map, orig_map);
 			// findCheckMap(my_map, orig_map);
 			// countCheckMap(my_map, orig_map);
@@ -105,7 +105,7 @@ namespace ft{
 				my_map_int[i] = char();
 				orig_map_int[i] = char();
 			}
-			
+
 			checkerForMap(my_map_int, orig_map_int,
 							tmp_maps.getFtIntMap(),
 							tmp_maps.getStdIntMap());

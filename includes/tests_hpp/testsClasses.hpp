@@ -104,18 +104,18 @@ namespace	ft{
 		// }
 
 		void	setCharMaps(void){
-			for (char i = 64;
-					i < 127 && i < factor;
-					i++){
+			for (char i = 64, q = 0;
+					i < 127 && q < factor;
+					i++, q++){
 				myCharMap[i] = std::string();
 				origCharMap[i] = std::string();
 			}
 		}
 
 		void	setIntMaps(void){
-			for (int i = 1073741824;
-					i < factor;
-					i++){
+			for (int i = 1073741824, q = 0;
+					i < 2147483647 && q < factor;
+					i++, q++){
 				myIntMap[i] = char();
 				origIntMap[i] = char();
 			}

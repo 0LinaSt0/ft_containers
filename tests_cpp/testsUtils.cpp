@@ -34,7 +34,7 @@ namespace ft{
 	void	print_results(const std::string& fieldName,
 							long ft_time, long std_time){
 
-		std::cout << colors::yellow << iter++ << ". " << colors::end;
+		std::cout << colors::yellow << iter++ << ".	" << colors::end;
 		stdout_result(fieldName + " -->	", colors::cyan);
 
 		stdout_result("ft_time: ", colors::green);
@@ -58,7 +58,7 @@ namespace ft{
 
 
 	void	print_mismatch(const std::string& fieldName){
-		std::cout << colors::yellow << iter++ << ". " << colors::end;
+		std::cout << colors::yellow << iter++ << ".	" << colors::end;
 		stdout_result(fieldName + " -->	", colors::cyan);
 		stdout_result("error: std & ft not the same ", colors::red);
 		std::cout << std::endl << std::endl;
