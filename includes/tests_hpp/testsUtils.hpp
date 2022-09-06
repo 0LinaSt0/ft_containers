@@ -20,7 +20,7 @@
 
 namespace ft {
 	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
-	static int	factor = 10;
+	static int	factor = 100;
 	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
 	static int	iter = 1;
 

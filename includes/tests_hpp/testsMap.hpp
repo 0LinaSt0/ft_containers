@@ -70,6 +70,15 @@ namespace ft{
 			return false;
 		}
 
+	template <class ft_pair, class std_pair>
+		bool	compareEqualRangeReturnPair(ft_pair &my_pair, std_pair &orig_pair){
+			if (my_pair.first->first == orig_pair.first->first
+				&& my_pair.second->first == orig_pair.second->first){
+				return true;
+			}
+			return false;
+		}
+
 	template <class ft_map, class std_map,
 				class ft_content, class std_content,
 				class plusFuncCompare>
@@ -289,6 +298,12 @@ namespace ft{
 				ftIterEnd--; stdIterEnd--;
 				ftIterEnd--; stdIterEnd--;
 				ftIterEnd--; stdIterEnd--;
+				ftIterEnd--; stdIterEnd--;
+				ftIterEnd--; stdIterEnd--;
+				ftIterEnd--; stdIterEnd--;
+				ftIterEnd--; stdIterEnd--;
+				ftIterEnd--; stdIterEnd--;
+				ftIterEnd--; stdIterEnd--;
 
 				timer.start();
 				my_map.erase(ftIter, ftIterEnd);
@@ -365,7 +380,7 @@ namespace ft{
 			std_rev_iter	stdRevIter = orig_map.rbegin();
 			ft_time = timer.stop();
 
-			result("rbegin()       ", my_map, orig_map, ft_time, std_time,
+			result("rbegin()        ", my_map, orig_map, ft_time, std_time,
 					compareMaps(my_map, orig_map, (++ftRevIter), (++stdRevIter),
 									compareKeysInPair<ft_rev_iter, std_rev_iter>),
 					printMaps<ft_map, std_map>);
@@ -387,21 +402,483 @@ namespace ft{
 			std_rev_iter	stdRevIter = orig_map.rend();
 			ft_time = timer.stop();
 
-			result("rend()         ", my_map, orig_map, ft_time, std_time,
+			result("rend()          ", my_map, orig_map, ft_time, std_time,
 					compareMaps(my_map, orig_map, (--ftRevIter), (--stdRevIter),
 									compareKeysInPair<ft_rev_iter, std_rev_iter>),
 					printMaps<ft_map, std_map>);
 		}
 
-	// atCheckMap(my_vec, orig_vec);
-	// findCheckMap(my_vec, orig_vec);
-	// countCheckMap(my_vec, orig_vec);
-	// lower_boundCheckMap();
-	// upper_boundCheckMap();
-	// equal_boundCheckMap();
-	// clearChechMap(my_vec, orig_vec);
-	// swapCheckMap(my_vec, orig_vec, my_tmp, orig_tmp);
+	template <class ft_map, class std_map>
+		void	atCheckMap(ft_map &my_map, std_map &orig_map){
+			typedef typename ft_map::iterator		ft_iter;
+			typedef typename std_map::iterator		std_iter;
+			typedef typename ft_map::mapped_type	ft_value;
+			typedef typename std_map::mapped_type	std_value;
 
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			ft_value	myValue = my_map.at(my_map.begin()->first);
+			ft_time = timer.stop();
+
+			timer.start();
+			std_value	origValue = orig_map.at(orig_map.begin()->first);
+			ft_time = timer.stop();
+
+			result("at()            ", my_map, orig_map, ft_time, std_time,
+					(myValue == origValue
+							&& compareContainers(my_map, orig_map,
+													compareKeysInPair<ft_iter,
+																		std_iter>)),
+					printMaps<ft_map, std_map>);
+		}
+
+	template <class ft_map, class std_map>
+		void	findCheckMap(ft_map &my_map, std_map &orig_map){
+			typedef typename ft_map::iterator		ft_iter;
+			typedef typename std_map::iterator		std_iter;
+
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			ft_iter	myIter = my_map.find(my_map.begin()->first);
+			ft_time = timer.stop();
+
+			timer.start();
+			std_iter	origIter = orig_map.find(orig_map.begin()->first);
+			ft_time = timer.stop();
+
+			result("find()          ", my_map, orig_map, ft_time, std_time,
+					compareMaps(my_map, orig_map, myIter, origIter,
+									compareKeysInPair<ft_iter, std_iter>),
+					printMaps<ft_map, std_map>);
+		}
+
+	template <class ft_map, class std_map>
+		void	countCheckMap(ft_map &my_map, std_map &orig_map,
+								ft_map &my_tmp, std_map &orig_tmp){
+			typedef typename ft_map::iterator		ft_iter;
+			typedef typename std_map::iterator		std_iter;
+			typedef typename ft_map::size_type		ft_size_type;
+			typedef typename std_map::size_type		std_size_type;
+
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			ft_size_type	my_size;
+			std_size_type	orig_size;
+
+			ft_iter		myIterTmp = my_tmp.begin();
+			std_iter	origIterTmp = orig_tmp.begin();
+
+			myIterTmp++; origIterTmp++;
+			myIterTmp++; origIterTmp++;
+
+			timer.start();
+			my_size = my_map.count(myIterTmp->first);
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_size = orig_map.count(origIterTmp->first);
+			ft_time = timer.stop();
+
+			result("count()         ", my_map, orig_map, ft_time, std_time,
+					(my_size == orig_size
+						&& compareContainers(my_map, orig_map,
+												compareKeysInPair<ft_iter,
+																	std_iter>)),
+					printMaps<ft_map, std_map>);
+		}
+
+	template <class ft_map, class std_map>
+		void	lower_boundCheckMap(ft_map &my_map, std_map &orig_map){
+			typedef typename ft_map::iterator		ft_iter;
+			typedef typename std_map::iterator		std_iter;
+
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			ft_iter		myIter = my_map.begin();
+			std_iter	origIter = orig_map.begin();
+
+			myIter++; origIter++;
+			myIter++; origIter++;
+			myIter++; origIter++;
+
+			timer.start();
+			myIter = my_map.lower_bound(myIter->first);
+			ft_time = timer.stop();
+
+			timer.start();
+			origIter = orig_map.lower_bound(origIter->first);
+			ft_time = timer.stop();
+
+			result("lower_bound()   ", my_map, orig_map, ft_time, std_time,
+					compareMaps(my_map, orig_map, myIter, origIter,
+									compareKeysInPair<ft_iter, std_iter>),
+					printMaps<ft_map, std_map>);
+		}
+
+	template <class ft_map, class std_map>
+		void	upper_boundCheckMap(ft_map &my_map, std_map &orig_map){
+			typedef typename ft_map::iterator		ft_iter;
+			typedef typename std_map::iterator		std_iter;
+
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			ft_iter		myIter = my_map.begin();
+			std_iter	origIter = orig_map.begin();
+
+			myIter++; origIter++;
+
+			timer.start();
+			myIter = my_map.upper_bound(myIter->first);
+			ft_time = timer.stop();
+
+			timer.start();
+			origIter = orig_map.upper_bound(origIter->first);
+			ft_time = timer.stop();
+
+			result("upper_bound()   ", my_map, orig_map, ft_time, std_time,
+					compareMaps(my_map, orig_map, myIter, origIter,
+									compareKeysInPair<ft_iter, std_iter>),
+					printMaps<ft_map, std_map>);
+		}
+
+	template <class ft_map, class std_map>
+		void	equal_rangeCheckMap(ft_map &my_map, std_map &orig_map){
+			typedef typename ft_map::iterator		ft_iter;
+			typedef typename std_map::iterator		std_iter;
+			typedef	ft::pair<ft_iter, ft_iter>		ft_pair;
+			typedef	std::pair<std_iter, std_iter>	std_pair;
+
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			ft_pair		my_pair;
+			std_pair	orig_pair;
+			ft_iter		myIter = my_map.begin();
+			std_iter	origIter = orig_map.begin();
+
+			myIter++; origIter++;
+
+			timer.start();
+			my_pair = my_map.equal_range(myIter->first);
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_pair = orig_map.equal_range(origIter->first);
+			ft_time = timer.stop();
+
+			result("equal_range()   ", my_map, orig_map, ft_time, std_time,
+					compareMaps(my_map, orig_map, my_pair, orig_pair,
+									compareEqualRangeReturnPair<ft_pair, std_pair>),
+					printMaps<ft_map, std_map>);
+		}
+
+	template <class ft_map, class std_map>
+		void	clearCheckMap(ft_map &my_map, std_map &orig_map){
+			typedef typename ft_map::iterator		ft_iter;
+			typedef typename std_map::iterator		std_iter;
+
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			my_map.clear();
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_map.clear();
+			ft_time = timer.stop();
+
+			result("clear()         ", my_map, orig_map, ft_time, std_time,
+					compareContainers(my_map, orig_map,
+											compareKeysInPair<ft_iter, std_iter>),
+					printMaps<ft_map, std_map>);
+		}
+
+	template <class ft_map, class std_map>
+		void	swapCheckMap(ft_map &my_map, std_map &orig_map,
+								ft_map &my_tmp, std_map &orig_tmp){
+			typedef typename ft_map::iterator		ft_iter;
+			typedef typename std_map::iterator		std_iter;
+
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			timer.start();
+			my_map.swap(my_tmp);
+			ft_time = timer.stop();
+
+			timer.start();
+			orig_map.swap(orig_tmp);
+			ft_time = timer.stop();
+
+			result("swap()          ", my_map, orig_map, ft_time, std_time,
+					(compareContainers(my_map, orig_map,
+											compareKeysInPair<ft_iter, std_iter>)
+					&& compareContainers(my_tmp, orig_tmp,
+											compareKeysInPair<ft_iter, std_iter>)),
+					printMaps<ft_map, std_map>);
+		}
+
+	template <class ft_map, class std_map>
+		void	compareCheckMaps(ft_map &my_map, std_map &orig_map,
+									ft_map &my_tmp, std_map &orig_tmp){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			{
+				timer.start();
+				bool	myComp = (my_tmp == my_map);
+				ft_time = timer.stop();
+
+				timer.start();
+				bool	origComp = (orig_tmp == orig_map);
+				std_time = timer.stop();
+
+				result("map==map       ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+
+			{
+				timer.start();
+				bool	myComp = (my_tmp != my_map);
+				ft_time = timer.stop();
+
+				timer.start();
+				bool	origComp = (orig_tmp != orig_map);
+				std_time = timer.stop();
+
+				result("map!=map       ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+
+			{
+				timer.start();
+				bool	myComp = (my_tmp < my_map);
+				ft_time = timer.stop();
+
+				timer.start();
+				bool	origComp = (orig_tmp < orig_map);
+				std_time = timer.stop();
+
+				result("map<map        ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+
+			{
+				timer.start();
+				bool	myComp = (my_tmp > my_map);
+				ft_time = timer.stop();
+
+				timer.start();
+				bool	origComp = (orig_tmp > orig_map);
+				std_time = timer.stop();
+
+				result("map>map        ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+
+			{
+				timer.start();
+				bool	myComp = (my_tmp <= my_map);
+				ft_time = timer.stop();
+
+				timer.start();
+				bool	origComp = (orig_tmp <= orig_map);
+				std_time = timer.stop();
+
+				result("map<=map       ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+
+			{
+				timer.start();
+				bool	myComp = (my_tmp != my_map);
+				ft_time = timer.stop();
+
+				timer.start();
+				bool	origComp = (orig_tmp != orig_map);
+				std_time = timer.stop();
+
+				result("map>=map        ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+	}
+
+	// ~~~~~~~~~~~~~~~~~~~ CHECKS_FOR ITERATOR ~~~~~~~~~~~~~~~~~~~;
+	template <class ft_map, class std_map>
+		void	iteratorsCheckMaps(ft_map &my_map, std_map &orig_map){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			typename ft_map::iterator	myIterBegin = my_map.begin();
+			typename std_map::iterator	origIterBegin = orig_map.begin();
+			{
+				myIterBegin++; myIterBegin++; myIterBegin++;
+				timer.start();
+				--myIterBegin;
+				ft_time = timer.stop();
+
+				origIterBegin++; origIterBegin++; origIterBegin++;
+				timer.start();
+				--origIterBegin;
+				std_time = timer.stop();
+
+				result("--orerator     ", my_map, orig_map, ft_time, std_time,
+						(myIterBegin->first == origIterBegin->first),
+						printMaps<ft_map, std_map>);
+			}
+
+			{
+				timer.start();
+				++myIterBegin;
+				ft_time = timer.stop();
+
+				timer.start();
+				++origIterBegin;
+				std_time = timer.stop();
+
+				result("++orerator     ", my_map, orig_map, ft_time, std_time,
+						(myIterBegin->first == origIterBegin->first),
+						printMaps<ft_map, std_map>);
+			}
+		}
+
+	template <class ft_map, class std_map>
+		void	compareCheckItersMaps(ft_map &my_map, std_map &orig_map){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			typename ft_map::iterator	myIterBegin = my_map.begin();
+			typename std_map::iterator	origIterBegin = orig_map.begin();
+
+			{
+				timer.start();
+				bool	myComp = (myIterBegin == my_map.begin());
+				ft_time = timer.stop();
+
+				timer.start();
+				bool	origComp = (origIterBegin == orig_map.begin());
+				std_time = timer.stop();
+
+				result("iter==iter     ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+
+			{
+				myIterBegin++; myIterBegin++; myIterBegin++;
+				timer.start();
+				bool	myComp = (myIterBegin != my_map.begin());
+				ft_time = timer.stop();
+
+				origIterBegin++; origIterBegin++; origIterBegin++;
+				timer.start();
+				bool	origComp = (origIterBegin != orig_map.begin());
+				std_time = timer.stop();
+
+				result("iter!=iter     ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+		}
+
+	template <class ft_map, class std_map>
+		void	revIteratorsCheckMaps(ft_map &my_map, std_map &orig_map){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			typename ft_map::reverse_iterator	myIterBegin = my_map.rend();
+			typename std_map::reverse_iterator	origIterBegin = orig_map.rend();
+			{
+				myIterBegin++; myIterBegin++; myIterBegin++;
+				timer.start();
+				myIterBegin--;
+				ft_time = timer.stop();
+
+				origIterBegin++; origIterBegin++; origIterBegin++;
+				timer.start();
+				origIterBegin--;
+				std_time = timer.stop();
+
+				result("orerator--     ", my_map, orig_map, ft_time, std_time,
+						(myIterBegin->first == origIterBegin->first),
+						printMaps<ft_map, std_map>);
+			}
+
+			{
+				myIterBegin++; myIterBegin++; myIterBegin++;
+				timer.start();
+				--myIterBegin;
+				ft_time = timer.stop();
+
+				origIterBegin++; origIterBegin++; origIterBegin++;
+				timer.start();
+				--origIterBegin;
+				std_time = timer.stop();
+
+				result("--orerator     ", my_map, orig_map, ft_time, std_time,
+						(myIterBegin->first == origIterBegin->first),
+						printMaps<ft_map, std_map>);
+			}
+
+			{
+				myIterBegin--;
+				timer.start();
+				++myIterBegin;
+				ft_time = timer.stop();
+
+				origIterBegin--;
+				timer.start();
+				++origIterBegin;
+				std_time = timer.stop();
+
+				result("++orerator     ", my_map, orig_map, ft_time, std_time,
+						(myIterBegin->first == origIterBegin->first),
+						printMaps<ft_map, std_map>);
+			}
+		}
+
+	template <class ft_map, class std_map>
+		void	compareCheckRevItersMaps(ft_map &my_map, std_map &orig_map){
+			ft::time	timer;
+			long	ft_time = 0, std_time = 0;
+
+			typename ft_map::reverse_iterator	myIterBegin = my_map.rbegin();
+			typename std_map::reverse_iterator	origIterBegin = orig_map.rbegin();
+
+			{
+				timer.start();
+				bool	myComp = (myIterBegin == my_map.rbegin());
+				ft_time = timer.stop();
+
+				timer.start();
+				bool	origComp = (origIterBegin == orig_map.rbegin());
+				std_time = timer.stop();
+
+				result("iter==iter     ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+
+			{
+				myIterBegin++; myIterBegin++; myIterBegin++;
+				timer.start();
+				bool	myComp = (myIterBegin != my_map.rbegin());
+				ft_time = timer.stop();
+
+				origIterBegin++; origIterBegin++; origIterBegin++;
+				timer.start();
+				bool	origComp = (origIterBegin != orig_map.rbegin());
+				std_time = timer.stop();
+
+				result("iter!=iter     ", my_map, orig_map, ft_time, std_time,
+						(myComp == origComp), printMaps<ft_map, std_map>);
+			}
+		}
 }
 
 
