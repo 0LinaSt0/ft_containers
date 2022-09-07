@@ -25,6 +25,7 @@
 */
 
 namespace ft{
+	const std::string	colors::magneta = "\033[35m";
 	const std::string	colors::cyan = "\033[36m";
 	const std::string	colors::green = "\033[32m";
 	const std::string	colors::red = "\033[31m";

@@ -14,9 +14,9 @@
 
 namespace ft{
 
-	template <class ft_map, class std_map>
-		void	memberTestsMap(ft_map &my_map, std_map &orig_map,
-								ft_map &my_tmp, std_map &orig_tmp){
+	template <class _T, class std_map>
+		void	memberTestsMap(_T &my_map, std_map &orig_map,
+								_T &my_tmp, std_map &orig_tmp){
 			constructorsCheckMap(my_tmp, orig_tmp);
 			insertCheckMap(my_map, orig_map, my_tmp, orig_tmp);
 			eraseCheckMap(my_map, orig_map);
@@ -34,9 +34,9 @@ namespace ft{
 			swapCheckMap(my_map, orig_map, my_tmp, orig_tmp);
 		}
 
-	template <class ft_map, class std_map>
-		void	checkerForMap(ft_map &my_map, std_map &orig_map,
-								ft_map &my_tmp, std_map &orig_tmp){
+	template <class _T, class std_map>
+		void	checkerForMap(_T &my_map, std_map &orig_map,
+								_T &my_tmp, std_map &orig_tmp){
 			stdout_result("Member_functions: ", colors::yellow);
 			std::cout << std::endl;
 			memberTestsMap(my_map, orig_map, my_tmp, orig_tmp);
@@ -58,6 +58,7 @@ namespace ft{
 		}
 
 	void	mapChecker(valueType key_type){
+		iter = 1;
 		tmpMaps	tmp_maps;
 
 		if (key_type == STRING){

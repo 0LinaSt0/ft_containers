@@ -62,6 +62,7 @@ namespace ft{
 
 
 	void	vectorChecker(valueType type){
+		iter = 1;
 		tmpVectors	tmp_vecs;
 
 		if (type == STRING){

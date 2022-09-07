@@ -13,7 +13,8 @@
 #ifndef SET_HPP
 #define SET_HPP
 
-#include "containers.hpp"
+#include "ft_containers.hpp"
+#include "ft_rb_tree.hpp"
 
 namespace ft{
 	template < class _T,
@@ -31,7 +32,7 @@ namespace ft{
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
 		private:
-			typedef _rb_tree<value_type, value_compare, allocator_type>	set_tree;
+			typedef rb_tree<value_type, value_compare, allocator_type>	set_tree;
 			typedef	typename set_tree::pointer_node						ptr_node;
 
 			set_tree		tree;
@@ -167,7 +168,7 @@ namespace ft{
 			allocator_type get_allocator(void) const { return setAlloc; }
 		} ;
 
-	
+
 	template <class T, class Compare, class Alloc>
 		bool operator== (const set<T, Compare, Alloc>& lhs,
 							const set<T, Compare, Alloc>& rhs){

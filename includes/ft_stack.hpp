@@ -13,8 +13,8 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
-#include "containers.hpp"
-#include "vector.hpp"
+#include "ft_containers.hpp"
+#include "ft_vector.hpp"
 
 namespace ft{
 	template <class _T, class Container = ft::vector<_T> >
@@ -44,8 +44,6 @@ namespace ft{
 	protected:
 		container_type	ctnr;
 	public:
-
-
 		explicit stack(const container_type& ctnr = container_type())
 						: ctnr(ctnr){}
 

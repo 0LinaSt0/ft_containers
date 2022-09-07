@@ -13,10 +13,7 @@
 #ifndef VECTORITERATOR_HPP
 #define VECTORITERATOR_HPP
 
-#include <iostream>
-#include <string>
-#include <stddef.h>
-#include <memory>
+#include "../ft_containers.hpp"
 
 namespace ft{
 	// template<typename stackType>
@@ -76,7 +73,7 @@ namespace ft{
 			iterVec&	operator--(void) { --vectorElem; return *this; }
 			iterVec		operator--(int) { iterVec _new(*this); --(*this); return _new; }
 			iterVec		operator+(difference_type distan) const {iterVec it(*this); it += distan; return it; }
-			iterVec		operator-(difference_type distan) const { iterVec it(*this); it -= distan; return it;; } //{ vectorElem -= distan; return *this; }
+			iterVec		operator-(difference_type distan) const { iterVec it(*this); it -= distan; return it;; }
 			iterVec&	operator+=(difference_type distan) { vectorElem += distan; return *this; }
 			iterVec&	operator-=(difference_type distan) { vectorElem -= distan; return *this; }
 

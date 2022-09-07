@@ -13,9 +13,9 @@
 #ifndef TESTS_VEC_HPP
 #define TESTS_VEC_HPP
 
-#include "testsClasses.hpp"
-#include "../vector.hpp"
-#include "../containers.hpp"
+#include "testsTmpClasses.hpp"
+#include "../ft_vector.hpp"
+#include "../ft_containers.hpp"
 
 namespace ft{
 	void	vectorChecker(valueType type);
@@ -81,7 +81,7 @@ namespace ft{
 				std_vec	orig_vec(factor, orig_tmp[3]);
 				std_time = timer.stop();
 
-				result("construc(fill)  ", my_vec, orig_vec, ft_time, std_time,
+				result("construc(fill) ", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 
@@ -95,7 +95,7 @@ namespace ft{
 				std_vec	orig_vec(orig_tmp.begin(),(orig_tmp.end() - 1));
 				std_time = timer.stop();
 
-				result("construc(range) ", my_vec, orig_vec, ft_time, std_time,
+				result("construc(range)", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 
@@ -108,7 +108,7 @@ namespace ft{
 				timer.start();
 				std_vec	orig_vec = orig_tmp;
 				std_time = timer.stop();
-				result("construc(copy)  ", my_vec, orig_vec, ft_time, std_time,
+				result("construc(copy) ", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 		}
@@ -129,7 +129,7 @@ namespace ft{
 				orig_vec.assign(orig_tmp.begin(), orig_tmp.end());
 				std_time = timer.stop();
 
-				result("assign(range)   ", my_vec, orig_vec, ft_time, std_time,
+				result("assign(range)  ", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 			{
@@ -144,7 +144,7 @@ namespace ft{
 					std_time += timer.stop();
 				}
 
-				result("assign(fill)    ", my_vec, orig_vec, ft_time, std_time,
+				result("assign(fill)   ", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 
@@ -168,7 +168,7 @@ namespace ft{
 			orig_vec.push_back(orig_tmp[1]);
 			std_time = timer.stop();
 
-			result("push_back       ", my_vec, orig_vec, ft_time, std_time,
+			result("push_back      ", my_vec, orig_vec, ft_time, std_time,
 					compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 		}
 
@@ -189,7 +189,7 @@ namespace ft{
 			orig_vec.pop_back();
 			std_time = timer.stop();
 
-			result<ft_vec, std_vec>("pop_back       ", my_vec, orig_vec, ft_time, std_time,
+			result("pop_back       ", my_vec, orig_vec, ft_time, std_time,
 					compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 		}
 
@@ -209,35 +209,35 @@ namespace ft{
 				orig_vec.insert(orig_vec.end(), orig_tmp.begin(), orig_tmp.end());
 				std_time = timer.stop();
 
-				result("insert(range)   ", my_vec, orig_vec, ft_time, std_time,
+				result("insert(range)  ", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 			{
-				typename ft_vec::iterator	ftIter = my_vec.begin();
-				typename std_vec::iterator	stdIter = orig_vec.begin();
+				typename ft_vec::iterator	myIter = my_vec.begin();
+				typename std_vec::iterator	origIter = orig_vec.begin();
 
 			// <<<<<<<<<<<<<<< Tests for insert(single elem) >>>>>>>>>>>>>>>
 				timer.start();
-				ftIter = my_vec.insert((ftIter + 2), my_tmp[2]);
+				myIter = my_vec.insert((myIter + 2), my_tmp[2]);
 				ft_time = timer.stop();
 
 				timer.start();
-				stdIter = orig_vec.insert((stdIter + 2), my_tmp[2]);
+				origIter = orig_vec.insert((origIter + 2), my_tmp[2]);
 				std_time = timer.stop();
 
-				result("insert(single)  ", my_vec, orig_vec, ft_time, std_time,
+				result("insert(single) ", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			// <<<<<<<<<<<<<<< Tests for insert(fill) >>>>>>>>>>>>>>>
 
 				timer.start();
-				my_vec.insert(ftIter, 2, my_tmp[0]);
+				my_vec.insert(myIter, 2, my_tmp[0]);
 				ft_time = timer.stop();
 
 				timer.start();
-				orig_vec.insert(stdIter, 2, my_tmp[0]);
+				orig_vec.insert(origIter, 2, my_tmp[0]);
 				std_time = timer.stop();
 
-				result("insert(fill)    ", my_vec, orig_vec, ft_time, std_time,
+				result("insert(fill)   ", my_vec, orig_vec, ft_time, std_time,
 						compareVectors(my_vec, orig_vec), printVectors<ft_vec, std_vec>);
 			}
 		}

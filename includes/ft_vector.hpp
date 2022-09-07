@@ -13,12 +13,9 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-// #include "vectorIterator.hpp"
-#include "containers.hpp"
+#include "iterators/vectorIterator.hpp"
+#include "ft_containers.hpp"
 
-/*
-	! - means things which i still don't implement
-*/
 namespace ft{
 	template < class D >
 		struct is_integral { static const bool	value = false; };
@@ -54,10 +51,10 @@ namespace ft{
 	template < class D >
 		struct enable_if < true, D > { typedef D type; };
 
-	template < class ft_map, class _Alloc = std::allocator<ft_map> >
+	template < class _T, class _Alloc = std::allocator<_T> >
 		class	vector{
 		public:
-			typedef ft_map										value_type;
+			typedef _T											value_type;
 			typedef _Alloc										allocator_type;
 			typedef typename allocator_type::reference			reference;
 			typedef typename allocator_type::const_reference	const_reference;
@@ -74,68 +71,17 @@ namespace ft{
 			allocator_type										vecAlloc;
 			size_type											countElem;
 			size_type											capacitySize;
-			// Just change size of "capacitySize" variable
-			void	_capacityUpdate(size_type amountCapacity){
-				if (capacitySize == 0){
-					capacitySize = amountCapacity;
-				} else if (capacitySize < amountCapacity) {
-					if ((capacitySize * 2) < amountCapacity){
-						capacitySize = amountCapacity;
-					} else {
-						capacitySize *= 2;
-					}
-				}
-			}
 
-			/* 	1) destruct needing element (DoIDeallocate - false)
-				2) destruct and deallocate vec
-					(DoIDeallocate - true, freeElems - how much deallocate)*/
-			void	_freeMemory(bool DoIDeallocate, size_type freeElems){
-				// if (freeElems){
-					for (size_type i = 0; i < countElem; i++){
-							vecAlloc.destroy(vec + i);
-					}
-					if (DoIDeallocate){
-							vecAlloc.deallocate(vec, freeElems);
-					}
-				// }
-			}
+			void	_capacityUpdate(size_type amountCapacity);
 
-			/* Counts distance between two iterators and returns size of the distance */
+			void	_freeMemory(bool DoIDeallocate, size_type freeElems);
+
 			template < class InputIterator >
-				size_type	_sizeItersDistance(InputIterator first, InputIterator last){
-					size_type	distance = 0;
+				size_type	_sizeItersDistance(InputIterator first, InputIterator last);
 
-					while (first != last){
-							distance++;
-							first++;
-						}
-					return (distance);
-				}
-
-			/* Writes in 'container' value from begin_vector to 'posititon' iterators
-				or from 'position' to end_vector. It depends on whichPartFl.
-				'whichPartFl' flag could be:
-					- 'b' if needs put first part of vector to containter
-					- 'e' if needs put last part of vector to containter */
 			template < class InputIterator >
 				void	_writeValue(InputIterator &container, InputIterator position,
-										char whichPartFl){
-					if (whichPartFl == 'b') {
-						for (InputIterator vecBeging(begin());
-								vecBeging != position;
-								vecBeging++, container++){
-							(*container) = (*vecBeging);
-						}
-					} else if (whichPartFl == 'e') {
-						for (InputIterator vecEnd(end());
-								position != vecEnd;
-								position++, container++){
-							(*container) = (*position);
-						}
-					} else { }
-				}
-
+										char whichPartFl);
 		public:
 			/* ~~~~~~~~~~ Constructors ~~~~~~~~~~
 				1. explicit vector (const allocator_type&)			|	Empty vector
@@ -147,6 +93,7 @@ namespace ft{
 			*/
 			explicit vector (const allocator_type& alloc = allocator_type()) :
 							vec (NULL), countElem (0), capacitySize (0) { vecAlloc = alloc; }
+
 			explicit vector (size_type n, const value_type& val = value_type(),
 							const allocator_type& alloc = allocator_type()) :
 							countElem (n), capacitySize (n){
@@ -158,6 +105,7 @@ namespace ft{
 									(*iter) = val;
 								}
 							}
+
 			// !!!!!!!!!!!ADD THE EXCEPTION WHEN first OR/AND last is NULL!!!!!!!!!!!
 			// TYPE OF EXCEPTION: "libc++abi.dylib: terminating with uncaught exception of type std::length_error: vector"
 			template < class InputIterator >
@@ -178,7 +126,9 @@ namespace ft{
 								iter[i++] = (*first);
 							}
 						}
+
 			vector (const vector& x) : countElem(0), capacitySize(0) { operator=(x); }
+
 			~vector (void) { _freeMemory(true, capacitySize); }
 
 
@@ -202,8 +152,10 @@ namespace ft{
 					}
 				return *this;
 			}
+
 			reference		operator[] (size_type n)
 				{ iterator	referBrackets(vec); return referBrackets[n]; }
+
 			const_reference	operator[] (size_type n) const
 				{ const_iterator	constReferBrackets(vec); return constReferBrackets[n]; }
 
@@ -228,7 +180,9 @@ namespace ft{
 				reserve		|	Request a change in capacity
 			*/
 			size_type	size() const { return countElem; }
+
 			size_type	max_size() const { return vecAlloc.max_size(); }
+
 			void		resize (size_type n, value_type val = value_type()){
 				if (n == countElem)
 					return ;
@@ -244,8 +198,11 @@ namespace ft{
 					countElem--;
 				}
 			}
+
 			size_type	capacity() const { return capacitySize; }
+
 			bool		empty() const{ return countElem ? false : true; }
+
 			void		reserve (size_type n){
 				if (n > capacitySize){
 					size_type			oldCapacity = capacitySize;
@@ -275,14 +232,18 @@ namespace ft{
 				return (vec[n]);
 			}
 			const_reference		at (size_type n) const { at(n); }
+
 			reference			front() { return at(0); }
+
 			const_reference		front() const { return front(); }
+
 			reference			back(){
 				if(countElem){
 					return vec[countElem - 1];
 				}
 				return at(countElem);
 			}
+
 			const_reference		back() const { return back(); }
 
 			/* ~~~~~~~~~~ Modifiers ~~~~~~~~~~
@@ -390,6 +351,7 @@ namespace ft{
 					_freeMemory(true, oldCapacity);
 					vec = t;
 				}
+
 			iterator	insert (iterator position, const value_type& val){
 				size_type	oldCapacity = capacitySize;
 				pointer	tmp;
@@ -412,6 +374,7 @@ namespace ft{
 				vec = tmp;
 				return(returnPosition);
 			}
+
 			void		insert (iterator position, size_type n,
 									const value_type& val){
 				size_type	oldCapacity = capacitySize;
@@ -458,6 +421,7 @@ namespace ft{
 				vecAlloc.deallocate(tmp, 1);
 				return (iterator(vec+deletePos));
 			}
+
 			iterator	erase (iterator first, iterator last){
 				pointer	tmp;
 				size_type	toLastDistance = _sizeItersDistance(begin(), last);
@@ -499,25 +463,25 @@ namespace ft{
 			allocator_type	get_allocator() const{ return (vecAlloc); }
 		};
 
-		template <class ft_map, class _Alloc>
-			bool operator== (const vector<ft_map,_Alloc>& lhs,
-								const vector<ft_map,_Alloc>& rhs){
+		template <class _T, class _Alloc>
+			bool operator== (const vector<_T,_Alloc>& lhs,
+								const vector<_T,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return true;
 				else if (lhs.empty() || rhs.empty()) return false;
 				return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 			}
 
-		template <class ft_map, class _Alloc>
-			bool operator!=(const vector<ft_map,_Alloc>& lhs,
-								const vector<ft_map,_Alloc>& rhs){
+		template <class _T, class _Alloc>
+			bool operator!=(const vector<_T,_Alloc>& lhs,
+								const vector<_T,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return false;
 				else if (lhs.empty() || rhs.empty()) return true;
 				return (lhs == rhs) ? false : true;
 			}
 
-		template <class ft_map, class _Alloc>
-			bool operator< (const vector<ft_map,_Alloc>& lhs,
-								const vector<ft_map,_Alloc>& rhs){
+		template <class _T, class _Alloc>
+			bool operator< (const vector<_T,_Alloc>& lhs,
+								const vector<_T,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return false;
 				else if (lhs.empty() && !rhs.empty()) return true;
 				else if (!lhs.empty() && rhs.empty()) return false;
@@ -525,39 +489,40 @@ namespace ft{
 													rhs.begin(), rhs.end());
 			}
 
-		template <class ft_map, class _Alloc>
-			bool operator<=(const vector<ft_map,_Alloc>& lhs,
-								const vector<ft_map,_Alloc>& rhs){
+		template <class _T, class _Alloc>
+			bool operator<=(const vector<_T,_Alloc>& lhs,
+								const vector<_T,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return true;
 				else if (lhs.empty() && !rhs.empty()) return true;
 				else if (!lhs.empty() && rhs.empty()) return false;
 				return (lhs < rhs || lhs == rhs) ? true : false;
 			}
 
-		template <class ft_map, class _Alloc>
-			bool operator>(const vector<ft_map,_Alloc>& lhs,
-								const vector<ft_map,_Alloc>& rhs){
+		template <class _T, class _Alloc>
+			bool operator>(const vector<_T,_Alloc>& lhs,
+								const vector<_T,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return false;
 				else if (lhs.empty() && !rhs.empty()) return false;
 				else if (!lhs.empty() && rhs.empty()) return true;
 				return (!(lhs <= rhs)) ? true : false;
 			}
 
-		template <class ft_map, class _Alloc>
-			bool operator>=(const vector<ft_map,_Alloc>& lhs,
-								const vector<ft_map,_Alloc>& rhs){
+		template <class _T, class _Alloc>
+			bool operator>=(const vector<_T,_Alloc>& lhs,
+								const vector<_T,_Alloc>& rhs){
 				if (lhs.empty() && rhs.empty()) return true;
 				else if (lhs.empty() && !rhs.empty()) return false;
 				else if (!lhs.empty() && rhs.empty()) return true;
 				return (!(lhs < rhs)) ? true : false;
 			}
 
-		template <class ft_map, class _Alloc>
-			void swap(vector<ft_map,_Alloc>& x,
-						vector<ft_map,_Alloc>& y) {
+		template <class _T, class _Alloc>
+			void swap(vector<_T,_Alloc>& x,
+						vector<_T,_Alloc>& y) {
 				x.swap(y);
 			}
 };
 
+#include "../useful_tpp/ft_vector.tpp"
 
 #endif

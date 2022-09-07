@@ -13,24 +13,24 @@
 #ifndef TESTS_UTILS_HPP
 #define TESTS_UTILS_HPP
 
-#include <sys/time.h>
-// #include "testsClasses.hpp"
-#include "../containers.hpp"
+#include "../ft_containers.hpp"
 
+
+enum	valueType{
+	STRING,
+	CHAR,
+	INT
+} ;
 
 namespace ft {
-	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
-	static int	factor = 100;
-	/*TESTING: IT'S BROKING IN HIGHEST FACTOR*/
+	/*TESTING: IT'S BROKING IN HIGHEST FACTOR IN VECTOR???*/
+	static int	factor = 10;
+	/*TESTING: IT'S BROKING IN HIGHEST FACTOR IN VECTOR???*/
 	static int	iter = 1;
 
-	enum	valueType{
-		STRING = 0,
-		CHAR = 1,
-		INT = 2
-	} ;
 
 	struct	colors{
+		static const std::string	magneta;
 		static const std::string	cyan;
 		static const std::string	green;
 		static const std::string	red;

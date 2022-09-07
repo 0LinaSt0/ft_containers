@@ -13,19 +13,19 @@
 #include "includes/tests_hpp/testsVec.hpp"
 #include "includes/tests_hpp/testsStack.hpp"
 #include "includes/tests_hpp/testsMap.hpp"
-// #include "includes/tests_hpp/testsUtidls.hpp"
-#include "includes/containers.hpp"
-// #include "Lapa_tests/map_tests.hpp"
-// #include <algorithm>
-// #include <set>
-// #include <iostream>
-// #include <unistd.h>
+#include "includes/tests_hpp/testsSet.hpp"
 
-namespace ft{
+	void	print_separator(void){
+		std::cout << ft::colors::red
+						<< "\n    ~~~~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~~~~"
+						<< ft::colors::end
+						<< std::endl;
+	}
+
 	void	print_preview(const std::string& outString,
 							valueType type){
-		std::cout << "\033[35m"
-				<< "\t ~~~~~~~~~~~~TESTS_FOR_"
+		std::cout << ft::colors::magneta
+				<< "\n\t ~~~~~~~~~~~~TESTS_FOR_"
 				<< outString;
 		if (type == STRING){
 			std::cout << "(STRING)~~~~~~~~~~~~";
@@ -34,23 +34,47 @@ namespace ft{
 		} else {
 			std::cout << "(INT)~~~~~~~~~~~~";
 		}
-		std::cout << "\033[0m \n" << std::endl;
+		std::cout << ft::colors::end
+					<< "\n"
+					<< std::endl;
 	}
-}
+
 	int main (void){
-		using namespace ft;
-		// valueType	type = STRING;
-		// valueType	type = CHAR;
-		valueType	type = INT;
-		// print_preview("VECTOR", type);
-		// vectorChecker(type);
-		// checkerForStack();
-		print_preview("MAP", type);
-		mapChecker(type);
-
-		// MAP_TESTS::RUN_MAP_TESTS();
-
-
+		{
+			// valueType	type = STRING;
+			// print_preview("VECTOR", type);
+			// ft::vectorChecker(type);
+			// print_preview("STACK", type);
+			// ft::stackChecker(type);
+			// print_preview("MAP", type);
+			// ft::mapChecker(type);
+			// print_preview("SET", type);
+			// ft::setChecker(type);
+		}
+			print_separator();
+		{
+			valueType	type = CHAR;
+			print_preview("VECTOR", type);
+			ft::vectorChecker(type);
+			print_preview("STACK", type);
+			ft::stackChecker(type);
+			print_preview("MAP", type);
+			ft::mapChecker(type);
+			print_preview("SET", type);
+			ft::setChecker(type);
+		}
+			print_separator();
+		{
+			valueType	type = INT;
+			print_preview("VECTOR", type);
+			ft::vectorChecker(type);
+			print_preview("STACK", type);
+			ft::stackChecker(type);
+			print_preview("MAP", type);
+			ft::mapChecker(type);
+			print_preview("SET", type);
+			ft::setChecker(type);
+		}
 	}
 
 

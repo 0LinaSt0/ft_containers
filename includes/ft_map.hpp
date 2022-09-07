@@ -1,7 +1,8 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include "containers.hpp"
+#include "ft_containers.hpp"
+#include "ft_rb_tree.hpp"
 
 namespace ft{
 	template < class _Key,										// map::key_type
@@ -32,7 +33,7 @@ namespace ft{
 					{ return comp(x.first, y.first); }
 			} ;
  		private:
-			typedef _rb_tree<value_type, value_compare, allocator_type>	map_tree;
+			typedef rb_tree<value_type, value_compare, allocator_type>	map_tree;
 			typedef typename map_tree::pointer_node						ptr_node;
 
 		public:
