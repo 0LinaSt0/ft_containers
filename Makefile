@@ -10,34 +10,46 @@
 #                                                                              #
 # **************************************************************************** #
 
-HEADS_DIR		=	includes
+INC_HEAD_DIR		=	includes
 
-SRCS_DIR		=	tests_cpp
+ITER_HEAD_DIR		=	$(addprefix $(HEADS_DIR)/iterators)
 
-HEAD_CONT		=	$(addprefix $(HEADS_DIR)/, containers.hpp vector.hpp vectorIterator.hpp stack.hpp map.hpp set.hpp)
+TEST_HEAD_DIR		=	$(addprefix $(HEADS_DIR)/tests_hpp)
 
-HEAD_TESTS		=	$(addprefix $(HEADS_DIR)/tests_hpp/, testsVec.hpp testsStack.hpp testsMap.hpp testsUtils.hpp)
+TESTS_DIR			=	tests_cpp
 
-TPP_FILES		=	$(addprefix $(HEADS_DIR)/tpp_format/, tree.tpp)
+TPP_DIR				=	useful_tpp
+
+MAIN_HEADS			=	$(addprefix $(HEADS_DIR)/, ft_containers.hpp ft_map.hpp ft_rb_tree.hpp \
+													ft_set.hpp ft_stack.hpp ft_vector.hpp)
+
+ITERS_HEADS			=	$(addprefix $(ITER_HEAD_DIR)/, rb_treeIterators.hpp vectorIterators.hpp)
+
+TESTS_HEADS			=	$(addprefix $(TEST_HEAD_DIR)/, testsMap.hpp testsSet.hpp testsStack.hpp \
+														testsTmpClasses.hpp testsUtils.hpp testsVec.hpp)
+
+TESTS_FILES			=	$(addprefix $(TESTS_DIR)/, testsMap.cpp testsSet.cpp testsStack.hpp \
+													testsUtils.cpp testsVec.cpp)
+
+TPP_FILES			=	$(addprefix $(TPP_DIR)/, ft_rb_tree_erase.tpp ft_rb_tree_helpful.tpp \
+													ft_rb_tree_insert.tpp ft_vector.tpp)
 
 SRCS_MAIN		=	main.cpp
 
-SRCS_TESTS		=	$(addprefix $(SRCS_DIR)/,testsForVec.cpp testsForStack.cpp testsForMap.cpp testsUtils.cpp)
-
 OBJS_MAIN		=	$(SRCS_MAIN:.cpp=.o)
 
-OBJS_TESTS		=	$(SRCS_TESTS:.cpp=.o)
+OBJS_TESTS		=	$(TESTS_FILES:.cpp=.o)
 
 PROG_NAME		=	./ft_containers
 
 C++				=	c++ -std=c++98 -Wall -Wextra -Werror -g
 
-%.o:			%.cpp $(HEAD_CONT) $(HEAD_TESTS) $(SRCS_MAIN) $(SRCS_TESTS) $(TPP_FILES) Makefile
+%.o:			%.cpp $(MAIN_HEADS) $(ITERS_HEADS) $(TESTS_HEADS) $(TESTS_FILES) $(TPP_FILES) $(SRCS_MAIN) Makefile
 				$(C++) -c $< -o $@
 
 all:			$(PROG_NAME)
 
-${PROG_NAME}:	$(SRCS_MAIN) $(SRCS_TESTS) $(OBJS_MAIN) $(OBJS_TESTS) $(HEAD_CONT) $(HEAD_TESTS)
+${PROG_NAME}:	$(OBJS_MAIN) $(OBJS_TESTS) Makefile
 				$(C++) $(OBJS_MAIN) $(OBJS_TESTS) -o $(PROG_NAME)
 
 start:			all
