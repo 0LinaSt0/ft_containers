@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/03 14:20:42 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/10 20:16:24 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@
 
 	int main (void){
 		{
-			// valueType	type = STRING;
-			// print_preview("VECTOR", type);
-			// ft::vectorChecker(type);
-			// print_preview("STACK", type);
-			// ft::stackChecker(type);
-			// print_preview("MAP", type);
-			// ft::mapChecker(type);
-			// print_preview("SET", type);
-			// ft::setChecker(type);
+			valueType	type = STRING;
+			print_preview("VECTOR", type);
+			ft::vectorChecker(type);
+			print_preview("STACK", type);
+			ft::stackChecker(type);
+			print_preview("MAP", type);
+			ft::mapChecker(type);
+			print_preview("SET", type);
+			ft::setChecker(type);
 		}
 			print_separator();
 		{

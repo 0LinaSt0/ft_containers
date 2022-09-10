@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   testsTmpClasses.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:23:41 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 15:23:41 by marvin           ###   ########.fr       */
+/*   Updated: 2022/09/10 20:03:58 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,19 @@ namespace	ft{
 		std::vector<int>			origIntVec;
 	public:
 		tmpVectors(void) {
-			// setStringVecs();
+			setStringVecs();
 			setCharVecs();
 			setIntVecs();
 		}
 
 		~tmpVectors(void) { }
 
-		// void	setStringVecs(void){
-		// 	for (int i = 0; i < factor; i++){
-		// 		myStringVec.push_back("hola");
-		// 		origStringVec.push_back("hola");
-		// 	}
-		// }
+		void	setStringVecs(void){
+			for (int i = 0; i < factor; i++){
+				myStringVec.push_back("hola");
+				origStringVec.push_back("hola");
+			}
+		}
 
 		void	setCharVecs(void){
 			for (int i = 0; i < factor; i++){
@@ -69,39 +69,39 @@ namespace	ft{
 
 	class	tmpMaps{
 	private:
-		// ft::map<std::string, int>	myStringMap;
+		ft::map<std::string, int>	myStringMap;
 		ft::map<char, std::string>	myCharMap;
 		ft::map<int, char>			myIntMap;
 
-		// std::map<std::string, int>	origStringMap;
+		std::map<std::string, int>	origStringMap;
 		std::map<char, std::string>	origCharMap;
 		std::map<int, char>			origIntMap;
 	public:
 		tmpMaps(void) {
-			// setStringMaps();
+			setStringMaps();
 			setCharMaps();
 			setIntMaps();
 		}
 
 		~tmpMaps(void) { }
 
-		// void	setStringMaps(void){
-		// 	std::string	str = "ahora";
-		// 	char c = '~';
+		void	setStringMaps(void){
+			std::string	str = "ahora";
+			char c = '~';
 
-		// 	for (int i = 0;
-		// 			i < factor;
-		// 			i++){
-		// 		myStringMap[str] = int();
-		// 		origStringMap[str] = int();
-		// 		if (c == 'A'){
-		// 			c = '~';
-		// 			str.erase(str.begin()+1, str.begin()+3);
-		// 		}
-		// 		str += c;
-		// 		c--;
-		// 	}
-		// }
+			for (int i = 0;
+					i < factor;
+					i++){
+				myStringMap[str] = int();
+				origStringMap[str] = int();
+				if (c == 'A'){
+					c = '~';
+					str.erase(str.begin()+1, str.begin()+3);
+				}
+				str += c;
+				c--;
+			}
+		}
 
 		void	setCharMaps(void){
 			for (char i = 64, q = 0;
@@ -121,10 +121,10 @@ namespace	ft{
 			}
 		}
 
-		// ft::map<std::string, int>	&getFtStringMap(void) { return myStringMap; }
+		ft::map<std::string, int>	&getFtStringMap(void) { return myStringMap; }
 		ft::map<char, std::string>	&getFtCharMap(void) { return myCharMap; }
 		ft::map<int, char>			&getFtIntMap(void) { return myIntMap; }
-		// std::map<std::string, int>	&getStdStringMap(void) { return origStringMap; }
+		std::map<std::string, int>	&getStdStringMap(void) { return origStringMap; }
 		std::map<char, std::string>	&getStdCharMap(void) { return origCharMap; }
 		std::map<int, char>			&getStdIntMap(void) { return origIntMap; }
 
@@ -132,39 +132,39 @@ namespace	ft{
 
 	class	tmpSets{
 	private:
-		// ft::set<std::string>	myStringSet;
+		ft::set<std::string>	myStringSet;
 		ft::set<char>			myCharSet;
 		ft::set<int>			myIntSet;
 
-		// std::set<std::string>	origStringSet;
+		std::set<std::string>	origStringSet;
 		std::set<char>			origCharSet;
 		std::set<int>			origIntSet;
 	public:
 		tmpSets(void) {
-			// setStringSets();
+			setStringSets();
 			setCharSets();
 			setIntSets();
 		}
 
 		~tmpSets(void) { }
 
-		// void	setStringSets(void){
-		// 	std::string	str = "ahora";
-		// 	char c = '~';
+		void	setStringSets(void){
+			std::string	str = "ahora";
+			char c = '~';
 
-		// 	for (int i = 0;
-		// 			i < factor;
-		// 			i++){
-		// 		myStringSet.insert(str);
-		// 		origStringSet.insert(str);
-		// 		if (c == 'A'){
-		// 			c = '~';
-		// 			str.erase(str.begin()+1, str.begin()+3);
-		// 		}
-		// 		str += c;
-		// 		c--;
-		// 	}
-		// }
+			for (int i = 0;
+					i < factor;
+					i++){
+				myStringSet.insert(str);
+				origStringSet.insert(str);
+				if (c == 'A'){
+					c = '~';
+					str.erase(str.begin()+1, str.begin()+3);
+				}
+				str += c;
+				c--;
+			}
+		}
 
 		void	setCharSets(void){
 			for (char i = 64, q = 0;
@@ -184,36 +184,37 @@ namespace	ft{
 			}
 		}
 
-		// ft::set<std::string>	&getFtStringSet(void) { return myStringSet; }
+		ft::set<std::string>	&getFtStringSet(void) { return myStringSet; }
 		ft::set<char>			&getFtCharSet(void) { return myCharSet; }
 		ft::set<int>			&getFtIntSet(void) { return myIntSet; }
-		// std::set<std::string>	&getStdStringSet(void) { return origStringSet; }
+		std::set<std::string>	&getStdStringSet(void) { return origStringSet; }
 		std::set<char>			&getStdCharSet(void) { return origCharSet; }
 		std::set<int>			&getStdIntSet(void) { return origIntSet; }
 
 	} ;
 
-	// template <class ft_stack_class, class std_stack_class>
-	// 	class	tmpStackString{
-	// 	public:
-	// 		// typedef ft::stack<std::string, ft_stack_class>		ft_stack_string;
+	template <class ft_stack_class, class std_stack_class>
+		class	tmpStackString{
+		public:
+			typedef ft::stack<std::string, ft_stack_class>		ft_stack_string;
 
-	// 		// typedef std::stack<std::string, std_stack_class>	std_stack_string;
-	// 	private:
+			typedef std::stack<std::string, std_stack_class>	std_stack_string;
+		private:
 
-	// 		//ft_stack_string		myStringStack;
+			ft_stack_string		myStringStack;
 
-	// 		//std_stack_string	origStringStack;
-	// 	public:
-	// 		tmpStackString(tmpVectors &tmp_vec)
-	// 				: //myStringStack(tmp_vec.getFtStringVec()),
-	// 					//origStringStack(tmp_vec.getStdStringVec()) { }
+			std_stack_string	origStringStack;
+		public:
+			tmpStackString(tmpVectors &tmp_vec)
+					: myStringStack(tmp_vec.getFtStringVec()),
+						origStringStack(tmp_vec.getStdStringVec()) { }
 
-	// 		~tmpStackString(void) { }
+			~tmpStackString(void) { }
 
-	// 		// ft_stack_string		&getFtStringStack(void) { return myStringStack; }
-	// 		// std_stack_string	&getStdStringStack(void) { return origStringStack; }
-	// 	} ;
+			ft_stack_string		&getFtStringStack(void) { return myStringStack; }
+			std_stack_string	&getStdStringStack(void) { return origStringStack; }
+		} ;
+		
 	template <class ft_stack_class, class std_stack_class>
 		class	tmpStackChar{
 		public:

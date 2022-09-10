@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   testsForVec.cpp                                    :+:      :+:    :+:   */
+/*   testsVec.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:36:43 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/03 14:20:25 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/10 20:23:01 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,21 @@ namespace ft{
 
 
 	void	vectorChecker(valueType type){
-		iter = 1;
+		iterator::iter = 1;
 		tmpVectors	tmp_vecs;
 
 		if (type == STRING){
-			// ft::vector<std::string>		my_vec_str(factor);
-			// std::vector<std::string>	orig_vec_str(factor);
+			ft::vector<std::string>		my_vec_str(factor);
+			std::vector<std::string>	orig_vec_str(factor);
 
-			// for (int i = 0; i < factor; i++){
-			// 	my_vec_str[i] = "siempre";
-			// 	orig_vec_str[i] = "siempre";
-			// }
+			for (int i = 0; i < factor; i++){
+				my_vec_str[i] = "siempre";
+				orig_vec_str[i] = "siempre";
+			}
 
-			// checkerForVector(my_vec_str, orig_vec_str,
-			// 					tmp_vecs.getFtStringVec(),
-			// 					tmp_vecs.getStdStringVec());
+			checkerForVector(my_vec_str, orig_vec_str,
+								tmp_vecs.getFtStringVec(),
+								tmp_vecs.getStdStringVec());
 		} else if (type == CHAR) {
 			ft::vector<char>	my_vec_char(factor);
 			std::vector<char>	orig_vec_char(factor);

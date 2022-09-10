@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   testsForStack.cpp                                  :+:      :+:    :+:   */
+/*   testsStack.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 16:18:34 by marvin            #+#    #+#             */
-/*   Updated: 2022/07/18 16:18:34 by marvin           ###   ########.fr       */
+/*   Updated: 2022/09/10 20:23:14 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,31 @@ namespace ft{
 		}
 
 	void	stackChecker(valueType type){
-		// typedef ft::vector<std::string>		ft_string_cont;
+		typedef ft::vector<std::string>		ft_string_cont;
 		typedef ft::vector<char>			ft_char_cont;
 		typedef ft::vector<int>				ft_int_cont;
-		// typedef std::vector<std::string>	std_string_cont;
+		typedef std::vector<std::string>	std_string_cont;
 		typedef std::vector<char>			std_char_cont;
 		typedef std::vector<int>			std_int_cont;
 
 		tmpVectors	tmp_vec;
-		iter = 1;
+		iterator::iter = 1;
 
 		if (type == STRING){
-			// typedef ft::stack<std::string, ft_string_cont>		ft_stack;
-			// typedef std::stack<std::string, std_string_cont>	std_stack;
+			typedef ft::stack<std::string, ft_string_cont>		ft_stack;
+			typedef std::stack<std::string, std_string_cont>	std_stack;
 
-			// tmpStackString<ft_string_cont, std_string_cont>	tmp_stacks(tmp_vec);
+			tmpStackString<ft_string_cont, std_string_cont>	tmp_stacks(tmp_vec);
 
-			// ft_stack		my_stack_str(tmp_stacks.getFtStringStack());
-			// std_stack		orig_stack_str(tmp_stacks.getStdStringStack());
-			// std::vector<std::string>	vec;
-			// vec.push_back("camisa");
-			// vec.push_back("camiseta");
-			// vec.push_back("vestido");
-			// vec.push_back("ropa");
+			ft_stack		my_stack_str(tmp_stacks.getFtStringStack());
+			std_stack		orig_stack_str(tmp_stacks.getStdStringStack());
+			std::vector<std::string>	vec;
+			vec.push_back("camisa");
+			vec.push_back("camiseta");
+			vec.push_back("vestido");
+			vec.push_back("ropa");
 
-			// checkerForStack(my_stack_str, orig_stack_str, vec);
+			checkerForStack(my_stack_str, orig_stack_str, vec);
 		} else if (type == CHAR) {
 			typedef ft::stack<char, ft_char_cont>	ft_stack_char;
 			typedef std::stack<char, std_char_cont>	std_stack_char;

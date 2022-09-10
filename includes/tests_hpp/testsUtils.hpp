@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 15:38:56 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/03 13:05:51 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/10 20:33:44 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ enum	valueType{
 } ;
 
 namespace ft {
-	/*TESTING: IT'S BROKING IN HIGHEST FACTOR IN VECTOR???*/
-	static int	factor = 10;
-	/*TESTING: IT'S BROKING IN HIGHEST FACTOR IN VECTOR???*/
-	static int	iter = 1;
+	static int	factor = 10000;
+	// static int	iter = 1;
 
+	struct iterator{
+		static int iter;
+	} ;
 
 	struct	colors{
 		static const std::string	magneta;
@@ -35,6 +36,7 @@ namespace ft {
 		static const std::string	green;
 		static const std::string	red;
 		static const std::string	yellow;
+		static const std::string	white;
 		static const std::string	end;
 	} ;
 

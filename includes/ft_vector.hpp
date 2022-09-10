@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.hpp                                         :+:      :+:    :+:   */
+/*   ft_vector.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/03 14:20:15 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/10 20:18:33 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,17 @@ namespace ft{
 
 			void	_freeMemory(bool DoIDeallocate, size_type freeElems);
 
-			template < class InputIterator >
+			pointer	_allocateMemory(pointer &allocateTo, size_type capacSize,
+										size_type constructSize);
+
+			template <class InputIterator>
 				size_type	_sizeItersDistance(InputIterator first, InputIterator last);
 
-			template < class InputIterator >
+			template <class InputIterator>
 				void	_writeValue(InputIterator &container, InputIterator position,
 										char whichPartFl);
+										
+			void	_assignMemoryUpdate(void);
 		public:
 			/* ~~~~~~~~~~ Constructors ~~~~~~~~~~
 				1. explicit vector (const allocator_type&)			|	Empty vector
@@ -98,8 +103,7 @@ namespace ft{
 							const allocator_type& alloc = allocator_type()) :
 							countElem (n), capacitySize (n){
 								vecAlloc = alloc;
-								vec = vecAlloc.allocate(n);
-								vecAlloc.construct(vec, value_type());
+								vec = _allocateMemory(vec, capacitySize, countElem);
 
 								for (iterator iter(this->begin()); iter < this->end(); iter++){
 									(*iter) = val;
@@ -117,8 +121,7 @@ namespace ft{
 							countElem = _sizeItersDistance(first, last);
 							capacitySize = countElem;
 							vecAlloc = alloc;
-							vec = vecAlloc.allocate(countElem);
-							vecAlloc.construct(vec, value_type());
+							vec = _allocateMemory(vec, capacitySize, countElem);
 
 							iterator	iter(vec);
 
@@ -140,8 +143,7 @@ namespace ft{
 				capacitySize = 0;
 				countElem = x.countElem;
 				_capacityUpdate(countElem);
-					vec = vecAlloc.allocate(capacitySize);
-					vecAlloc.construct(vec, value_type());
+				vec = _allocateMemory(vec, capacitySize, countElem);
 
 					iterator	thisIter(vec);
 
@@ -193,7 +195,7 @@ namespace ft{
 				} else {
 					reserve(n);
 					for (; countElem <= n; countElem++){
-						vec[countElem] = val;
+						vecAlloc.construct((vec + countElem), val);
 					}
 					countElem--;
 				}
@@ -209,8 +211,7 @@ namespace ft{
 					_capacityUpdate(n);
 					pointer	tmp;
 
-					tmp = vecAlloc.allocate(capacitySize);
-					vecAlloc.construct(tmp, value_type());
+					tmp = _allocateMemory(tmp, capacitySize, countElem);
 
 					for (size_type iter = 0; iter < countElem; iter++){
 						tmp[iter] = vec[iter];
@@ -266,15 +267,9 @@ namespace ft{
 						countElem++;
 					}
 					if (countElem){
-						if (countElem > capacitySize){
-							vecAlloc.deallocate(vec, capacitySize);
-							vec = vecAlloc.allocate(countElem);
-							vecAlloc.construct(vec, value_type());
-							capacitySize = countElem;
-						}
-						for (iterator iterVec(vec); first != last; first++){
-							*iterVec = *first;
-							iterVec++;
+						_assignMemoryUpdate();
+						for (size_type i = 0; first != last; first++, i++){
+							vecAlloc.construct((vec + i), *first);
 						}
 					}
 				}
@@ -283,14 +278,9 @@ namespace ft{
 				_freeMemory(false, countElem);
 				countElem = n;
 				if (countElem){
-					if (countElem > capacitySize){
-						vecAlloc.deallocate(vec, capacitySize);
-							vec = vecAlloc.allocate(countElem);
-							vecAlloc.construct(vec, value_type());
-							capacitySize = countElem;
-					}
+					_assignMemoryUpdate();
 					for (size_type i = 0; i < n; i++){
-						vec[i] = val;
+						vecAlloc.construct((vec + i), val);
 					}
 				}
 			}
@@ -299,12 +289,12 @@ namespace ft{
 				if ((capacitySize - countElem) <= 0){
 					reserve(capacitySize+1);
 				}
-				vec[countElem] = val;
+				vecAlloc.construct((vec + countElem), val);
 				++countElem;
 			}
 
 			void		pop_back(void){
-				vecAlloc.destroy(vec + countElem-1);
+				vecAlloc.destroy(vec + countElem - 1);
 				--countElem;
 			}
 
@@ -322,9 +312,8 @@ namespace ft{
 					size_type	oldCapacity = capacitySize;
 					pointer	t;
 
-					_capacityUpdate(countElem+distanceSize);
-					t = vecAlloc.allocate(capacitySize);
-					vecAlloc.construct(t, value_type());
+					_capacityUpdate(countElem + distanceSize);
+					t = _allocateMemory(t, capacitySize, countElem + distanceSize);
 
 					iterator	tmpIter(t);
 					_writeValue(tmpIter, position, 'b');
@@ -347,8 +336,8 @@ namespace ft{
 					// }
 
 					_writeValue(tmpIter, position, 'e');
-					countElem += distanceSize;
 					_freeMemory(true, oldCapacity);
+					countElem += distanceSize;
 					vec = t;
 				}
 
@@ -357,8 +346,7 @@ namespace ft{
 				pointer	tmp;
 
 				_capacityUpdate(countElem+1);
-				tmp = vecAlloc.allocate(capacitySize);
-				vecAlloc.construct(tmp, value_type());
+				tmp = _allocateMemory(tmp, capacitySize, countElem + 1);
 
 				iterator	tmpIter(tmp);
 
@@ -369,8 +357,8 @@ namespace ft{
 				tmpIter++;
 
 				_writeValue(tmpIter, position, 'e');
-				countElem++;
 				_freeMemory(true, oldCapacity);
+				countElem++;
 				vec = tmp;
 				return(returnPosition);
 			}
@@ -381,8 +369,7 @@ namespace ft{
 				pointer	tmp;
 
 				_capacityUpdate(countElem+n);
-				tmp = vecAlloc.allocate(capacitySize);
-				vecAlloc.construct(tmp, value_type());
+				tmp = _allocateMemory(tmp, capacitySize, countElem + n);
 
 				iterator	tmpIter(tmp);
 				_writeValue(tmpIter, position, 'b');
@@ -393,32 +380,26 @@ namespace ft{
 				}
 
 				_writeValue(tmpIter, position, 'e');
-				countElem += n;
 				_freeMemory(true, oldCapacity);
+				countElem += n;
 				vec = tmp;
 			}
 
 			iterator	erase (iterator position){
-				pointer	tmp;
-
-				tmp = vecAlloc.allocate(capacitySize);
-				vecAlloc.construct(tmp, value_type());
-
-				iterator	tmpIter(tmp);
 				size_type	distance = _sizeItersDistance((position+1), end());
 				size_type	deletePos = countElem - distance - 1;
+				pointer	tmp;
 
+				tmp = _allocateMemory(tmp, capacitySize, countElem - 1);
+
+				iterator	tmpIter(tmp);
+
+				_writeValue(tmpIter, position, 'b');
 				_writeValue(tmpIter, (position+1), 'e');
-				vecAlloc.destroy(vec+deletePos);
+				
+				_freeMemory(true, capacitySize);
 				countElem--;
-
-				for (size_type i = deletePos, y = 0;
-						i < countElem;
-						i++, y++){
-					vec[i] = tmp[y];
-				}
-				vecAlloc.destroy(tmp);
-				vecAlloc.deallocate(tmp, 1);
+				vec = tmp;
 				return (iterator(vec+deletePos));
 			}
 
@@ -427,15 +408,14 @@ namespace ft{
 				size_type	toLastDistance = _sizeItersDistance(begin(), last);
 				size_type	comingDistance = _sizeItersDistance(first, last);
 
-				tmp = vecAlloc.allocate(capacitySize);
-				vecAlloc.construct(tmp, value_type());
+				tmp = _allocateMemory(tmp, capacitySize, countElem - comingDistance);
 
 				iterator	tmpIter(tmp);
 
 				_writeValue(tmpIter, first, 'b');
 				_writeValue(tmpIter, last, 'e');
-				countElem -= comingDistance;
 				_freeMemory(true, capacitySize);
+				countElem -= comingDistance;
 				vec = tmp;
 				return (iterator(vec+(toLastDistance - comingDistance)));
 			}

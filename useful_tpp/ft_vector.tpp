@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_vector.tpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 16:22:01 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 16:22:01 by marvin           ###   ########.fr       */
+/*   Updated: 2022/09/10 20:16:49 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@ namespace ft{
 				}
 			}
 		}
+
+	template < class _T, class _Alloc>
+		typename vector<_T, _Alloc>::pointer	vector<_T, _Alloc>::
+				_allocateMemory(typename vector<_T, _Alloc>::pointer &allocateTo,
+								typename vector<_T, _Alloc>::size_type capacSize,
+								typename vector<_T, _Alloc>::size_type constructSize){
+			allocateTo = vecAlloc.allocate(capacSize);
+			for (size_type i = 0; i < constructSize; i++){
+				vecAlloc.construct((allocateTo + i), 
+									typename vector<_T, _Alloc>::value_type());
+			}
+			return allocateTo;
+	}
 
 	template < class _T, class _Alloc>
 	/* 	1) destruct needing element (DoIDeallocate - false)
@@ -79,5 +92,14 @@ namespace ft{
 					(*container) = (*position);
 				}
 			} else { }
+		}
+
+	template < class _T, class _Alloc >
+		void	vector<_T, _Alloc>::_assignMemoryUpdate(void){
+			if (countElem > capacitySize){
+				vecAlloc.deallocate(vec, capacitySize);
+				capacitySize = countElem;
+				vec = _allocateMemory(vec, capacitySize, countElem);
+			}
 		}
 }

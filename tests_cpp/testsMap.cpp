@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   testsForMap.cpp                                    :+:      :+:    :+:   */
+/*   testsMap.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:01:12 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/31 22:09:41 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/10 20:23:07 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,32 +58,32 @@ namespace ft{
 		}
 
 	void	mapChecker(valueType key_type){
-		iter = 1;
+		iterator::iter = 1;
 		tmpMaps	tmp_maps;
 
 		if (key_type == STRING){
-			// ft::map<std::string, int>	my_map_str;
-			// std::map<std::string, int>	orig_map_str;
+			ft::map<std::string, int>	my_map_str;
+			std::map<std::string, int>	orig_map_str;
 
-			// std::string	str = "hoy";
-			// char c = 'A';
+			std::string	str = "hoy";
+			char c = 'A';
 
-			// for (int i = 0;
-			// 		i < factor;
-			// 		i++){
-			// 	my_map_str[str] = int();
-			// 	orig_map_str[str] = int();
-			// 	if (c == '~'){
-			// 		c = 'A';
-			// 		str.erase(str.begin()+1, str.begin()+3);
-			// 	}
-			// 	str += c;
-			// 	c++;
-			// }
+			for (int i = 0;
+					i < factor;
+					i++){
+				my_map_str[str] = int();
+				orig_map_str[str] = int();
+				if (c == '~'){
+					c = 'A';
+					str.erase(str.begin()+1, str.begin()+3);
+				}
+				str += c;
+				c++;
+			}
 
-			// checkerForMap(my_map_str, orig_map_str,
-			// 				tmp_maps.getFtStringMap(),
-			// 				tmp_maps.getStdStringMap());
+			checkerForMap(my_map_str, orig_map_str,
+							tmp_maps.getFtStringMap(),
+							tmp_maps.getStdStringMap());
 		} else if (key_type == CHAR) {
 			ft::map<char, std::string>	my_map_char;
 			std::map<char, std::string>	orig_map_char;

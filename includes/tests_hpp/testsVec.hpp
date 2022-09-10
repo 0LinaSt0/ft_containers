@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 11:38:01 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/03 14:08:31 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/10 19:16:08 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,7 @@ namespace ft{
 			{
 			// <<<<<<<<<<<<<<< Tests for insert(position) >>>>>>>>>>>>>>>
 				timer.start();
+				// std::cout << my_vec.size() << std::endl;
 				my_tmp = my_vec.erase(my_tmp+6);
 				my_vec.erase(my_tmp + 3);
 				my_vec.erase(my_vec.begin() + my_vec.size() - 1);

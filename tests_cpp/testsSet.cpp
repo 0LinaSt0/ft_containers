@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   testsForSet.cpp                                    :+:      :+:    :+:   */
+/*   testsSet.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 09:58:29 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 09:58:29 by marvin           ###   ########.fr       */
+/*   Updated: 2022/09/10 20:23:10 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,32 @@ namespace ft{
 		}
 
 	void	setChecker(valueType key_type){
-		iter = 1;
+		iterator::iter = 1;
 		tmpSets	tmp_sets;
 
 		if (key_type == STRING){
-		// 	ft::set<std::string>	my_set_str;
-		// 	std::set<std::string>	orig_set_str;
+			ft::set<std::string>	my_set_str;
+			std::set<std::string>	orig_set_str;
 
-		// 	std::string	str = "hoy";
-		// 	char c = 'A';
+			std::string	str = "hoy";
+			char c = 'A';
 
-		// 	for (int i = 0;
-		// 			i < factor;
-		// 			i++){
-		// 		my_set_str.insert(str);
-		// 		orig_set_str.insert(str);
-		// 		if (c == '~'){
-		// 			c = 'A';
-		// 			str.erase(str.begin()+1, str.begin()+3);
-		// 		}
-		// 		str += c;
-		// 		c++;
-		// 	}
+			for (int i = 0;
+					i < factor;
+					i++){
+				my_set_str.insert(str);
+				orig_set_str.insert(str);
+				if (c == '~'){
+					c = 'A';
+					str.erase(str.begin()+1, str.begin()+3);
+				}
+				str += c;
+				c++;
+			}
 
-		// 	checkerForSet(my_set_str, orig_set_str,
-		// 					tmp_sets.getFtStringSet(),
-		// 					tmp_sets.getStdStringSet());
+			checkerForSet(my_set_str, orig_set_str,
+							tmp_sets.getFtStringSet(),
+							tmp_sets.getStdStringSet());
 		} else if (key_type == CHAR) {
 			ft::set<char>	my_set_char;
 			std::set<char>	orig_set_char;
