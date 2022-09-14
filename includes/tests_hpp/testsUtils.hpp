@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 15:38:56 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/10 20:33:44 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/14 19:45:18 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ enum	valueType{
 } ;
 
 namespace ft {
-	static int	factor = 10000;
+	static int	factor = 5;
 	// static int	iter = 1;
 
 	struct iterator{

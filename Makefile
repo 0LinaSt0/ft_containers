@@ -6,7 +6,7 @@
 #    By: msalena <msalena@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/09 16:24:48 by msalena           #+#    #+#              #
-#    Updated: 2022/09/10 16:14:03 by msalena          ###   ########.fr        #
+#    Updated: 2022/09/14 20:23:38 by msalena          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,14 @@ TESTS_DIR			=	tests_cpp
 TPP_DIR				=	useful_tpp
 
 MAIN_HEADS			=	$(addprefix $(INC_HEAD_DIR)/, ft_containers.hpp ft_map.hpp ft_rb_tree.hpp \
-													ft_set.hpp ft_stack.hpp ft_vector.hpp)
+													ft_stack.hpp ft_vector.hpp)
 
 ITERS_HEADS			=	$(addprefix $(ITER_HEAD_DIR)/, rb_treeIterators.hpp vectorIterator.hpp)
 
-TESTS_HEADS			=	$(addprefix $(TEST_HEAD_DIR)/, testsMap.hpp testsSet.hpp testsStack.hpp \
+TESTS_HEADS			=	$(addprefix $(TEST_HEAD_DIR)/, testsMap.hpp testsStack.hpp \
 														testsTmpClasses.hpp testsUtils.hpp testsVec.hpp)
 
-TESTS_FILES			=	$(addprefix $(TESTS_DIR)/, testsMap.cpp testsSet.cpp testsStack.cpp \
+TESTS_FILES			=	$(addprefix $(TESTS_DIR)/, testsMap.cpp testsStack.cpp \
 													testsUtils.cpp testsVec.cpp)
 
 TPP_FILES			=	$(addprefix $(TPP_DIR)/, ft_rb_tree_erase.tpp ft_rb_tree_helpful.tpp \
@@ -44,7 +44,7 @@ PROG_NAME			=	./ft_containers
 
 C++					=	c++ -std=c++98 -Wall -Wextra -Werror -g
 
-%.o:				%.cpp $(MAIN_HEADS) $(ITERS_HEADS) $(TESTS_HEADS) $(TESTS_FILES) $(TPP_FILES) $(SRCS_MAIN) Makefile
+%.o:				%.cpp $(MAIN_HEADS) $(ITERS_HEADS) $(TESTS_HEADS) $(TPP_FILES) Makefile
 					$(C++) -c $< -o $@
 
 all:				$(PROG_NAME)

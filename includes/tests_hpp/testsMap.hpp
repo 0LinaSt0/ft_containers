@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/21 15:43:23 by msalena           #+#    #+#             */
-/*   Updated: 2022/08/31 22:07:45 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/14 20:06:01 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,9 @@ namespace ft{
 
 	template <class _T, class std_map>
 		void	constructorsCheckMap(_T &my_tmp, std_map &orig_tmp){
+			// (void)my_tmp;
+			// (void)orig_tmp;
+
 			typedef typename _T::iterator	ft_iter;
 			typedef typename std_map::iterator	std_iter;
 
@@ -108,37 +111,37 @@ namespace ft{
 			long	ft_time = 0, std_time = 0;
 			{
 				// /* <<<<<<<<<<<<<<< Tests for empty_constructor >>>>>>>>>>>>>>>*/
-				timer.start();
-				_T	my_map;
-				ft_time = timer.stop();
+				// timer.start();
+				// _T	my_map;
+				// ft_time = timer.stop();
 
-				timer.start();
-				std_map	orig_map;
-				std_time = timer.stop();
+				// timer.start();
+				// std_map	orig_map;
+				// std_time = timer.stop();
 
-				result("construc(empty) ", my_map, orig_map, ft_time, std_time,
-						compareContainers(my_map, orig_map,
-						compareKeysInPair<ft_iter, std_iter>),
-						printMaps<_T, std_map>);
+				// result("construc(empty) ", my_map, orig_map, ft_time, std_time,
+				// 		compareContainers(my_map, orig_map,
+				// 		compareKeysInPair<ft_iter, std_iter>),
+				// 		printMaps<_T, std_map>);
 			}
 
 			{
 				/* <<<<<<<<<<<<<<< Tests for range_constructor >>>>>>>>>>>>>>>*/
-				ft_iter		myIter(my_tmp.end());
-				std_iter	origIter(orig_tmp.end());
+				// ft_iter		myIter(my_tmp.end());
+				// std_iter	origIter(orig_tmp.end());
 
-				timer.start();
-				_T	my_map(my_tmp.begin(),(--myIter));
-				ft_time = timer.stop();
+				// timer.start();
+				// _T	my_map(my_tmp.begin(),(--myIter));
+				// ft_time = timer.stop();
 
-				timer.start();
-				std_map	orig_map(orig_tmp.begin(),(--origIter));
-				std_time = timer.stop();
+				// timer.start();
+				// std_map	orig_map(orig_tmp.begin(),(--origIter));
+				// std_time = timer.stop();
 
-				result("construc(range) ", my_map, orig_map, ft_time, std_time,
-						compareContainers(my_map, orig_map,
-						compareKeysInPair<ft_iter, std_iter>),
-						printMaps<_T, std_map>);
+				// result("construc(range) ", my_map, orig_map, ft_time, std_time,
+				// 		compareContainers(my_map, orig_map,
+				// 		compareKeysInPair<ft_iter, std_iter>),
+				// 		printMaps<_T, std_map>);
 			}
 
 			{
@@ -154,6 +157,7 @@ namespace ft{
 						compareContainers(my_map, orig_map,
 						compareKeysInPair<ft_iter, std_iter>),
 						printMaps<_T, std_map>);
+				my_map.tree.printTree();
 			}
 		}
 

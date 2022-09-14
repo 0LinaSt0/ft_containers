@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_rb_tree_helpful.tpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:01:43 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 17:01:43 by marvin           ###   ########.fr       */
+/*   Updated: 2022/09/14 20:17:59 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,19 @@ namespace ft{
 		void	rb_tree<_T, _Compare, _Allocator>::
 				_freeTree(typename rb_tree<_T, _Compare, _Allocator>::
 							pointer_node node){
-			(void)node;
-			// if (node->isItNil) { if (!node->previous) { _freeNode(node); } return ; }
+			// (void)node;
+			// _print_node(node);
+			std::cout << node << std::endl << std::endl;;
+			if (node->isItNil) { 
+				_freeNode(node); 
+				return ; 
+			}
 
-			// _freeTree(node->nextLeft);
+			_freeTree(node->nextLeft);
 			// typename rb_tree<_T, _Compare, _Allocator>::pointer_node	tmp = node->nextRight;
 			// _print_node(node);
-			// _freeTree(node->nextRight);
-			// _freeNode(node);
+			_freeTree(node->nextRight);
+			_freeNode(node);
 		}
 
 	template <class _T, class _Compare, class _Allocator>

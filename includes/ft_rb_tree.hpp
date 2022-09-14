@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_rb_tree.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 16:08:49 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 16:08:49 by marvin           ###   ########.fr       */
+/*   Updated: 2022/09/14 20:19:45 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ namespace ft{
 			rb_tree(const compare_class& comp,
 						const allocator_type& a = allocator_type())
 			: compare(comp), countElems(0), nodeAlloc(a) { node = _createNilNode(NULL); }
-			~rb_tree(void) { _freeTree(node); }
+			~rb_tree(void) { std::cout << node->value.first << std::endl; _freeTree(node); }
 
 			/*Iterators: begin, end, rbegin, rend*/
 
