@@ -142,6 +142,7 @@ namespace ft{
 			}
 
 			void	swap (map& x){
+				exit(0);
 				map	tmp(*this);
 
 				*this = x;
