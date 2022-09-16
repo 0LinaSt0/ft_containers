@@ -36,11 +36,11 @@ namespace ft{
 			typedef rb_tree<value_type, value_compare, allocator_type>	map_tree;
 			typedef typename map_tree::pointer_node						ptr_node;
 
-		public:
 			/*RETURN TO PRIVATE*/
 				map_tree		tree;
 				allocator_type	mapAlloc;
 			/*RETURN TO PRIVATE*/
+		public:
 			typedef typename map_tree::size_type					size_type;
 			typedef typename map_tree::difference_type				difference_type;
 			typedef typename map_tree::iterator						iterator;
@@ -59,11 +59,9 @@ namespace ft{
 					: tree(comp, alloc), mapAlloc(alloc) { insert(first, last); }
 
 			map (const map& x) : tree(x.tree), mapAlloc(x.mapAlloc) { }
-			// map (const map& x) = default;
 
 			~map() { }
 
-			// map& operator= (const map& x) = default;
 			map& operator= (const map& x){
 				tree = x.tree;
 				mapAlloc = x.mapAlloc;
@@ -73,7 +71,6 @@ namespace ft{
 			mapped_type& operator[] (const key_type& k){
 				ptr_node	desiredNode = tree.at(value_type(k, mapped_type()));
 
-				// std::cout << k << std::endl;
 				return (!desiredNode) ? (*((insert(value_type(k, mapped_type()))).first)).second
 										: desiredNode->value.second;
 			}

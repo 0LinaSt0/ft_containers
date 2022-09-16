@@ -130,68 +130,68 @@ namespace	ft{
 
 	} ;
 
-	// class	tmpSets{
-	// private:
-	// 	ft::set<std::string>	myStringSet;
-	// 	ft::set<char>			myCharSet;
-	// 	ft::set<int>			myIntSet;
+	class	tmpSets{
+	private:
+		ft::set<std::string>	myStringSet;
+		ft::set<char>			myCharSet;
+		ft::set<int>			myIntSet;
 
-	// 	std::set<std::string>	origStringSet;
-	// 	std::set<char>			origCharSet;
-	// 	std::set<int>			origIntSet;
-	// public:
-	// 	tmpSets(void) {
-	// 		setStringSets();
-	// 		setCharSets();
-	// 		setIntSets();
-	// 	}
+		std::set<std::string>	origStringSet;
+		std::set<char>			origCharSet;
+		std::set<int>			origIntSet;
+	public:
+		tmpSets(void) {
+			setStringSets();
+			setCharSets();
+			setIntSets();
+		}
 
-	// 	~tmpSets(void) { }
+		~tmpSets(void) { }
 
-	// 	void	setStringSets(void){
-	// 		std::string	str = "ahora";
-	// 		char c = '~';
+		void	setStringSets(void){
+			std::string	str = "ahora";
+			char c = '~';
 
-	// 		for (int i = 0;
-	// 				i < factor;
-	// 				i++){
-	// 			myStringSet.insert(str);
-	// 			origStringSet.insert(str);
-	// 			if (c == 'A'){
-	// 				c = '~';
-	// 				str.erase(str.begin()+1, str.begin()+3);
-	// 			}
-	// 			str += c;
-	// 			c--;
-	// 		}
-	// 	}
+			for (int i = 0;
+					i < factor;
+					i++){
+				myStringSet.insert(str);
+				origStringSet.insert(str);
+				if (c == 'A'){
+					c = '~';
+					str.erase(str.begin()+1, str.begin()+3);
+				}
+				str += c;
+				c--;
+			}
+		}
 
-	// 	void	setCharSets(void){
-	// 		for (char i = 64, q = 0;
-	// 				i < 127 && q < factor;
-	// 				i++, q++){
-	// 			myCharSet.insert(i);
-	// 			origCharSet.insert(i);
-	// 		}
-	// 	}
+		void	setCharSets(void){
+			for (char i = 64, q = 0;
+					i < 127 && q < factor;
+					i++, q++){
+				myCharSet.insert(i);
+				origCharSet.insert(i);
+			}
+		}
 
-	// 	void	setIntSets(void){
-	// 		for (int i = 1073741824, q = 0;
-	// 				i < 2147483647 && q < factor;
-	// 				i++, q++){
-	// 			myIntSet.insert(i);
-	// 			origIntSet.insert(i);
-	// 		}
-	// 	}
+		void	setIntSets(void){
+			for (int i = 1073741824, q = 0;
+					i < 2147483647 && q < factor;
+					i++, q++){
+				myIntSet.insert(i);
+				origIntSet.insert(i);
+			}
+		}
 
-	// 	ft::set<std::string>	&getFtStringSet(void) { return myStringSet; }
-	// 	ft::set<char>			&getFtCharSet(void) { return myCharSet; }
-	// 	ft::set<int>			&getFtIntSet(void) { return myIntSet; }
-	// 	std::set<std::string>	&getStdStringSet(void) { return origStringSet; }
-	// 	std::set<char>			&getStdCharSet(void) { return origCharSet; }
-	// 	std::set<int>			&getStdIntSet(void) { return origIntSet; }
+		ft::set<std::string>	&getFtStringSet(void) { return myStringSet; }
+		ft::set<char>			&getFtCharSet(void) { return myCharSet; }
+		ft::set<int>			&getFtIntSet(void) { return myIntSet; }
+		std::set<std::string>	&getStdStringSet(void) { return origStringSet; }
+		std::set<char>			&getStdCharSet(void) { return origCharSet; }
+		std::set<int>			&getStdIntSet(void) { return origIntSet; }
 
-	// } ;
+	} ;
 
 	template <class ft_stack_class, class std_stack_class>
 		class	tmpStackString{
@@ -214,7 +214,7 @@ namespace	ft{
 			ft_stack_string		&getFtStringStack(void) { return myStringStack; }
 			std_stack_string	&getStdStringStack(void) { return origStringStack; }
 		} ;
-		
+
 	template <class ft_stack_class, class std_stack_class>
 		class	tmpStackChar{
 		public:
