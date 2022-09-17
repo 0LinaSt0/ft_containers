@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/10 20:18:33 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/17 23:14:41 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,26 +132,26 @@ namespace ft{
 
 			vector (const vector& x) : countElem(0), capacitySize(0) { operator=(x); }
 
-			~vector (void) { _freeMemory(true, capacitySize); }
+			~vector (void) { if (capacitySize) { _freeMemory(true, capacitySize); } }
 
 
 			// ~~~~~~~~~~ Operators ~~~~~~~~~~
 			vector&			operator= (const vector& x){
-				if (capacitySize){
-					_freeMemory(true, capacitySize);
+				if (x.countElem){
+					if (capacitySize){ _freeMemory(true, capacitySize); }
+					capacitySize = 0;
+					countElem = x.countElem;
+					_capacityUpdate(countElem);
+					vec = _allocateMemory(vec, capacitySize, countElem);
+
+						iterator	thisIter(vec);
+
+						for (iterator	xIter(x.begin());
+								xIter != x.end();
+								xIter++, thisIter++){
+							(*thisIter) = (*xIter);
+						}
 				}
-				capacitySize = 0;
-				countElem = x.countElem;
-				_capacityUpdate(countElem);
-				vec = _allocateMemory(vec, capacitySize, countElem);
-
-					iterator	thisIter(vec);
-
-					for (iterator	xIter(x.begin());
-							xIter != x.end();
-							xIter++, thisIter++){
-						(*thisIter) = (*xIter);
-					}
 				return *this;
 			}
 
@@ -216,7 +216,7 @@ namespace ft{
 					for (size_type iter = 0; iter < countElem; iter++){
 						tmp[iter] = vec[iter];
 					}
-					_freeMemory(true, oldCapacity);
+					if(oldCapacity) { _freeMemory(true, oldCapacity); }
 					vec = tmp;
 				}
 			}
@@ -261,7 +261,7 @@ namespace ft{
 									typename enable_if<!is_integral<InputIterator>::value,
 													InputIterator>::type tmp = InputIterator()){
 					(void)tmp;
-					_freeMemory(false, countElem);
+					if (countElem) { _freeMemory(false, countElem); }
 					countElem = 0;
 					for (InputIterator myFirst(first); myFirst != last; myFirst++){
 						countElem++;
@@ -275,7 +275,7 @@ namespace ft{
 				}
 
 			void		assign (size_type n, const value_type& val){
-				_freeMemory(false, countElem);
+				if (countElem) { _freeMemory(false, countElem); }
 				countElem = n;
 				if (countElem){
 					_assignMemoryUpdate();
@@ -336,7 +336,7 @@ namespace ft{
 					// }
 
 					_writeValue(tmpIter, position, 'e');
-					_freeMemory(true, oldCapacity);
+					if (oldCapacity) { _freeMemory(true, oldCapacity); }
 					countElem += distanceSize;
 					vec = t;
 				}
@@ -357,7 +357,7 @@ namespace ft{
 				tmpIter++;
 
 				_writeValue(tmpIter, position, 'e');
-				_freeMemory(true, oldCapacity);
+				if (oldCapacity) { _freeMemory(true, oldCapacity); }
 				countElem++;
 				vec = tmp;
 				return(returnPosition);
@@ -380,7 +380,7 @@ namespace ft{
 				}
 
 				_writeValue(tmpIter, position, 'e');
-				_freeMemory(true, oldCapacity);
+				if (oldCapacity) { _freeMemory(true, oldCapacity); }
 				countElem += n;
 				vec = tmp;
 			}
@@ -397,7 +397,7 @@ namespace ft{
 				_writeValue(tmpIter, position, 'b');
 				_writeValue(tmpIter, (position+1), 'e');
 				
-				_freeMemory(true, capacitySize);
+				if (capacitySize) { _freeMemory(true, capacitySize); }
 				countElem--;
 				vec = tmp;
 				return (iterator(vec+deletePos));
@@ -414,7 +414,7 @@ namespace ft{
 
 				_writeValue(tmpIter, first, 'b');
 				_writeValue(tmpIter, last, 'e');
-				_freeMemory(true, capacitySize);
+				if (capacitySize) { _freeMemory(true, capacitySize); }
 				countElem -= comingDistance;
 				vec = tmp;
 				return (iterator(vec+(toLastDistance - comingDistance)));

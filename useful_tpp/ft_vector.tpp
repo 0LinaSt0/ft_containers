@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 16:22:01 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/10 20:16:49 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/17 23:21:42 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ namespace ft{
 	template < class _T, class _Alloc >
 		void	vector<_T, _Alloc>::_assignMemoryUpdate(void){
 			if (countElem > capacitySize){
-				vecAlloc.deallocate(vec, capacitySize);
+				if (capacitySize) { vecAlloc.deallocate(vec, capacitySize); }
 				capacitySize = countElem;
 				vec = _allocateMemory(vec, capacitySize, countElem);
 			}

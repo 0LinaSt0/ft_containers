@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack.hpp                                          :+:      :+:    :+:   */
+/*   ft_stack.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 14:05:32 by marvin            #+#    #+#             */
-/*   Updated: 2022/07/22 19:00:34 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/17 23:01:30 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,15 @@ namespace ft{
 	public:
 		explicit stack(const container_type& ctnr = container_type())
 						: ctnr(ctnr){}
+		stack(const stack& other){
+			ctnr = other.ctnr;
+		}
+		~stack(void) { }
+
+		stack& operator=( const stack& other ){
+			ctnr = other.ctnr;
+			return *this; 
+		}
 
 		bool	empty() const { return ctnr.empty(); }
 
