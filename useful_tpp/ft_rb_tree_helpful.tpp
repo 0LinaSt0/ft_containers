@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:01:43 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/17 19:12:37 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/16 22:07:46 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ namespace ft{
 			std::cout << "NODE_status" << std::endl;
 			std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
 			if (!treeNode->isItNil)
-				// std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
-			std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
+				std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
+				std::cout << "	nodeVal: " << treeNode->value.second << "\n";/*FOR MAP*/
+			// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
 			std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
 			std::cout << "	color: " << (char)(treeNode->color) << "\n";
 
@@ -121,8 +122,8 @@ namespace ft{
 		void	rb_tree<_T, _Compare, _Allocator>::
 				_freeTree(typename rb_tree<_T, _Compare, _Allocator>::
 							pointer_node node){
-			if (!node || node->isItNil) { 
-				if (node) { _freeNode(node); }
+			if (node->isItNil) { 
+				_freeNode(node); 
 				return ; 
 			}
 
@@ -136,7 +137,7 @@ namespace ft{
 			rb_tree<_T, _Compare, _Allocator>::
 			_findNode(const rb_tree<_T, _Compare, _Allocator>::
 						value_type& finding) const{
-			if (!node || node->isItNil){ return NULL; }
+			if (node->isItNil){ return NULL; }
 
 			typename rb_tree<_T, _Compare, _Allocator>::
 			pointer_node	lookedNode = node;
@@ -208,12 +209,13 @@ namespace ft{
 
 			addedNode->nextRight = nilRight;
 			addedNode->nextLeft = nilLeft;
-			if (!node){
+			if (node->isItNil){
+				_freeNode(node);
 				node = addedNode;
 				node->color = BLACK;
 			} else {
 				addedNode->previous = insertPlace->previous;
-				if (compare(insertPlace->previous->value, addedNode->value)){
+				if (insertPlace != insertPlace->previous->nextLeft){
 					insertPlace->previous->nextRight = addedNode;
 				} else {
 					insertPlace->previous->nextLeft = addedNode;
@@ -230,12 +232,12 @@ namespace ft{
 			typename rb_tree<_T, _Compare, _Allocator>::
 			pointer_node	uncle = __findUncle(addedNode);
 
-			if (!uncle){ }
+			if (uncle->isItNil){ }
 			else if (!(uncle->previous)) { addedNode->previous->color = BLACK; }
 			else if (uncle->color == RED) { __redUncle(uncle, addedNode); }
 			else if (uncle->color == BLACK) { __blackUncle(uncle, addedNode); }
 			else { return ;}
-			if (!node) { node = addedNode; }
+			if (node->isItNil) { _freeNode(node); node = addedNode; }
 		}
 
 	template <class _T, class _Compare, class _Allocator>
@@ -259,7 +261,7 @@ namespace ft{
 			rb_tree<_T, _Compare, _Allocator>::
 			_theLeastNode(typename rb_tree<_T, _Compare, _Allocator>::
 							pointer_node current) const{
-			if (current->nextLeft->isItNil)
+			if (current->isItNil || current->nextLeft->isItNil)
 				{ return current; }
 			return _theLeastNode(current->nextLeft);
 		}
@@ -269,7 +271,7 @@ namespace ft{
 			rb_tree<_T, _Compare, _Allocator>::
 			_theLargestNode(typename rb_tree<_T, _Compare, _Allocator>::
 								pointer_node current) const{
-			if (current->nextRight->isItNil)
+			if (current->isItNil || current->nextRight->isItNil)
 				{ return current; }
 			return _theLargestNode(current->nextRight);
 		}

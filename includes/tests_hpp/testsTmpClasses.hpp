@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 15:23:41 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/10 20:03:58 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/14 20:22:36 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ namespace	ft{
 			ft_stack_string		&getFtStringStack(void) { return myStringStack; }
 			std_stack_string	&getStdStringStack(void) { return origStringStack; }
 		} ;
-		
+
 	template <class ft_stack_class, class std_stack_class>
 		class	tmpStackChar{
 		public:
