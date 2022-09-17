@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set.hpp                                            :+:      :+:    :+:   */
+/*   ft_set.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 13:25:39 by marvin            #+#    #+#             */
-/*   Updated: 2022/08/28 12:58:53 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/17 19:55:13 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ namespace ft{
 			typedef rb_tree<value_type, value_compare, allocator_type>	set_tree;
 			typedef	typename set_tree::pointer_node						ptr_node;
 
-			set_tree		tree;
-			allocator_type	setAlloc;
-			key_compare		setCompare;
+			
+			/*RETURN TO PRIVATE*/
+				set_tree		tree;
+				allocator_type	setAlloc;
+				key_compare		setCompare;
+			/*RETURN TO PRIVATE*/
 		public:
 			typedef typename set_tree::size_type				size_type;
 			typedef typename set_tree::difference_type			difference_type;
@@ -58,10 +61,7 @@ namespace ft{
 					tree.insert(first, last);
 				}
 
-			set(const set& x) : tree(x.tree) {
-				setAlloc = x.setAlloc;
-				setCompare =x.setCompare;
-			}
+			set(const set& x) : tree(x.tree), setAlloc(x.setAlloc), setCompare(x.setCompare) { }
 
 			~set(void) { }
 

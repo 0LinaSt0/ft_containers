@@ -36,11 +36,11 @@ namespace ft{
 			typedef rb_tree<value_type, value_compare, allocator_type>	map_tree;
 			typedef typename map_tree::pointer_node						ptr_node;
 
-		public:
 			/*RETURN TO PRIVATE*/
 				map_tree		tree;
 				allocator_type	mapAlloc;
 			/*RETURN TO PRIVATE*/
+		public:
 			typedef typename map_tree::size_type					size_type;
 			typedef typename map_tree::difference_type				difference_type;
 			typedef typename map_tree::iterator						iterator;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_rb_tree_helpful.tpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:01:43 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 17:01:43 by marvin           ###   ########.fr       */
+/*   Updated: 2022/09/17 19:12:37 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ namespace ft{
 						std::cout << "		isitNil - " << std::boolalpha
 														<< child->isItNil << "\n";
 						if (!(child->isItNil))
-							{ std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
-							// { std::cout << "		key - " << child->value << "\n"; }/*for set*/
+							// { std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
+							{ std::cout << "		key - " << child->value << "\n"; }/*for set*/
 					}
 				}
 
@@ -32,16 +32,16 @@ namespace ft{
 			std::cout << "NODE_status" << std::endl;
 			std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
 			if (!treeNode->isItNil)
-				std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
-			// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
+				// std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
+			std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
 			std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
 			std::cout << "	color: " << (char)(treeNode->color) << "\n";
 
 			std::cout << "	parent: " << "\n"
 							<< "		adress - " << treeNode->previous << "\n";
 			if (treeNode->previous){
-				std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
-				// std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
+				// std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
+				std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
 				<< "		color - " << (char)(treeNode->previous->color) << "\n";
 			}
 
@@ -121,14 +121,14 @@ namespace ft{
 		void	rb_tree<_T, _Compare, _Allocator>::
 				_freeTree(typename rb_tree<_T, _Compare, _Allocator>::
 							pointer_node node){
-			(void)node;
-			// if (node->isItNil) { if (!node->previous) { _freeNode(node); } return ; }
+			if (!node || node->isItNil) { 
+				if (node) { _freeNode(node); }
+				return ; 
+			}
 
-			// _freeTree(node->nextLeft);
-			// typename rb_tree<_T, _Compare, _Allocator>::pointer_node	tmp = node->nextRight;
-			// _print_node(node);
-			// _freeTree(node->nextRight);
-			// _freeNode(node);
+			_freeTree(node->nextLeft);
+			_freeTree(node->nextRight);
+			_freeNode(node);
 		}
 
 	template <class _T, class _Compare, class _Allocator>
@@ -208,8 +208,7 @@ namespace ft{
 
 			addedNode->nextRight = nilRight;
 			addedNode->nextLeft = nilLeft;
-			if (!countElems){
-				_freeNode(node);
+			if (!node){
 				node = addedNode;
 				node->color = BLACK;
 			} else {
@@ -270,8 +269,7 @@ namespace ft{
 			rb_tree<_T, _Compare, _Allocator>::
 			_theLargestNode(typename rb_tree<_T, _Compare, _Allocator>::
 								pointer_node current) const{
-			if (!current || current->isItNil
-					|| current->nextRight->isItNil)
+			if (current->nextRight->isItNil)
 				{ return current; }
 			return _theLargestNode(current->nextRight);
 		}
@@ -297,7 +295,7 @@ namespace ft{
 							value_type comingVal) const {
 			iterator	current = begin();
 
-			while (!current.base()->isItNil
+			while (current != end() && !current.base()->isItNil
 					&& (compare(*current, comingVal)
 					|| (!compare(*current, comingVal)
 					&& !compare(comingVal, *current)))){
