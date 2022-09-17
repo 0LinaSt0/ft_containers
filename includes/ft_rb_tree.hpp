@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 16:08:49 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/16 21:03:17 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/17 20:03:13 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ namespace ft{
 			typedef ft::rb_tree_rev_iter<const_iterator>						const_reverse_iterator;
 			typedef ptrdiff_t													difference_type;
 			typedef size_t														size_type;
+
 		private:
 			pointer_node	node;
 			compare_class	compare;
@@ -56,18 +57,23 @@ namespace ft{
 		public:
 			rb_tree(const compare_class& comp,
 						const allocator_type& a = allocator_type())
-			: compare(comp), countElems(0), nodeAlloc(a) { node = _createNilNode(NULL); }
-			rb_tree(const rb_tree& other) : node(NULL), compare(other.compare) {
+			: node(NULL), compare(comp), countElems(0), nodeAlloc(a) { }
+			rb_tree(const rb_tree& other) : node(NULL), compare(other.compare) { 
 				operator=(other);
 			}
 			~rb_tree(void) { _freeTree(node); }
 
-			rb_tree& operator=(const rb_tree& other){
-				compare = other.compare;
-				// if (!node){ node = _createNilNode(NULL); }
+			rb_tree&	operator=(const rb_tree& other){
+				if (node){
+					_freeTree(node);
+					node = NULL;
+					compare = other.compare;
+				}
 				countElems = 0;
 				nodeAlloc = other.nodeAlloc;
-				insert(other.begin(), other.end());
+				if (other.begin().base()){
+					insert(other.begin(), other.end());
+				}
 				return *this;
 			}
 
@@ -119,39 +125,32 @@ namespace ft{
 				pointer_node	added_node = _createNode(val);
 
 				insertPlace = _findsInsertPlace(added_node, insertPlace);
-				if (insertPlace == added_node)
-					{ return pair<iterator, bool>
-									(iterator(added_node), false); }
+				if (insertPlace == added_node){ 
+					_freeNode(added_node);
+					return pair<iterator, bool>
+								(iterator(insertPlace), false); 
+				}
 				return _insertNode(added_node, insertPlace);
 			}
 
 			iterator insert (iterator position, const value_type& val){
 				pointer_node	pos1 = position.base();
-				if(pos1->isItNil) { return insert(val).first; }
+				if (pos1) { 
+					pointer_node	pos2 = (++position).base();
 
-				pointer_node	pos2 = (++position).base();
-
-				if (compare(pos1->value, val)
-						&& compare(val, pos2->value)){
-					return _insertNode(_createNode(val), pos1).first;
-				} else if (!compare(pos1->value, val)
-							&& !compare(val, pos1->value)){
-					return (iterator(pos1));
-				} else if (!compare(pos2->value, val)
-							&& !compare(val, pos2->value)){
-					return (iterator(pos2));
-				} else { return insert(val).first; }
+					if (compare(pos1->value, val)
+							&& compare(val, pos2->value)){
+						return _insertNode(_createNode(val), pos1).first;
+					}
+				}
+				return insert(val).first;
 			}
 
 			template <class InputIterator>
 				void insert (InputIterator first, InputIterator last){
-					if (first.base()->isItNil) {
-						node = _createNilNode(NULL);
-					} else {
-						for (iterator it(first); it != last; it++){
+					for (iterator it(first); it != last; it++){
 							insert(*it);
 						}
-					}
 				}
 
 			size_type	erase(const value_type& val){
@@ -160,7 +159,11 @@ namespace ft{
 				if (!deletedNode) { return 0; }
 
 				_deleteOptions(deletedNode);
-				
+
+				if (node->isItNil){
+					_freeNode(node);
+					node = NULL;
+				}
 				countElems--;
 				return 1;
 			}
@@ -168,7 +171,6 @@ namespace ft{
 			void erase (iterator position){	erase(*position); }
 
 			void erase (iterator first, iterator last){
-				if (first.base()->isItNil) { return ; }
 				iterator	tmp = first;
 				for (iterator it(first); it != last; ){
 					++it;
@@ -177,7 +179,7 @@ namespace ft{
 				}
 			}
 
-			void clear(void) { _freeTree(node); countElems = 0; node = _createNilNode(NULL); }
+			void clear(void) { _freeTree(node); countElems = 0; node = NULL; }
 
 			/* ~~~~~~~~~~~~ OPERATIONS ~~~~~~~~~~
 				at			|	Returns a pointer to the node with key 'n' or NULL

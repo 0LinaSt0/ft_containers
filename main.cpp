@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/16 21:15:04 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/10 20:16:24 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 	void	print_preview(const std::string& outString,
 							valueType type){
 		std::cout << ft::colors::magneta
-				<< "\n\t ~~~~~~~~~~~~tests_for_"
+				<< "\n\t ~~~~~~~~~~~~TESTS_FOR_"
 				<< outString;
 		if (type == STRING){
 			std::cout << "(STRING)~~~~~~~~~~~~";

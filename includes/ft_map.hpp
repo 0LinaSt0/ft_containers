@@ -59,9 +59,11 @@ namespace ft{
 					: tree(comp, alloc), mapAlloc(alloc) { insert(first, last); }
 
 			map (const map& x) : tree(x.tree), mapAlloc(x.mapAlloc) { }
+			// map (const map& x) = default;
 
 			~map() { }
 
+			// map& operator= (const map& x) = default;
 			map& operator= (const map& x){
 				tree = x.tree;
 				mapAlloc = x.mapAlloc;
@@ -71,6 +73,7 @@ namespace ft{
 			mapped_type& operator[] (const key_type& k){
 				ptr_node	desiredNode = tree.at(value_type(k, mapped_type()));
 
+				// std::cout << k << std::endl;
 				return (!desiredNode) ? (*((insert(value_type(k, mapped_type()))).first)).second
 										: desiredNode->value.second;
 			}
@@ -142,7 +145,6 @@ namespace ft{
 			}
 
 			void	swap (map& x){
-				exit(0);
 				map	tmp(*this);
 
 				*this = x;
