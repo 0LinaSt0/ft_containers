@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/29 15:38:56 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/18 13:09:54 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/18 15:16:05 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ namespace ft {
 		void	start(void) { gettimeofday(&_start, NULL); }
 		long	stop(void) {
 			gettimeofday(&_stop, NULL);
-			return (_stop.tv_sec * 1000000 + _stop.tv_usec)
-					- (_start.tv_sec * 1000000 + _start.tv_usec);
+			return (_stop.tv_sec * 1000 + _stop.tv_usec)
+					- (_start.tv_sec * 1000 + _start.tv_usec);
 		}
 	} ;
 

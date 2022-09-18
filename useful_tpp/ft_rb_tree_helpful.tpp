@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:01:43 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/18 12:34:09 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/18 14:39:04 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ namespace ft{
 				{ _redDad(added_node); }
 			return pair<iterator, bool>(iterator(added_node), true);
 		}
-
+		
 	template <class _T, class _Compare, class _Allocator>
 		typename rb_tree<_T, _Compare, _Allocator>::iterator
 			rb_tree<_T, _Compare, _Allocator>::

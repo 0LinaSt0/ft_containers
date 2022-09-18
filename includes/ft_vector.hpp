@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:06:03 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/17 23:14:41 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/18 15:20:42 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,6 @@ namespace ft{
 			allocator_type										vecAlloc;
 			size_type											countElem;
 			size_type											capacitySize;
-
-			void	_capacityUpdate(size_type amountCapacity);
-
-			void	_freeMemory(bool DoIDeallocate, size_type freeElems);
-
-			pointer	_allocateMemory(pointer &allocateTo, size_type capacSize,
-										size_type constructSize);
-
-			template <class InputIterator>
-				size_type	_sizeItersDistance(InputIterator first, InputIterator last);
-
-			template <class InputIterator>
-				void	_writeValue(InputIterator &container, InputIterator position,
-										char whichPartFl);
-										
-			void	_assignMemoryUpdate(void);
 		public:
 			/* ~~~~~~~~~~ Constructors ~~~~~~~~~~
 				1. explicit vector (const allocator_type&)			|	Empty vector
@@ -110,8 +94,6 @@ namespace ft{
 								}
 							}
 
-			// !!!!!!!!!!!ADD THE EXCEPTION WHEN first OR/AND last is NULL!!!!!!!!!!!
-			// TYPE OF EXCEPTION: "libc++abi.dylib: terminating with uncaught exception of type std::length_error: vector"
 			template < class InputIterator >
 				vector (InputIterator first, InputIterator last,
 						const allocator_type& alloc = allocator_type(),
@@ -325,16 +307,8 @@ namespace ft{
 					} catch (...) {
 						vecAlloc.deallocate(t, 0);
 						capacitySize = oldCapacity;
-						// throw std::invalid_argument(ex);
 						throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
 					}
-					// } catch (std::exception& ex) {
-					// 	vecAlloc.deallocate(t, 0);
-					// 	capacitySize = oldCapacity;
-					// 	throw std::invalid_argument(ex);
-					// 	// throw std::invalid_argument( "libc++abi.dylib: terminating with uncaught exception of type char const*" );
-					// }
-
 					_writeValue(tmpIter, position, 'e');
 					if (oldCapacity) { _freeMemory(true, oldCapacity); }
 					countElem += distanceSize;
@@ -441,6 +415,22 @@ namespace ft{
 
 			//Allocator
 			allocator_type	get_allocator() const{ return (vecAlloc); }
+			private:
+				void	_capacityUpdate(size_type amountCapacity);
+
+				void	_freeMemory(bool DoIDeallocate, size_type freeElems);
+
+				pointer	_allocateMemory(pointer &allocateTo, size_type capacSize,
+											size_type constructSize);
+
+				template <class InputIterator>
+					size_type	_sizeItersDistance(InputIterator first, InputIterator last);
+
+				template <class InputIterator>
+					void	_writeValue(InputIterator &container, InputIterator position,
+											char whichPartFl);
+											
+				void	_assignMemoryUpdate(void);
 		};
 
 		template <class _T, class _Alloc>

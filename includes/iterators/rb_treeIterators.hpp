@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rb_treeIterators.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 16:22:09 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/07 16:22:09 by marvin           ###   ########.fr       */
+/*   Updated: 2022/09/18 13:39:22 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ namespace ft{
 						returned = returned->nextLeft;
 					}
 				}
-				// std::cout <<
 				return returned;
 			}
 
@@ -105,7 +104,7 @@ namespace ft{
 
 			reference	operator* (void) const { rbIter t = iterTree; return (--t).base()->value; }
 			pointer		operator->(void) const { return &(operator*()); }
-			/*???*/rbRevIter&	operator=(const rbRevIter& other) { iterTree = other.iterTree; return *this; }
+			rbRevIter&	operator=(const rbRevIter& other) { iterTree = other.iterTree; return *this; }
 			rbRevIter&	operator++(void) { --iterTree; return *this; }
 			rbRevIter	operator++(int) { rbRevIter _new(*this); --iterTree; return _new; }
 			rbRevIter&	operator--(void) { ++iterTree; return *this; }
