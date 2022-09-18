@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 17:43:22 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/17 23:11:00 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/18 13:12:54 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 	void	print_preview(const std::string& outString,
 							valueType type){
 		std::cout << ft::colors::magneta
-				<< "\n\t ~~~~~~~~~~~~TESTS_FOR_"
+				<< "\n\t ~~~~~~~~~~~~tests_for_"
 				<< outString;
 		if (type == STRING){
 			std::cout << "(STRING)~~~~~~~~~~~~";
@@ -40,14 +40,6 @@
 	}
 	
 	int main (void){
-		ft::vector<int>	vector;
-		 std::vector<int> v;
-    vector.assign(1000, 1);
-    // g_start2 = timer();
-    v.push_back(*vector.begin());
-    v.push_back(*++vector.begin());
-    // g_end2 = timer();
-    return 1;
 		{
 			valueType	type = STRING;
 			print_preview("VECTOR", type);

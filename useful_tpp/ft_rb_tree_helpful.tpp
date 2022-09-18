@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/07 17:01:43 by marvin            #+#    #+#             */
-/*   Updated: 2022/09/17 19:12:37 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/18 12:34:09 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ namespace ft{
 						std::cout << "		isitNil - " << std::boolalpha
 														<< child->isItNil << "\n";
 						if (!(child->isItNil))
-							// { std::cout << "		key - " << child->value.first << "\n"; } /*for map*/
-							{ std::cout << "		key - " << child->value << "\n"; }/*for set*/
+							{ std::cout << "		key - " << child->value.first << "\n"; } /*FOR MAP*/
+							// { std::cout << "		key - " << child->value << "\n"; }/*FOR MAP*/
 					}
 				}
 
@@ -32,16 +32,16 @@ namespace ft{
 			std::cout << "NODE_status" << std::endl;
 			std::cout << "	nodeAddress: " << &(*treeNode) << "\n";
 			if (!treeNode->isItNil)
-				// std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
-			std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
+				std::cout << "	nodeKey: " << treeNode->value.first << "\n";/*FOR MAP*/
+			// std::cout << "	nodeKey: " << treeNode->value << "\n";/*FOR SET*/
 			std::cout << "	isItNil: " << std::boolalpha << treeNode->isItNil << "\n";
 			std::cout << "	color: " << (char)(treeNode->color) << "\n";
 
 			std::cout << "	parent: " << "\n"
 							<< "		adress - " << treeNode->previous << "\n";
 			if (treeNode->previous){
-				// std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
-				std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
+				std::cout << "		key - " << treeNode->previous->value.first << "\n"/*FOR MAP*/
+				// std::cout << "		key - " << treeNode->previous->value << "\n"/*FOR SET*/
 				<< "		color - " << (char)(treeNode->previous->color) << "\n";
 			}
 
@@ -162,10 +162,10 @@ namespace ft{
 								pointer_node currentNode){
 			if (!currentNode || currentNode->isItNil){
 				return currentNode;
-			} else if (compare(currentNode->value, comingNode->value)){
-				return _findsInsertPlace(comingNode, currentNode->nextRight);
 			} else if (compare(comingNode->value, currentNode->value)){
 				return _findsInsertPlace(comingNode, currentNode->nextLeft);
+			} else if (compare(currentNode->value, comingNode->value)){
+				return _findsInsertPlace(comingNode, currentNode->nextRight);
 			} else {
 				return comingNode;
 			}
@@ -213,10 +213,10 @@ namespace ft{
 				node->color = BLACK;
 			} else {
 				addedNode->previous = insertPlace->previous;
-				if (compare(insertPlace->previous->value, addedNode->value)){
-					insertPlace->previous->nextRight = addedNode;
-				} else {
+				if (compare(addedNode->value, insertPlace->previous->value)){
 					insertPlace->previous->nextLeft = addedNode;
+				} else {
+					insertPlace->previous->nextRight = addedNode;
 				}
 				_freeNode(insertPlace);
 			}

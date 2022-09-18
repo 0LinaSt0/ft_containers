@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 23:07:27 by msalena           #+#    #+#             */
-/*   Updated: 2022/09/17 17:57:34 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/18 12:02:04 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define CONTAINERS_HPP
 
 #include <sys/time.h>
+#include <cstddef>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>

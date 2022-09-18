@@ -6,7 +6,7 @@
 /*   By: msalena <msalena@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 21:44:46 by msalena           #+#    #+#             */
-/*   Updated: 2022/07/16 20:52:06 by msalena          ###   ########.fr       */
+/*   Updated: 2022/09/18 13:09:16 by msalena          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,6 @@
 #include "../ft_containers.hpp"
 
 namespace ft{
-	// template<typename stackType>
-	// 	struct remove_pointer
-	// 	{
-	// 		typedef stackType type;
-	// 	};
-
-	// template<typename stackType>
-	// 	struct remove_pointer<stackType*>
-	// 	{
-	// 		typedef typename remove_pointer<stackType>::type type;
-	// 	};
 
 	template < class Tp >
 		struct iterator_traits {
@@ -36,14 +25,6 @@ namespace ft{
 			typedef Tp*									pointer; // the type of a pointer to an element
 			typedef std::random_access_iterator_tag		iterator_category; // the iterator category
 		} ;
-	// template < class Tp >
-	// 	struct iterator_traits<Tp*> {
-	// 		typedef ptrdiff_t 							difference_type; // result of subtracting (-) one iterator from another
-	// 		typedef typename remove_pointer<Tp>::type	value_type; // the type of the element
-	// 		typedef value_type&							reference; // the type of a reference to an element
-	// 		typedef Tp									pointer; // the type of a pointer to an element
-	// 		typedef std::random_access_iterator_tag		iterator_category; // the iterator category
-	// 	} ;
 
 
 	template < class Iter >
